@@ -1,0 +1,12 @@
+{
+  "name": "Ampplex",
+  "displayName": "Ampplex",
+  "expo": {
+    "name": "Ampplex",
+    "slug": "Ampplex",
+    "version": "1.0.0",
+    "assetBundlePatterns": [
+      "**/*"
+    ]
+  }
+}
