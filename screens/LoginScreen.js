@@ -7,6 +7,15 @@ import {
   Image,
   TouchableOpacity,
 } from "react-native";
+import FlashMessage from "react-native-flash-message";
+import { showMessage, hideMessage } from "react-native-flash-message";
+
+const ErrorFlasher = (msg) => {
+  showMessage({
+    message: msg,
+    type: "danger",
+  });
+};
 
 export default function LoginScreen(props) {
   const Login = (email, password) => {
@@ -25,6 +34,7 @@ export default function LoginScreen(props) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loginResponse, setLoginResponse] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
 
   return (
     <View style={styles.container}>
@@ -54,14 +64,32 @@ export default function LoginScreen(props) {
         }}
       />
       <View>
+        <TouchableOpacity>
+          <Text style={styles.RegisterText}>
+            Don't have an Ampplex account?
+          </Text>
+          <Text style={styles.RegisterBtn}>Register</Text>
+        </TouchableOpacity>
+      </View>
+      <FlashMessage position="top" />
+      <View>
         <TouchableOpacity
           onPress={() => {
             setLoginResponse(Login(email, password));
-            if (loginResponse === "success") {
-              console.log("Mission accomplished!");
+            if (
+              loginResponse === "success" &&
+              email.length > 0 &&
+              password.length > 0
+            ) {
               props.navigation.navigate("Home");
-            } else {
-              console.log("Esa karoge mere sath ? :(");
+            } else if (!email || !password) {
+              setErrorMessage(
+                "Error: Please enter you email and password to login!"
+              );
+              ErrorFlasher(errorMessage);
+            } else if (loginResponse === "error") {
+              setErrorMessage("Error: Your email or password is incorrect!");
+              ErrorFlasher(errorMessage);
             }
           }}
         >
@@ -147,5 +175,26 @@ const styles = StyleSheet.create({
     alignSelf: "flex-end",
     marginRight: 70,
     marginTop: 80,
+  },
+  RegisterText: {
+    fontSize: 17,
+    alignSelf: "center",
+    position: "absolute",
+    left: 12,
+    top: 20,
+  },
+  RegisterBtn: {
+    position: "absolute",
+    alignSelf: "flex-end",
+    right: 35,
+    fontSize: 20,
+    top: 20,
+    color: "#00ffff",
+  },
+  Error: {
+    // color: "red",
+    // // flexDirection: "row",
+    // // alignSelf: "flex-start",
+    fontSize: 50,
   },
 });
