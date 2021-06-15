@@ -4,11 +4,10 @@ import {
   Text,
   View,
   TextInput,
-  Image,
   TouchableOpacity,
 } from "react-native";
 import FlashMessage from "react-native-flash-message";
-import { showMessage, hideMessage } from "react-native-flash-message";
+import { showMessage } from "react-native-flash-message";
 
 const ErrorFlasher = (msg) => {
   showMessage({
@@ -18,6 +17,39 @@ const ErrorFlasher = (msg) => {
 };
 
 export default function LoginScreen(props) {
+  const LoginBtnHandler = () => {
+    setLoginResponse(Login(email, password));
+    if (
+      loginResponse === "success" &&
+      email.length > 0 &&
+      password.length >= 8
+    ) {
+      // If there is success response from the backened server then redirecting user to the home page
+      setTimeout(() => {
+        showMessage({
+          message: "Success: Logined successfully!",
+          type: "success",
+        });
+      }, 1000);
+      setTimeout(() => {
+        props.navigation.navigate("Home");
+        setEmail("");
+        setPassword("");
+      }, 1100);
+    } else if (password.length < 8) {
+      setErrorMessage("Error: Password length must be more than 8 characters");
+      ErrorFlasher(errorMessage);
+    } else if (!email || !password) {
+      // If user didn't filled the required details then showing error
+      setErrorMessage("Error: Please enter you email and password to login!");
+      ErrorFlasher(errorMessage);
+    } else if (loginResponse === "error") {
+      // If user entered incorrect email or password then showing error
+      setErrorMessage("Error: Your email or password is incorrect!");
+      ErrorFlasher(errorMessage);
+    }
+  };
+
   const Login = (email, password) => {
     // Login method sends the email and password to flask Rest API and get response like "success" or "error"
 
@@ -63,50 +95,25 @@ export default function LoginScreen(props) {
           setPassword(e);
         }}
       />
-      <View>
-        <TouchableOpacity>
-          <Text style={styles.RegisterText}>
-            Don't have an Ampplex account?
-          </Text>
-          <Text style={styles.RegisterBtn}>Register</Text>
-        </TouchableOpacity>
-      </View>
-      <FlashMessage position="top" />
-      <View>
-        <TouchableOpacity
-          onPress={() => {
-            setLoginResponse(Login(email, password));
-            if (
-              loginResponse === "success" &&
-              email.length > 0 &&
-              password.length > 0
-            ) {
-              props.navigation.navigate("Home");
-            } else if (!email || !password) {
-              setErrorMessage(
-                "Error: Please enter you email and password to login!"
-              );
-              ErrorFlasher(errorMessage);
-            } else if (loginResponse === "error") {
-              setErrorMessage("Error: Your email or password is incorrect!");
-              ErrorFlasher(errorMessage);
-            }
-          }}
-        >
-          {/* <Text>Login</Text> */}
-          <Image
-            source={require("../Images/next.png")}
-            style={styles.NavigateNextIcon}
-          />
-        </TouchableOpacity>
-      </View>
+      <FlashMessage position="bottom" />
+      <TouchableOpacity style={styles.LoginBtn} onPress={LoginBtnHandler}>
+        <Text style={styles.LoginBtnText}>Login</Text>
+      </TouchableOpacity>
+      <TouchableOpacity
+        style={styles.RegisterBtn}
+        onPress={() => {
+          props.navigation.navigate("Register");
+        }}
+      >
+        <Text style={styles.RegisterBtnText}>Register</Text>
+      </TouchableOpacity>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    // flex: 1,
+    flex: 1,
     backgroundColor: "#F4F5F7",
     width: "100%",
     height: "100%",
@@ -168,7 +175,7 @@ const styles = StyleSheet.create({
     position: "absolute",
     width: 520,
     height: 500,
-    left: -160,
+    left: -230,
     top: 15,
   },
   NavigateNextIcon: {
@@ -183,18 +190,42 @@ const styles = StyleSheet.create({
     left: 12,
     top: 20,
   },
-  RegisterBtn: {
-    position: "absolute",
-    alignSelf: "flex-end",
-    right: 35,
-    fontSize: 20,
-    top: 20,
-    color: "#00ffff",
-  },
+
   Error: {
-    // color: "red",
-    // // flexDirection: "row",
-    // // alignSelf: "flex-start",
     fontSize: 50,
+  },
+  LoginBtn: {
+    width: 280,
+    height: 45,
+    backgroundColor: "#87cefa",
+    alignSelf: "center",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: 60,
+    borderRadius: 50,
+  },
+  LoginBtnText: {
+    fontWeight: "bold",
+    color: "white",
+    alignSelf: "center",
+    fontSize: 18,
+  },
+  RegisterBtn: {
+    width: 280,
+    height: 45,
+    backgroundColor: "#87cefa",
+    alignSelf: "center",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: 50,
+    borderRadius: 50,
+  },
+  RegisterBtnText: {
+    fontWeight: "bold",
+    color: "white",
+    alignSelf: "center",
+    fontSize: 18,
   },
 });

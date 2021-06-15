@@ -13,7 +13,11 @@ export default function App({ navigation }) {
   return (
     <NavigationContainer>
       <StatusBar style="light" />
-      <Stack.Navigator>
+      <Stack.Navigator
+        screenOptions={{
+          headerTitleAlign: "center",
+        }}
+      >
         <Stack.Screen
           name="Login"
           component={LoginScreen}
@@ -28,7 +32,19 @@ export default function App({ navigation }) {
             headerShown: false,
           }}
         />
-        <Stack.Screen name="Register" component={Register} />
+        <Stack.Screen
+          name="Register"
+          component={Register}
+          options={{
+            headerStyle: {
+              backgroundColor: "#87cefa",
+            },
+            headerTitleStyle: {
+              fontWeight: "bold",
+              color: "white",
+            },
+          }}
+        />
       </Stack.Navigator>
     </NavigationContainer>
   );
