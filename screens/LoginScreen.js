@@ -24,11 +24,16 @@ const ErrorFlasher = (msg) => {
 export default function LoginScreen(props) {
   const LoginBtnHandler = () => {
     setLoginResponse(Login(email, password));
+
     if (
       loginResponse === "success" &&
       email.length > 0 &&
       password.length >= 8
     ) {
+      // GetUserSession();
+      // if (isLogined === null || isLogined === "notLogined") {
+      //   StoreUserSession();
+      // }
       // If there is success response from the backened server then redirecting user to the home page
       setTimeout(() => {
         showMessage({
@@ -53,12 +58,6 @@ export default function LoginScreen(props) {
       setErrorMessage("Error: Your email or password is incorrect!");
       ErrorFlasher(errorMessage);
     }
-    // return (
-    //   <Tab.Navigator>
-    //     <Tab.Screen name="Home" component={HomeScreen} />
-    //     <Tab.Screen name="Settings" component={SettingsScreen} />
-    //   </Tab.Navigator>
-    // );
   };
 
   const Login = (email, password) => {
@@ -78,6 +77,7 @@ export default function LoginScreen(props) {
   const [password, setPassword] = useState("");
   const [loginResponse, setLoginResponse] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
+  const [isLogined, setIsLogined] = useState("");
 
   return (
     <View style={styles.container}>

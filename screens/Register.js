@@ -203,7 +203,7 @@ const styles = StyleSheet.create({
     fontSize: 30,
     marginLeft: 20,
     position: "absolute",
-    top: 60,
+    top: 50,
   },
   Circle: {
     backgroundColor: "#ffff",

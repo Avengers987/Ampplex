@@ -6,6 +6,7 @@ import { createStackNavigator } from "@react-navigation/stack";
 import { NavigationContainer } from "@react-navigation/native";
 import Home from "./screens/Home";
 import Register from "./screens/Register";
+import OnboardingScreen from "./screens/OnboardingScreen";
 
 const Stack = createStackNavigator();
 
@@ -18,6 +19,13 @@ export default function App({ navigation }) {
           headerTitleAlign: "center",
         }}
       >
+        <Stack.Screen
+          name="OnBoarding"
+          component={OnboardingScreen}
+          options={{
+            headerShown: false,
+          }}
+        />
         <Stack.Screen
           name="Login"
           component={LoginScreen}

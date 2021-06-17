@@ -7,6 +7,7 @@
     "start": "react-native start"
   },
   "dependencies": {
+    "@react-native-community/async-storage": "^1.12.1",
     "@react-navigation/bottom-tabs": "^5.11.11",
     "@react-navigation/native": "^5.9.4",
     "@react-navigation/stack": "^5.14.5",
@@ -17,9 +18,11 @@
     "react": "16.13.1",
     "react-dom": "16.13.1",
     "react-native": "~0.63.4",
+    "react-native-action-button": "^2.8.5",
     "react-native-elements": "^3.4.2",
     "react-native-flash-message": "^0.1.23",
     "react-native-gesture-handler": "~1.10.2",
+    "react-native-onboarding-swiper": "^1.1.4",
     "react-native-reanimated": "~2.1.0",
     "react-native-screens": "~3.0.0",
     "react-native-unimodules": "~0.13.3",
