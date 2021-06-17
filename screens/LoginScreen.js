@@ -8,6 +8,11 @@ import {
 } from "react-native";
 import FlashMessage from "react-native-flash-message";
 import { showMessage } from "react-native-flash-message";
+// import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
+
+// const Tab = createMaterialTopTabNavigator();
+
+// function MyTabs() {}
 
 const ErrorFlasher = (msg) => {
   showMessage({
@@ -48,6 +53,12 @@ export default function LoginScreen(props) {
       setErrorMessage("Error: Your email or password is incorrect!");
       ErrorFlasher(errorMessage);
     }
+    // return (
+    //   <Tab.Navigator>
+    //     <Tab.Screen name="Home" component={HomeScreen} />
+    //     <Tab.Screen name="Settings" component={SettingsScreen} />
+    //   </Tab.Navigator>
+    // );
   };
 
   const Login = (email, password) => {

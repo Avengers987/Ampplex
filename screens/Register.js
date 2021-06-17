@@ -19,6 +19,7 @@ export default function Register(props) {
         return response.text();
       })
       .then((data) => {
+        // console.log(data);
         setLoginResponse(data);
       });
   };
@@ -47,6 +48,7 @@ export default function Register(props) {
       password.length >= 8 &&
       username.length > 0
     ) {
+      console.log("Registered!");
       setTimeout(() => {
         showMessage({
           message: "Success: Registered successfully",
