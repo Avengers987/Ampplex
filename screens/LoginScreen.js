@@ -34,8 +34,6 @@ export default function LoginScreen(props) {
       console.log(value);
       if (value !== null) {
         props.navigation.replace("Home");
-      } else {
-        storeData("true");
       }
     } catch (e) {
       // error reading value
@@ -58,6 +56,7 @@ export default function LoginScreen(props) {
         });
       }, 1000);
       setTimeout(() => {
+        storeData("true");
         props.navigation.navigate("Home");
         setEmail("");
         setPassword("");

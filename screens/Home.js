@@ -1,112 +1,126 @@
-import React from "react";
-import { Animated, StyleSheet, Text, View } from "react-native";
+import React, { useState } from "react";
+import {
+  Animated,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+  Dimensions,
+} from "react-native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { MaterialCommunityIcons, Ionicons } from "@expo/vector-icons";
-import ActionButton from "react-native-action-button";
-import Icon from "react-native-vector-icons/Ionicons";
-import { positionStyle } from "react-native-flash-message";
+import TakePic from "./TakePic";
+import ImagePicker from "react-native-image-crop-picker";
 
 const Tab = createBottomTabNavigator();
 
-const HomeScreen = () => {
-  return (
-    <View style={styles.homeComponent}>
-      <Text>Hello World</Text>
-    </View>
-  );
-};
+const Home = ({ navigation }) => {
+  const HomeScreen = () => {
+    return (
+      <>
+        <PostBtn />
+      </>
+    );
+  };
 
-const Profile = () => {
-  return (
-    <View style={styles.Profile}>
-      <Text>Profile</Text>
-    </View>
-  );
-};
+  const Profile = () => {
+    return (
+      <View style={styles.Profile}>
+        <Text>Profile</Text>
+      </View>
+    );
+  };
 
-const Search = () => {
-  return (
-    <View style={styles.Profile}>
-      <Text>Search</Text>
-    </View>
-  );
-};
+  const Search = () => {
+    return (
+      <View style={styles.Profile}>
+        <Text>Search</Text>
+      </View>
+    );
+  };
 
-const PostBtn = () => {
-  return (
-    <ActionButton
-      buttonColor="rgba(231,76,60,1)"
-      style={{
-        position: "absolute",
-        bottom: 50,
-      }}
-    >
-      <ActionButton.Item
-        buttonColor="#9b59b6"
-        title="Camera"
-        onPress={() => console.log("notes tapped!")}
+  const CameraBtnHandler = () => {
+    ImagePicker.openCamera({
+      width: 300,
+      height: 400,
+      cropping: true,
+    }).then((image) => {
+      console.log(image);
+    });
+  };
+
+  const Footer = () => {
+    return (
+      <Tab.Navigator>
+        <Tab.Screen
+          name="Home"
+          component={HomeScreen}
+          options={{
+            tabBarLabel: "Home",
+            tabBarIcon: ({ color, size }) => (
+              <MaterialCommunityIcons name="home" color={color} size={size} />
+            ),
+          }}
+        />
+        <Tab.Screen
+          name="Search"
+          component={Search}
+          options={{
+            tabBarLabel: "Search",
+            tabBarIcon: ({ color, size }) => (
+              <Ionicons name="md-search" color={color} size={size} />
+            ),
+          }}
+        />
+        <Tab.Screen
+          name="Profile"
+          component={Profile}
+          options={{
+            tabBarLabel: "Profile",
+            tabBarIcon: ({ color, size }) => (
+              <MaterialCommunityIcons
+                name="account"
+                color={color}
+                size={size}
+              />
+            ),
+          }}
+        />
+      </Tab.Navigator>
+    );
+  };
+  const PostBtn = () => {
+    const window_Width = Dimensions.get("window")["width"];
+    return (
+      <TouchableOpacity
+        style={{
+          position: "absolute",
+          right: 35,
+          bottom: 50,
+        }}
+        onPress={() => {
+          navigation.navigate("AddPost");
+        }}
       >
-        <Icon name="camera" style={styles.actionButtonIcon} />
-      </ActionButton.Item>
-      <ActionButton.Item
-        buttonColor="#3498db"
-        title="Choose picture"
-        onPress={() => {}}
-      >
-        <Icon name="image" style={styles.actionButtonIcon} />
-      </ActionButton.Item>
-    </ActionButton>
-  );
-};
+        <View style={styles.PostBtnStyle}>
+          <Text
+            style={{
+              color: "white",
+              fontSize: 25,
+              alignSelf: "center",
+              marginTop: 5,
+            }}
+          >
+            +
+          </Text>
+        </View>
+      </TouchableOpacity>
+    );
+  };
 
-const Footer = () => {
-  return (
-    <Tab.Navigator
-      tabBarOptions={{
-        style: {
-          flexDirection: "row",
-        },
-      }}
-    >
-      <Tab.Screen
-        name="Home"
-        component={HomeScreen}
-        options={{
-          tabBarLabel: "Home",
-          tabBarIcon: ({ color, size }) => (
-            <MaterialCommunityIcons name="home" color={color} size={size} />
-          ),
-        }}
-      />
-      <Tab.Screen
-        name="Search"
-        component={Search}
-        options={{
-          tabBarLabel: "Search",
-          tabBarIcon: ({ color, size }) => (
-            <Ionicons name="md-search" color={color} size={size} />
-          ),
-        }}
-      />
-      <Tab.Screen
-        name="Profile"
-        component={Profile}
-        options={{
-          tabBarLabel: "Profile",
-          tabBarIcon: ({ color, size }) => (
-            <MaterialCommunityIcons name="account" color={color} size={size} />
-          ),
-        }}
-      />
-    </Tab.Navigator>
-  );
-};
-
-const Home = () => {
   return (
     <>
       <Footer />
-      <PostBtn />
     </>
   );
 };
@@ -124,10 +138,17 @@ const styles = StyleSheet.create({
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
+    marginTop: 30,
   },
   Profile: {
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
+  },
+  PostBtnStyle: {
+    backgroundColor: "#7b68ee",
+    width: 50,
+    height: 50,
+    borderRadius: 100,
   },
 });

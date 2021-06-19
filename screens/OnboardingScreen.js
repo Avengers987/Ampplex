@@ -73,67 +73,61 @@ export default function OnboardingScreen({ navigation }) {
     if (value !== null) {
       // If user is already logined then navigating the user to the Home screen
       navigation.replace("Home");
-    } else {
-      // If user is not logined then displaying the onboarding screen
-      return (
-        <Onboarding
-          DoneButtonComponent={Done}
-          SkipButtonComponent={Skip}
-          NextButtonComponent={Next}
-          onSkip={() => navigation.replace("Login")}
-          onDone={() => navigation.replace("Login")}
-          pages={[
-            {
-              backgroundColor: "#fff",
-              image: (
-                <Image
-                  style={{
-                    width: 300,
-                    height: 300,
-                  }}
-                  source={require("../Images/onboarding1.png")}
-                />
-              ),
-              title: (
-                <Text style={styles.Title_Screen1}>Create with Ampplex</Text>
-              ),
-              subtitle: (
-                <Text style={styles.Descript_Screen1}>
-                  Spread Education To all over the world
-                </Text>
-              ),
-            },
-            {
-              backgroundColor: "#ffff",
-              image: (
-                <Image
-                  style={{
-                    width: 300,
-                    height: 300,
-                  }}
-                  source={require("../Images/onboarding2.png")}
-                />
-              ),
-              title: (
-                <Text style={styles.Title_Screen2}>
-                  Create educational videos so that we can stop other
-                  distractions
-                </Text>
-              ),
-              subtitle: (
-                <Text style={styles.Descript_Screen2}>
-                  Because when the world come on social media to study it get
-                  distracted and to avoid that please help us to make this world
-                  a better place
-                </Text>
-              ),
-            },
-          ]}
-        />
-      );
     }
   }
-  return <View />;
+  return (
+    <Onboarding
+      DoneButtonComponent={Done}
+      SkipButtonComponent={Skip}
+      NextButtonComponent={Next}
+      onSkip={() => navigation.replace("Login")}
+      onDone={() => navigation.replace("Login")}
+      pages={[
+        {
+          backgroundColor: "#fff",
+          image: (
+            <Image
+              style={{
+                width: 300,
+                height: 300,
+              }}
+              source={require("../Images/onboarding1.png")}
+            />
+          ),
+          title: <Text style={styles.Title_Screen1}>Create with Ampplex</Text>,
+          subtitle: (
+            <Text style={styles.Descript_Screen1}>
+              Spread Education To all over the world
+            </Text>
+          ),
+        },
+        {
+          backgroundColor: "#ffff",
+          image: (
+            <Image
+              style={{
+                width: 300,
+                height: 300,
+              }}
+              source={require("../Images/onboarding2.png")}
+            />
+          ),
+          title: (
+            <Text style={styles.Title_Screen2}>
+              Create educational videos so that we can stop other distractions
+            </Text>
+          ),
+          subtitle: (
+            <Text style={styles.Descript_Screen2}>
+              Because when the world come on social media to study it get
+              distracted and to avoid that please help us to make this world a
+              better place
+            </Text>
+          ),
+        },
+      ]}
+    />
+  );
 }
 
 const styles = StyleSheet.create({

@@ -7,6 +7,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import Home from "./screens/Home";
 import Register from "./screens/Register";
 import OnboardingScreen from "./screens/OnboardingScreen";
+import AddPost from "./screens/AddPost";
 
 const Stack = createStackNavigator();
 
@@ -43,6 +44,19 @@ export default function App({ navigation }) {
         <Stack.Screen
           name="Register"
           component={Register}
+          options={{
+            headerStyle: {
+              backgroundColor: "#87cefa",
+            },
+            headerTitleStyle: {
+              fontWeight: "bold",
+              color: "white",
+            },
+          }}
+        />
+        <Stack.Screen
+          name="AddPost"
+          component={AddPost}
           options={{
             headerStyle: {
               backgroundColor: "#87cefa",
