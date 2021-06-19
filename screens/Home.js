@@ -34,7 +34,13 @@ const Search = () => {
 
 const PostBtn = () => {
   return (
-    <ActionButton buttonColor="rgba(231,76,60,1)">
+    <ActionButton
+      buttonColor="rgba(231,76,60,1)"
+      style={{
+        position: "absolute",
+        bottom: 50,
+      }}
+    >
       <ActionButton.Item
         buttonColor="#9b59b6"
         title="Camera"
@@ -99,8 +105,8 @@ const Footer = () => {
 const Home = () => {
   return (
     <>
-      <PostBtn />
       <Footer />
+      <PostBtn />
     </>
   );
 };
