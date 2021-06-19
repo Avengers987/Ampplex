@@ -1,9 +1,10 @@
 import React from "react";
-import { StyleSheet, Text, View } from "react-native";
+import { Animated, StyleSheet, Text, View } from "react-native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-// import Ionicons from "react-native-vector-icons/Ionicons";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
-// import ActionButton from "react-native-action-button";
+import { MaterialCommunityIcons, Ionicons } from "@expo/vector-icons";
+import ActionButton from "react-native-action-button";
+import Icon from "react-native-vector-icons/Ionicons";
+import { positionStyle } from "react-native-flash-message";
 
 const Tab = createBottomTabNavigator();
 
@@ -31,9 +32,36 @@ const Search = () => {
   );
 };
 
-const Home = () => {
+const PostBtn = () => {
   return (
-    <Tab.Navigator>
+    <ActionButton buttonColor="rgba(231,76,60,1)">
+      <ActionButton.Item
+        buttonColor="#9b59b6"
+        title="Camera"
+        onPress={() => console.log("notes tapped!")}
+      >
+        <Icon name="camera" style={styles.actionButtonIcon} />
+      </ActionButton.Item>
+      <ActionButton.Item
+        buttonColor="#3498db"
+        title="Choose picture"
+        onPress={() => {}}
+      >
+        <Icon name="image" style={styles.actionButtonIcon} />
+      </ActionButton.Item>
+    </ActionButton>
+  );
+};
+
+const Footer = () => {
+  return (
+    <Tab.Navigator
+      tabBarOptions={{
+        style: {
+          flexDirection: "row",
+        },
+      }}
+    >
       <Tab.Screen
         name="Home"
         component={HomeScreen}
@@ -49,6 +77,9 @@ const Home = () => {
         component={Search}
         options={{
           tabBarLabel: "Search",
+          tabBarIcon: ({ color, size }) => (
+            <Ionicons name="md-search" color={color} size={size} />
+          ),
         }}
       />
       <Tab.Screen
@@ -62,6 +93,15 @@ const Home = () => {
         }}
       />
     </Tab.Navigator>
+  );
+};
+
+const Home = () => {
+  return (
+    <>
+      <PostBtn />
+      <Footer />
+    </>
   );
 };
 

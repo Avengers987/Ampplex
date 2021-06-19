@@ -8,11 +8,7 @@ import {
 } from "react-native";
 import FlashMessage from "react-native-flash-message";
 import { showMessage } from "react-native-flash-message";
-// import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
-
-// const Tab = createMaterialTopTabNavigator();
-
-// function MyTabs() {}
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const ErrorFlasher = (msg) => {
   showMessage({
@@ -22,18 +18,38 @@ const ErrorFlasher = (msg) => {
 };
 
 export default function LoginScreen(props) {
-  const LoginBtnHandler = () => {
-    setLoginResponse(Login(email, password));
+  getData();
+  const storeData = async (value) => {
+    // value take boolean type value
+    try {
+      await AsyncStorage.setItem("isLogined_Boolean", value);
+    } catch (e) {
+      ErrorFlasher("Error: Failed to store login info!");
+    }
+  };
 
+  async function getData() {
+    try {
+      const value = await AsyncStorage.getItem("isLogined_Boolean");
+      console.log(value);
+      if (value !== null) {
+        props.navigation.replace("Home");
+      } else {
+        storeData("true");
+      }
+    } catch (e) {
+      // error reading value
+      ErrorFlasher("Error: Failed to retrieve your login info!");
+    }
+  }
+
+  const LoginBtnHandler = () => {
+    Login(email, password);
     if (
       loginResponse === "success" &&
       email.length > 0 &&
       password.length >= 8
     ) {
-      // GetUserSession();
-      // if (isLogined === null || isLogined === "notLogined") {
-      //   StoreUserSession();
-      // }
       // If there is success response from the backened server then redirecting user to the home page
       setTimeout(() => {
         showMessage({
@@ -66,10 +82,12 @@ export default function LoginScreen(props) {
     const url = `https://ampplex-backened.herokuapp.com/Login/${email}/${password}`;
     fetch(url)
       .then((response) => {
+        console.log(response.text);
         return response.text();
       })
       .then((data) => {
         setLoginResponse(data);
+        console.log(data);
       });
   };
 
