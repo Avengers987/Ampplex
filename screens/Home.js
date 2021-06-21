@@ -12,54 +12,29 @@ import { MaterialCommunityIcons, Ionicons } from "@expo/vector-icons";
 import ImagePicker from "react-native-image-crop-picker";
 import { createDrawerNavigator } from "@react-navigation/drawer";
 import { NavigationContainer } from "@react-navigation/native";
+import Search from "./Search";
+import Profile from "./Profile";
+import PostBtn from "./PostBtn";
+import HomeScreen from "./HomeScreen";
+
+const getWindowDimensions = () => {
+  const dimensions = Dimensions.get("window").width;
+  return dimensions;
+};
 
 const Tab = createBottomTabNavigator();
 
 const Home = ({ navigation }) => {
-  const HomeScreen = () => {
-    return (
-      <>
-        <PostBtn />
-      </>
-    );
-  };
-
-  const Profile = () => {
-    return (
-      <View style={styles.Profile}>
-        <Text>Profile</Text>
-      </View>
-    );
-  };
-
-  const Search = () => {
-    return (
-      <View style={styles.Profile}>
-        <Text>Search</Text>
-      </View>
-    );
-  };
-
-  const CameraBtnHandler = () => {
-    ImagePicker.openCamera({
-      width: 300,
-      height: 400,
-      cropping: true,
-    }).then((image) => {
-      console.log(image);
-    });
-  };
-
-  const Footer = () => {
-    return (
+  return (
+    <>
       <Tab.Navigator>
         <Tab.Screen
           name="Home"
           component={HomeScreen}
           options={{
-            tabBarLabel: "Home",
+            tabBarLabel: "Search",
             tabBarIcon: ({ color, size }) => (
-              <MaterialCommunityIcons name="home" color={color} size={size} />
+              <Ionicons name="home" color={color} size={size} />
             ),
           }}
         />
@@ -88,22 +63,13 @@ const Home = ({ navigation }) => {
           }}
         />
       </Tab.Navigator>
-    );
-  };
-  const PostBtn = () => {
-    const window_Width = Dimensions.get("window")["width"];
-    return (
       <TouchableOpacity
-        style={{
-          position: "absolute",
-          right: 35,
-          bottom: 50,
-        }}
+        style={styles.PostBtnStyle}
         onPress={() => {
           navigation.navigate("AddPost");
         }}
       >
-        <View style={styles.PostBtnStyle}>
+        <View>
           <Text
             style={{
               color: "white",
@@ -116,12 +82,6 @@ const Home = ({ navigation }) => {
           </Text>
         </View>
       </TouchableOpacity>
-    );
-  };
-
-  return (
-    <>
-      <Footer />
     </>
   );
 };
@@ -151,5 +111,9 @@ const styles = StyleSheet.create({
     width: 50,
     height: 50,
     borderRadius: 100,
+    position: "absolute",
+    top: getWindowDimensions() + 200,
+    alignSelf: "flex-end",
+    right: 25,
   },
 });

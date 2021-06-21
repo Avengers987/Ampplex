@@ -4,14 +4,14 @@ import { StyleSheet, Text, View } from "react-native";
 import LoginScreen from "./screens/LoginScreen";
 import { createStackNavigator } from "@react-navigation/stack";
 import { NavigationContainer } from "@react-navigation/native";
-import Home from "./screens/Home";
 import Register from "./screens/Register";
 import OnboardingScreen from "./screens/OnboardingScreen";
 import AddPost from "./screens/AddPost";
+import Home from "./screens/Home";
 
 const Stack = createStackNavigator();
 
-export default function App({ navigation }) {
+export default function App() {
   return (
     <NavigationContainer>
       <StatusBar style="light" />

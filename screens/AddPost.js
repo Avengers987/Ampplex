@@ -50,7 +50,8 @@ const styles = StyleSheet.create({
     backgroundColor: "#f4f5f7",
   },
   PostInputStyle: {
-    fontSize: 20,
+    fontSize: 25,
     marginTop: 60,
+    fontWeight: "bold",
   },
 });
