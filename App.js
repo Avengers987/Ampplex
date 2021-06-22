@@ -8,6 +8,7 @@ import Register from "./screens/Register";
 import OnboardingScreen from "./screens/OnboardingScreen";
 import AddPost from "./screens/AddPost";
 import Home from "./screens/Home";
+import TakePic from "./screens/TakePic";
 
 const Stack = createStackNavigator();
 
@@ -52,6 +53,13 @@ export default function App() {
               fontWeight: "bold",
               color: "white",
             },
+          }}
+        />
+        <Stack.Screen
+          name="TakePic"
+          component={TakePic}
+          options={{
+            headerShown: false,
           }}
         />
         <Stack.Screen

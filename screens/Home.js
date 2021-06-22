@@ -10,7 +10,6 @@ import {
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { MaterialCommunityIcons, Ionicons } from "@expo/vector-icons";
 import ImagePicker from "react-native-image-crop-picker";
-import { createDrawerNavigator } from "@react-navigation/drawer";
 import { NavigationContainer } from "@react-navigation/native";
 import Search from "./Search";
 import Profile from "./Profile";

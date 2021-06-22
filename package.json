@@ -32,7 +32,9 @@
     "react-native-side-menu-updated": "^1.3.2",
     "react-native-sidebar": "^0.3.0",
     "react-native-unimodules": "~0.13.3",
-    "react-native-web": "~0.13.12"
+    "react-native-web": "~0.13.12",
+    "expo-image-picker": "~10.1.4",
+    "expo-face-detector": "~10.0.1"
   },
   "devDependencies": {
     "@babel/core": "^7.9.0"

@@ -1,11 +1,15 @@
 import React from "react";
 import { View, Text, StyleSheet } from "react-native";
+import { createDrawerNavigator } from "@react-navigation/drawer";
+import Profile from "./Profile";
 
 const HomeScreen = () => {
   return (
-    <View style={styles.Profile}>
-      <Text>Home</Text>
-    </View>
+    <>
+      <View style={styles.Profile}>
+        <Text>Home</Text>
+      </View>
+    </>
   );
 };
 
