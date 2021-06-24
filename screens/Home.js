@@ -9,8 +9,6 @@ import {
 } from "react-native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { MaterialCommunityIcons, Ionicons } from "@expo/vector-icons";
-import ImagePicker from "react-native-image-crop-picker";
-import { NavigationContainer } from "@react-navigation/native";
 import Search from "./Search";
 import Profile from "./Profile";
 import PostBtn from "./PostBtn";
@@ -18,6 +16,10 @@ import HomeScreen from "./HomeScreen";
 
 const getWindowDimensions = () => {
   const dimensions = Dimensions.get("window").width;
+  return dimensions;
+};
+const getWindowDimensionsHeight = () => {
+  const dimensions = Dimensions.get("window").height;
   return dimensions;
 };
 
@@ -111,7 +113,7 @@ const styles = StyleSheet.create({
     height: 50,
     borderRadius: 100,
     position: "absolute",
-    top: getWindowDimensions() + 200,
+    bottom: 100,
     alignSelf: "flex-end",
     right: 25,
   },

@@ -15,6 +15,8 @@ export default function TakePic() {
     })();
   }, []);
 
+  // Camera.takePictureAsync();
+
   if (hasPermission === null) {
     return <View />;
   } else if (hasPermission === false) {

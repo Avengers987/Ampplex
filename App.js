@@ -12,6 +12,8 @@ import TakePic from "./screens/TakePic";
 
 const Stack = createStackNavigator();
 
+// Till Now Ampplex is made up of 1,204 lines of code!
+
 export default function App() {
   return (
     <NavigationContainer>

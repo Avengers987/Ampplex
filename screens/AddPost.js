@@ -6,16 +6,24 @@ import {
   TextInput,
   Image,
   Platform,
+  Dimensions,
+  TouchableOpacity,
 } from "react-native";
 import ActionButton from "react-native-action-button";
 import Icon from "react-native-vector-icons/Ionicons";
 import * as ImagePicker from "expo-image-picker";
-import { Camera } from "expo-camera";
-import TakePic from "./TakePic";
-import { NavigationContainer } from "@react-navigation/native";
 
 export default function AddPost({ navigation }) {
   const [image, setImage] = useState(null);
+
+  const getWindowDimensionsWidth = () => {
+    const dimensions = Dimensions.get("window").width;
+    return dimensions;
+  };
+  const getWindowDimensionsHeight = () => {
+    const dimensions = Dimensions.get("window").height;
+    return dimensions;
+  };
 
   useEffect(() => {
     (async () => {
@@ -34,7 +42,7 @@ export default function AddPost({ navigation }) {
       let result = await ImagePicker.launchImageLibraryAsync({
         mediaTypes: ImagePicker.MediaTypeOptions.All,
         allowsEditing: true,
-        aspect: [4, 3],
+        aspect: [5, 4],
         quality: 1,
       });
 
@@ -86,13 +94,18 @@ export default function AddPost({ navigation }) {
           <Image
             source={{ uri: image }}
             style={{
-              width: 300,
-              height: 300,
+              width: getWindowDimensionsWidth(),
+              height: getWindowDimensionsWidth(),
               alignSelf: "center",
               marginTop: 20,
             }}
           />
         )}
+        <View>
+          <TouchableOpacity style={styles.postBtnStyle}>
+            <Text style={styles.postBtnTextStyle}>Post</Text>
+          </TouchableOpacity>
+        </View>
       </View>
     </>
   );
@@ -108,6 +121,16 @@ const styles = StyleSheet.create({
   PostInputStyle: {
     fontSize: 25,
     marginTop: 60,
+    fontWeight: "bold",
+  },
+  postBtnStyle: {
+    backgroundColor: "skyblue",
+    width: 100,
+    height: 30,
+    borderRadius: 50,
+  },
+  postBtnTextStyle: {
+    alignSelf: "center",
     fontWeight: "bold",
   },
 });
