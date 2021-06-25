@@ -23,6 +23,8 @@ export default function LoginScreen(props) {
     // value take boolean type value
     try {
       await AsyncStorage.setItem("isLogined_Boolean", value);
+      await AsyncStorage.setItem("user_name", UserName);
+      await AsyncStorage.setItem("user_id", userId);
     } catch (e) {
       ErrorFlasher("Error: Failed to store login info!");
     }
@@ -31,8 +33,12 @@ export default function LoginScreen(props) {
   async function getData() {
     try {
       const value = await AsyncStorage.getItem("isLogined_Boolean");
-      console.log(value);
-      if (value !== null) {
+      const userName = await AsyncStorage.getItem("user_name");
+      const user_id = await AsyncStorage.getItem("user_id");
+      console.log(`Username is ${userName}`);
+      console.log("resp", value);
+      console.log(`User Id is ${user_id}`);
+      if (value !== null && userName !== null && user_id !== null) {
         props.navigation.replace("Home");
       }
     } catch (e) {
@@ -82,11 +88,15 @@ export default function LoginScreen(props) {
     fetch(url)
       .then((response) => {
         console.log(response.text);
-        return response.text();
+        return response.json();
       })
       .then((data) => {
-        setLoginResponse(data);
-        console.log(data);
+        setLoginResponse(data.status);
+        setUserName(data.UserName);
+        setUserId(data.user_id);
+        console.log(data.status);
+        console.log(userId);
+        console.log(UserName);
       });
   };
 
@@ -94,7 +104,8 @@ export default function LoginScreen(props) {
   const [password, setPassword] = useState("");
   const [loginResponse, setLoginResponse] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
-  const [isLogined, setIsLogined] = useState("");
+  const [UserName, setUserName] = useState("");
+  const [userId, setUserId] = useState("");
 
   return (
     <View style={styles.container}>

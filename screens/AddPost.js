@@ -127,10 +127,13 @@ const styles = StyleSheet.create({
     backgroundColor: "skyblue",
     width: 100,
     height: 30,
+    marginTop: 12,
     borderRadius: 50,
   },
   postBtnTextStyle: {
     alignSelf: "center",
     fontWeight: "bold",
+    color: "white",
+    fontSize: 16.5,
   },
 });

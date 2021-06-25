@@ -6,7 +6,7 @@ import { MaterialCommunityIcons, Ionicons } from "@expo/vector-icons";
 export default function TakePic() {
   console.log("Hello Cam");
   const [hasPermission, setHasPermission] = useState(null);
-  const [type, setType] = useState(Camera.Constants.Type.back);
+  const [type, setType] = useState(Camera.Constants.Type.front);
 
   useEffect(() => {
     (async () => {

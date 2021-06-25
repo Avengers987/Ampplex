@@ -56,7 +56,7 @@ export default function Register(props) {
         });
       }, 1000);
       setTimeout(() => {
-        props.navigation.navigate("Home");
+        props.navigation.navigate("Login");
       }, 1100);
     }
   };

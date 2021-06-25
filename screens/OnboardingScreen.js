@@ -65,14 +65,20 @@ const Next = ({ ...props }) => {
 };
 
 export default function OnboardingScreen({ navigation }) {
+  const storeData = async () => {
+    await AsyncStorage.setItem("onboarding", "true");
+  };
+
   // Calling the getData() method to check if is user is logined or not
   getData();
   async function getData() {
-    const value = await AsyncStorage.getItem("isLogined_Boolean");
-    console.log(value);
+    const value = await AsyncStorage.getItem("onboarding");
+    console.log("on_boarding_resp", value);
+    storeData();
     if (value !== null) {
       // If user is already logined then navigating the user to the Home screen
-      navigation.replace("Home");
+      navigation.replace("Login");
+    } else if (value === null) {
     }
   }
   return (
