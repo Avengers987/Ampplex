@@ -8,13 +8,19 @@ import {
   Platform,
   Dimensions,
   TouchableOpacity,
+  ImageEditor,
 } from "react-native";
 import ActionButton from "react-native-action-button";
 import Icon from "react-native-vector-icons/Ionicons";
 import * as ImagePicker from "expo-image-picker";
+import storage from "@react-native-firebase/storage";
+import FlashMessage from "react-native-flash-message";
+import { showMessage } from "react-native-flash-message";
 
 export default function AddPost({ navigation }) {
   const [image, setImage] = useState(null);
+  const [userId, setUserId] = useState("");
+  const [postTxt, setPostTxt] = useState("");
 
   const getWindowDimensionsWidth = () => {
     const dimensions = Dimensions.get("window").width;
@@ -23,6 +29,13 @@ export default function AddPost({ navigation }) {
   const getWindowDimensionsHeight = () => {
     const dimensions = Dimensions.get("window").height;
     return dimensions;
+  };
+
+  const ErrorFlasher = (msg) => {
+    showMessage({
+      message: `Error: ${msg}`,
+      type: "danger",
+    });
   };
 
   useEffect(() => {
@@ -37,10 +50,41 @@ export default function AddPost({ navigation }) {
     })();
   }, []);
 
+  async function getData() {
+    try {
+      const userName = await AsyncStorage.getItem("user_name");
+      const user_id = await AsyncStorage.getItem("user_id");
+      setUserId(user_id);
+    } catch (e) {
+      // error reading value
+      ErrorFlasher("Failed to retrieve your login info!");
+    }
+  }
+
+  const sendPostToCloudServer = async () => {
+    console.log("Posting...");
+    if (image !== null) {
+      const uploadUri = image;
+      let filename = uploadUri.substring(uploadUri.lastIndexOf("/") + 1);
+      console.log("firebase!!!!!", filename);
+      try {
+        await storage().ref(filename).putFile(uploadUri);
+      } catch (e) {
+        console.log(e);
+      }
+    } else if (image === null && postTxt === "") {
+      ErrorFlasher("Please type or attach your post");
+    } else {
+      console.log(postTxt);
+      // setPostTxt("");
+    }
+  };
+
   const PostBtn = () => {
     const pickImage = async () => {
       let result = await ImagePicker.launchImageLibraryAsync({
         mediaTypes: ImagePicker.MediaTypeOptions.All,
+
         allowsEditing: true,
         aspect: [5, 4],
         quality: 1,
@@ -59,6 +103,11 @@ export default function AddPost({ navigation }) {
           <TextInput
             style={styles.PostInputStyle}
             placeholder="What's on your mind?"
+            value={postTxt}
+            autoFocus
+            onChangeText={(e) => {
+              setPostTxt(e);
+            }}
           />
         </View>
 
@@ -82,6 +131,7 @@ export default function AddPost({ navigation }) {
             <Icon name="md-images-outline" style={styles.actionButtonIcon} />
           </ActionButton.Item>
         </ActionButton>
+        <FlashMessage position="bottom" />
       </>
     );
   };
@@ -102,7 +152,10 @@ export default function AddPost({ navigation }) {
           />
         )}
         <View>
-          <TouchableOpacity style={styles.postBtnStyle}>
+          <TouchableOpacity
+            style={styles.postBtnStyle}
+            onPress={sendPostToCloudServer}
+          >
             <Text style={styles.postBtnTextStyle}>Post</Text>
           </TouchableOpacity>
         </View>
@@ -121,13 +174,13 @@ const styles = StyleSheet.create({
   PostInputStyle: {
     fontSize: 25,
     marginTop: 60,
-    fontWeight: "bold",
+    fontWeight: "800",
   },
   postBtnStyle: {
     backgroundColor: "skyblue",
     width: 100,
     height: 30,
-    marginTop: 12,
+    marginTop: 20,
     borderRadius: 50,
   },
   postBtnTextStyle: {
