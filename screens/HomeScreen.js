@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Text, StyleSheet } from "react-native";
+import { View, Text, StyleSheet, Dimensions } from "react-native";
 import { createDrawerNavigator } from "@react-navigation/drawer";
 import Profile from "./Profile";
 
@@ -7,7 +7,15 @@ const HomeScreen = () => {
   return (
     <>
       <View style={styles.Profile}>
-        <Text>Home</Text>
+        <Text
+          style={{
+            marginTop: Dimensions.get("window").width,
+            position: "absolute",
+            top: -50,
+          }}
+        >
+          Home
+        </Text>
       </View>
     </>
   );

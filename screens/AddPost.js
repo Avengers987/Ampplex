@@ -13,23 +13,43 @@ import {
 import ActionButton from "react-native-action-button";
 import Icon from "react-native-vector-icons/Ionicons";
 import * as ImagePicker from "expo-image-picker";
-import storage from "@react-native-firebase/storage";
 import FlashMessage from "react-native-flash-message";
 import { showMessage } from "react-native-flash-message";
+import * as firebase from "firebase";
+import { StatusBar } from "expo-status-bar";
+
+// For Firebase JS SDK v7.20.0 and later, measurementId is optional
+const firebaseConfig = {
+  apiKey: "AIzaSyB_vMbdEOmrMH_Eo4IuNkuObyY_ACLI5-k",
+  authDomain: "ampplex-75da7.firebaseapp.com",
+  databaseURL: "https://ampplex-75da7-default-rtdb.firebaseio.com",
+  projectId: "ampplex-75da7",
+  storageBucket: "ampplex-75da7.appspot.com",
+  messagingSenderId: "730587965700",
+  appId: "1:730587965700:web:7c71f40fd541c7b91bc851",
+  measurementId: "G-BSPPZFVTMS",
+};
+
+if (firebase.apps.length === 0) {
+  firebase.initializeApp(firebaseConfig);
+}
+
+const getWindowDimensionsWidth = () => {
+  const dimensions = Dimensions.get("window").width;
+  return dimensions;
+};
+const getWindowDimensionsHeight = () => {
+  const dimensions = Dimensions.get("window").height;
+  return dimensions;
+};
+
+require("firebase/firestore");
+require("firebase/firebase-storage");
 
 export default function AddPost({ navigation }) {
   const [image, setImage] = useState(null);
   const [userId, setUserId] = useState("");
   const [postTxt, setPostTxt] = useState("");
-
-  const getWindowDimensionsWidth = () => {
-    const dimensions = Dimensions.get("window").width;
-    return dimensions;
-  };
-  const getWindowDimensionsHeight = () => {
-    const dimensions = Dimensions.get("window").height;
-    return dimensions;
-  };
 
   const ErrorFlasher = (msg) => {
     showMessage({
@@ -66,9 +86,10 @@ export default function AddPost({ navigation }) {
     if (image !== null) {
       const uploadUri = image;
       let filename = uploadUri.substring(uploadUri.lastIndexOf("/") + 1);
-      console.log("firebase!!!!!", filename);
+      console.log("firebase!!!!!", uploadUri);
       try {
-        await storage().ref(filename).putFile(uploadUri);
+        console.log("img path", uploadUri);
+        await firebase.storage().ref(filename).put(uploadUri);
       } catch (e) {
         console.log(e);
       }
@@ -99,6 +120,7 @@ export default function AddPost({ navigation }) {
 
     return (
       <>
+        <StatusBar style="light" />
         <View style={styles.container}>
           <TextInput
             style={styles.PostInputStyle}
@@ -169,7 +191,6 @@ const styles = StyleSheet.create({
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "#f4f5f7",
   },
   PostInputStyle: {
     fontSize: 25,

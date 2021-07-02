@@ -13,6 +13,7 @@ import Search from "./Search";
 import Profile from "./Profile";
 import PostBtn from "./PostBtn";
 import HomeScreen from "./HomeScreen";
+import { StatusBar } from "expo-status-bar";
 
 const getWindowDimensions = () => {
   const dimensions = Dimensions.get("window").width;
@@ -28,6 +29,7 @@ const Tab = createBottomTabNavigator();
 const Home = ({ navigation }) => {
   return (
     <>
+      <StatusBar style="auto" />
       <Tab.Navigator>
         <Tab.Screen
           name="Home"
