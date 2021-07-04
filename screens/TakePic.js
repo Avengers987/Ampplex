@@ -1,21 +1,16 @@
 import { Camera } from "expo-camera";
 import React, { useState, useEffect } from "react";
-import {
-  View,
-  Text,
-  StyleSheet,
-  TouchableOpacity,
-  Image,
-  Dimensions,
-} from "react-native";
-import { MaterialCommunityIcons, Ionicons } from "@expo/vector-icons";
+import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
+import * as FaceDetector from "expo-face-detector";
 
-export default function TakePic() {
+export default function TakePic({ navigation }) {
   console.log("Hello Cam");
   const [hasPermission, setHasPermission] = useState(null);
   const [type, setType] = useState(Camera.Constants.Type.front);
   const [camera, setCamera] = useState(null);
   const [image, setImage] = useState(null);
+  const [flashType, setFlashType] = useState(null);
 
   useEffect(() => {
     (async () => {
@@ -26,10 +21,16 @@ export default function TakePic() {
 
   const takePicture = async () => {
     if (camera) {
-      console.log("Entered!");
-      const getImg = await camera.takePictureAsync(null);
-      console.log("img: ", getImg.uri);
+      console.log("Taking Picture...");
+      const getImg = await camera.takePictureAsync();
       setImage(getImg.uri);
+
+      if (image !== null) {
+        console.log("image is : ", image);
+        navigation.navigate("AddPost", { image: image });
+      } else {
+        console.log("I am null plz help me! :(");
+      }
     }
   };
 
@@ -47,8 +48,20 @@ export default function TakePic() {
     <View style={styles.CameraStyle}>
       <Camera
         style={styles.FixedAspectRatio}
+        onFacesDetected={() => {
+          console.log("Face Detected!");
+        }}
+        faceDetectorSettings={{
+          mode: FaceDetector.Constants.Mode.fast,
+          detectLandmarks: FaceDetector.Constants.Landmarks.none,
+          runClassifications: FaceDetector.Constants.Classifications.none,
+          minDetectionInterval: 100,
+          tracking: true,
+        }}
         ref={(ref) => setCamera(ref)}
         type={type}
+        zoom
+        flashMode={flashType !== null ? flashType : "auto"}
       >
         <View style={styles.container}>
           <TouchableOpacity
@@ -61,9 +74,35 @@ export default function TakePic() {
             }}
             style={styles.FlipBtnStyle}
           >
-            <MaterialCommunityIcons name="flip-horizontal" size={40} />
+            <MaterialCommunityIcons name="camera-switch" size={30} />
           </TouchableOpacity>
         </View>
+
+        <TouchableOpacity
+          style={styles.FlashStyle}
+          onPress={() => {
+            setFlashType(
+              flashType === null
+                ? "auto"
+                : flashType === "auto"
+                ? "on"
+                : flashType === "on"
+                ? "off"
+                : "auto"
+            );
+            console.log(flashType);
+          }}
+        >
+          {flashType === null ? (
+            <MaterialCommunityIcons name="flash-auto" size={30} />
+          ) : flashType === "on" ? (
+            <MaterialCommunityIcons name="flash-outline" size={30} />
+          ) : flashType === "off" ? (
+            <MaterialCommunityIcons name="flash-off" size={30} />
+          ) : (
+            <MaterialCommunityIcons name="flash-auto" size={30} />
+          )}
+        </TouchableOpacity>
         <TouchableOpacity
           style={styles.takePicBtn}
           onPress={() => {
@@ -92,12 +131,17 @@ const styles = StyleSheet.create({
     marginTop: 50,
   },
   takePicBtn: {
-    width: 100,
-    height: 100,
+    width: 90,
+    height: 90,
     backgroundColor: "#fafafa",
     borderRadius: 100,
     position: "absolute",
     bottom: 25,
     marginLeft: 130,
+  },
+  FlashStyle: {
+    position: "absolute",
+    top: 55,
+    marginLeft: 80,
   },
 });

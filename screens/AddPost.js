@@ -46,10 +46,27 @@ const getWindowDimensionsHeight = () => {
 require("firebase/firestore");
 require("firebase/firebase-storage");
 
-export default function AddPost({ navigation }) {
+export default function AddPost({ navigation, route }) {
   const [image, setImage] = useState(null);
   const [userId, setUserId] = useState("");
   const [postTxt, setPostTxt] = useState("");
+  const [camImg, setCamImg] = useState(null);
+
+  if (route !== undefined) {
+    console.log(route);
+  } else {
+    console.warn("I'm null!");
+  }
+
+  const SetImage = () => {
+    try {
+      setCamImg(route.params.image);
+    } catch {
+      console.log("No image selected!");
+    }
+  };
+
+  // SetImage();
 
   const ErrorFlasher = (msg) => {
     showMessage({
@@ -83,6 +100,8 @@ export default function AddPost({ navigation }) {
 
   const sendPostToCloudServer = async () => {
     console.log("Posting...");
+    SetImage();
+
     if (image !== null) {
       const uploadUri = image;
       let filename = uploadUri.substring(uploadUri.lastIndexOf("/") + 1);
@@ -97,7 +116,6 @@ export default function AddPost({ navigation }) {
       ErrorFlasher("Please type or attach your post");
     } else {
       console.log(postTxt);
-      // setPostTxt("");
     }
   };
 
@@ -164,7 +182,7 @@ export default function AddPost({ navigation }) {
       <View style={styles.container}>
         {image && (
           <Image
-            source={{ uri: image }}
+            source={{ uri: image === null ? camImg : image }}
             style={{
               width: getWindowDimensionsWidth(),
               height: getWindowDimensionsWidth(),
