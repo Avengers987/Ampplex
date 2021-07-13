@@ -39,7 +39,7 @@ export default function LoginScreen(props) {
       console.log("resp", value);
       console.log(`User Id is ${user_id}`);
       if (value !== null && userName !== null && user_id !== null) {
-        props.navigation.replace("Home");
+        props.navigation.replace("Category");
       }
     } catch (e) {
       // error reading value
@@ -63,7 +63,7 @@ export default function LoginScreen(props) {
       }, 1000);
       setTimeout(() => {
         storeData("true");
-        props.navigation.navigate("Home");
+        props.navigation.navigate("Category");
         setEmail("");
         setPassword("");
       }, 1100);

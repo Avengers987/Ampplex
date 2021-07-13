@@ -9,6 +9,7 @@ import OnboardingScreen from "./screens/OnboardingScreen";
 import AddPost from "./screens/AddPost";
 import Home from "./screens/Home";
 import TakePic from "./screens/TakePic";
+import Category from "./screens/Category";
 
 const Stack = createStackNavigator();
 
@@ -75,6 +76,13 @@ export default function App() {
               fontWeight: "bold",
               color: "white",
             },
+          }}
+        />
+        <Stack.Screen
+          name="Category"
+          component={Category}
+          options={{
+            headerShown: false,
           }}
         />
       </Stack.Navigator>
