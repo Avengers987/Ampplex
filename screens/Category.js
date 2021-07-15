@@ -15,7 +15,8 @@ import { SearchBar } from "react-native-elements";
 
 const Category = () => {
   const [searchVal, setSearchVal] = useState(null); // stores the search value
-  const [pressedBtn, setPressedBtn] = useState(null); // Stores the pressed button name
+  const [pressedBtn, setPressedBtn] = useState(new Set()); // Stores the pressed button name
+  pressedBtn.delete("N");
 
   const [icon, setIcon] = useState(
     require("../Images/2x/outline_search_black_24dp.png")
@@ -24,55 +25,97 @@ const Category = () => {
   const [iconType, setIconType] = useState("search");
 
   // Category button colors
-  const [btnColor, setBtnColor] = useState("powderblue");
-  const [btnColor1, setBtnColor1] = useState("powderblue");
-  const [btnColor2, setBtnColor2] = useState("powderblue");
-  const [btnColor3, setBtnColor3] = useState("powderblue");
-  const [btnColor4, setBtnColor4] = useState("powderblue");
-  const [btnColor5, setBtnColor5] = useState("powderblue");
-  const [btnColor6, setBtnColor6] = useState("powderblue");
-  const [btnColor7, setBtnColor7] = useState("powderblue");
-  const [btnColor8, setBtnColor8] = useState("powderblue");
-  const [btnColor9, setBtnColor9] = useState("powderblue");
-  const [btnColor10, setBtnColor10] = useState("powderblue");
-  const [btnColor11, setBtnColor11] = useState("powderblue");
-  const [btnColor12, setBtnColor12] = useState("powderblue");
-  const [btnColor13, setBtnColor13] = useState("powderblue");
-  const [btnColor14, setBtnColor14] = useState("powderblue");
-  const [btnColor15, setBtnColor15] = useState("powderblue");
-  const [btnColor16, setBtnColor16] = useState("powderblue");
-  const [btnColor17, setBtnColor17] = useState("powderblue");
-  const [btnColor18, setBtnColor18] = useState("powderblue");
-  const [btnColor19, setBtnColor19] = useState("powderblue");
+  const [btnColor, setBtnColor] = useState("white");
+  const [btnColor1, setBtnColor1] = useState("white");
+  const [btnColor2, setBtnColor2] = useState("white");
+  const [btnColor3, setBtnColor3] = useState("white");
+  const [btnColor4, setBtnColor4] = useState("white");
+  const [btnColor5, setBtnColor5] = useState("white");
+  const [btnColor6, setBtnColor6] = useState("white");
+  const [btnColor7, setBtnColor7] = useState("white");
+  const [btnColor8, setBtnColor8] = useState("white");
+  const [btnColor9, setBtnColor9] = useState("white");
+  const [btnColor10, setBtnColor10] = useState("white");
+  const [btnColor11, setBtnColor11] = useState("white");
+  const [btnColor12, setBtnColor12] = useState("white");
+  const [btnColor13, setBtnColor13] = useState("white");
+  const [btnColor14, setBtnColor14] = useState("white");
+  const [btnColor15, setBtnColor15] = useState("white");
+  const [btnColor16, setBtnColor16] = useState("white");
+  const [btnColor17, setBtnColor17] = useState("white");
+  const [btnColor18, setBtnColor18] = useState("white");
+  const [btnColor19, setBtnColor19] = useState("white");
+  const [animationCalled, setAnimationCalled] = useState(0);
 
-  const animatedSearchBar = new Animated.Value(0);
+  const animatedSearchBar = new Animated.Value(50);
+  const animatedSearchBarHeight = new Animated.Value(50);
 
-  Animated.timing(animatedSearchBar, {
-    toValue: 100,
-    duration: 1000,
-  });
+  if (animationCalled === 0) {
+    setTimeout(() => {
+      Animated.timing(animatedSearchBar, {
+        toValue: 65,
+        duration: 1100,
+        useNativeDriver: false,
+      }).start();
+    }, 1000);
+    setTimeout(() => {
+      Animated.timing(animatedSearchBarHeight, {
+        toValue: 65,
+        duration: 1100,
+        useNativeDriver: false,
+      }).start();
+    }, 1000);
+
+    setTimeout(() => {
+      Animated.timing(animatedSearchBar, {
+        toValue: 300,
+        duration: 1100,
+        useNativeDriver: false,
+      }).start();
+    }, 1500);
+    setAnimationCalled(1);
+  }
+
+  console.log(pressedBtn);
+  console.log(searchVal);
 
   return (
     <View style={styles.container}>
-      <TextInput
-        placeholder={"Search"}
-        style={styles.searchBox}
-        onChangeText={(e) => setSearchVal(e)}
-        onFocus={() => {
-          setIconType("back");
-          setIcon(require("../Images/2x/back.png"));
+      <Animated.View
+        style={{
+          backgroundColor: "white",
+          width: animatedSearchBar,
+          height: animatedSearchBarHeight,
+          borderRadius: 50,
+          position: "absolute",
+          right: 50,
+          top: 30,
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
         }}
-      />
-      <Image
-        onPress={() => {
-          if (iconType === "back") {
-            setIcon(require("../Images/2x/outline_search_black_24dp.png"));
-            // setIconType("search");
-          }
-        }}
-        source={icon}
-        style={styles.searchIcon}
-      />
+      >
+        <TextInput
+          style={{
+            borderRadius: 100,
+            height: 65,
+            marginLeft: 55,
+            fontSize: 20,
+          }}
+          onChangeText={(srch_val) => setSearchVal(srch_val)}
+          placeholder={"Search..."}
+        />
+        <Image
+          onPress={() => {
+            if (iconType === "back") {
+              setIcon(require("../Images/2x/outline_search_black_24dp.png"));
+              setIconType("search");
+            }
+          }}
+          source={icon}
+          style={styles.searchIcon}
+        />
+      </Animated.View>
       <View>
         <Text style={styles.TitleStyle}>Select your category</Text>
       </View>
@@ -84,11 +127,12 @@ const Category = () => {
             ...styles.Category,
           }}
           onPress={() => {
-            setPressedBtn("Coding");
-            if (btnColor === "skyblue") {
-              setBtnColor("powderblue");
+            setPressedBtn(pressedBtn.add("Coding"));
+            if (btnColor === "powderblue") {
+              pressedBtn.delete("Coding");
+              setBtnColor("white");
             } else {
-              setBtnColor("skyblue");
+              setBtnColor("powderblue");
             }
           }}
         >
@@ -100,11 +144,12 @@ const Category = () => {
             ...styles.Category,
           }}
           onPress={() => {
-            setPressedBtn("JEE");
-            if (btnColor1 === "skyblue") {
-              setBtnColor1("powderblue");
+            setPressedBtn(pressedBtn.add("JEE"));
+            if (btnColor1 === "powderblue") {
+              pressedBtn.delete("JEE");
+              setBtnColor1("white");
             } else {
-              setBtnColor1("skyblue");
+              setBtnColor1("powderblue");
             }
           }}
         >
@@ -116,11 +161,12 @@ const Category = () => {
             ...styles.Category,
           }}
           onPress={() => {
-            setPressedBtn("NEET");
-            if (btnColor2 === "skyblue") {
-              setBtnColor2("powderblue");
+            setPressedBtn(pressedBtn.add("NEET"));
+            if (btnColor2 === "powderblue") {
+              pressedBtn.delete("NEET");
+              setBtnColor2("white");
             } else {
-              setBtnColor2("skyblue");
+              setBtnColor2("powderblue");
             }
           }}
         >
@@ -132,11 +178,12 @@ const Category = () => {
             ...styles.Category,
           }}
           onPress={() => {
-            setPressedBtn("Sports");
-            if (btnColor3 === "skyblue") {
-              setBtnColor3("powderblue");
+            setPressedBtn(pressedBtn.add("Sports"));
+            if (btnColor3 === "powderblue") {
+              pressedBtn.delete("Sports");
+              setBtnColor3("white");
             } else {
-              setBtnColor3("skyblue");
+              setBtnColor3("powderblue");
             }
           }}
         >
@@ -149,11 +196,12 @@ const Category = () => {
             ...styles.Category,
           }}
           onPress={() => {
-            setPressedBtn("Acting");
-            if (btnColor4 === "skyblue") {
-              setBtnColor4("powderblue");
+            setPressedBtn(pressedBtn.add("Acting"));
+            if (btnColor4 === "powderblue") {
+              pressedBtn.delete("Acting");
+              setBtnColor4("white");
             } else {
-              setBtnColor4("skyblue");
+              setBtnColor4("powderblue");
             }
           }}
         >
@@ -165,11 +213,12 @@ const Category = () => {
             ...styles.Category,
           }}
           onPress={() => {
-            setPressedBtn("CBSE Class 1");
-            if (btnColor5 === "skyblue") {
-              setBtnColor5("powderblue");
+            setPressedBtn(pressedBtn.add("CBSE Class 1"));
+            if (btnColor5 === "powderblue") {
+              pressedBtn.delete("CBSE Class 1");
+              setBtnColor5("white");
             } else {
-              setBtnColor5("skyblue");
+              setBtnColor5("powderblue");
             }
           }}
         >
@@ -181,11 +230,12 @@ const Category = () => {
             ...styles.Category,
           }}
           onPress={() => {
-            setPressedBtn("CBSE Class 2");
-            if (btnColor6 === "skyblue") {
-              setBtnColor6("powderblue");
+            setPressedBtn(pressedBtn.add("CBSE Class 2"));
+            if (btnColor6 === "powderblue") {
+              pressedBtn.delete("CBSE Class 2");
+              setBtnColor6("white");
             } else {
-              setBtnColor6("skyblue");
+              setBtnColor6("powderblue");
             }
           }}
         >
@@ -197,11 +247,12 @@ const Category = () => {
             ...styles.Category,
           }}
           onPress={() => {
-            setPressedBtn("CBSE Class 3");
-            if (btnColor7 === "skyblue") {
-              setBtnColor7("powderblue");
+            setPressedBtn(pressedBtn.add("CBSE Class 3"));
+            if (btnColor7 === "powderblue") {
+              pressedBtn.delete("CBSE Class 3");
+              setBtnColor7("white");
             } else {
-              setBtnColor7("skyblue");
+              setBtnColor7("powderblue");
             }
           }}
         >
@@ -213,11 +264,12 @@ const Category = () => {
             ...styles.Category,
           }}
           onPress={() => {
-            setPressedBtn("CBSE Class 4");
-            if (btnColor8 === "skyblue") {
-              setBtnColor8("powderblue");
+            setPressedBtn(pressedBtn.add("CBSE Class 4"));
+            if (btnColor8 === "powderblue") {
+              pressedBtn.delete("CBSE Class 4");
+              setBtnColor8("white");
             } else {
-              setBtnColor8("skyblue");
+              setBtnColor8("powderblue");
             }
           }}
         >
@@ -229,11 +281,12 @@ const Category = () => {
             ...styles.Category,
           }}
           onPress={() => {
-            setPressedBtn("CBSE Class 5");
-            if (btnColor9 === "skyblue") {
-              setBtnColor9("powderblue");
+            setPressedBtn(pressedBtn.add("CBSE Class 5"));
+            if (btnColor9 === "powderblue") {
+              pressedBtn.delete("CBSE Class 5");
+              setBtnColor9("white");
             } else {
-              setBtnColor9("skyblue");
+              setBtnColor9("powderblue");
             }
           }}
         >
@@ -245,11 +298,12 @@ const Category = () => {
             ...styles.Category,
           }}
           onPress={() => {
-            setPressedBtn("CBSE Class 6");
-            if (btnColor10 === "skyblue") {
-              setBtnColor10("powderblue");
+            setPressedBtn(pressedBtn.add("CBSE Class 6"));
+            if (btnColor10 === "powderblue") {
+              pressedBtn.delete("CBSE Class 6");
+              setBtnColor10("white");
             } else {
-              setBtnColor10("skyblue");
+              setBtnColor10("powderblue");
             }
           }}
         >
@@ -261,11 +315,12 @@ const Category = () => {
             ...styles.Category,
           }}
           onPress={() => {
-            setPressedBtn("CBSE Class 7");
-            if (btnColor11 === "skyblue") {
-              setBtnColor11("powderblue");
+            setPressedBtn(pressedBtn.add("CBSE Class 7"));
+            if (btnColor11 === "powderblue") {
+              pressedBtn.delete("CBSE Class 7");
+              setBtnColor11("white");
             } else {
-              setBtnColor11("skyblue");
+              setBtnColor11("powderblue");
             }
           }}
         >
@@ -277,11 +332,12 @@ const Category = () => {
             ...styles.Category,
           }}
           onPress={() => {
-            setPressedBtn("CBSE Class 8");
-            if (btnColor12 === "skyblue") {
-              setBtnColor12("powderblue");
+            setPressedBtn(pressedBtn.add("CBSE Class 8"));
+            if (btnColor12 === "powderblue") {
+              pressedBtn.delete("CBSE Class 8");
+              setBtnColor12("white");
             } else {
-              setBtnColor12("skyblue");
+              setBtnColor12("powderblue");
             }
           }}
         >
@@ -293,11 +349,12 @@ const Category = () => {
             ...styles.Category,
           }}
           onPress={() => {
-            setPressedBtn("CBSE Class 9");
-            if (btnColor13 === "skyblue") {
-              setBtnColor13("powderblue");
+            setPressedBtn(pressedBtn.add("CBSE Class 9"));
+            if (btnColor13 === "powderblue") {
+              pressedBtn.delete("CBSE Class 9");
+              setBtnColor13("white");
             } else {
-              setBtnColor13("skyblue");
+              setBtnColor13("powderblue");
             }
           }}
         >
@@ -309,11 +366,12 @@ const Category = () => {
             ...styles.Category,
           }}
           onPress={() => {
-            setPressedBtn("CBSE Class 10");
-            if (btnColor14 === "skyblue") {
-              setBtnColor14("powderblue");
+            setPressedBtn(pressedBtn.add("CBSE Class 10"));
+            if (btnColor14 === "powderblue") {
+              pressedBtn.delete("CBSE Class 10");
+              setBtnColor14("white");
             } else {
-              setBtnColor14("skyblue");
+              setBtnColor14("powderblue");
             }
           }}
         >
@@ -325,11 +383,12 @@ const Category = () => {
             ...styles.Category,
           }}
           onPress={() => {
-            setPressedBtn("CBSE Class 11");
-            if (btnColor15 === "skyblue") {
-              setBtnColor15("powderblue");
+            setPressedBtn(pressedBtn.add("CBSE Class 11"));
+            if (btnColor15 === "powderblue") {
+              pressedBtn.delete("CBSE Class 11");
+              setBtnColor15("white");
             } else {
-              setBtnColor15("skyblue");
+              setBtnColor15("powderblue");
             }
           }}
         >
@@ -341,11 +400,12 @@ const Category = () => {
             ...styles.Category,
           }}
           onPress={() => {
-            setPressedBtn("CBSE Class 12");
-            if (btnColor16 === "skyblue") {
-              setBtnColor16("powderblue");
+            setPressedBtn(pressedBtn.add("CBSE Class 12"));
+            if (btnColor16 === "powderblue") {
+              pressedBtn.delete("CBSE Class 12");
+              setBtnColor16("white");
             } else {
-              setBtnColor16("skyblue");
+              setBtnColor16("powderblue");
             }
           }}
         >
@@ -358,11 +418,12 @@ const Category = () => {
             ...styles.Category,
           }}
           onPress={() => {
-            setPressedBtn("Mechanical_Engineering");
-            if (btnColor17 === "skyblue") {
-              setBtnColor17("powderblue");
+            setPressedBtn(pressedBtn.add("Mechanical_Engineering"));
+            if (btnColor17 === "powderblue") {
+              pressedBtn.delete("Mechanical_Engineering");
+              setBtnColor17("white");
             } else {
-              setBtnColor17("skyblue");
+              setBtnColor17("powderblue");
             }
           }}
         >
@@ -378,11 +439,12 @@ const Category = () => {
             ...styles.Category,
           }}
           onPress={() => {
-            setPressedBtn("Software_Engineering");
-            if (btnColor18 === "skyblue") {
-              setBtnColor18("powderblue");
+            setPressedBtn(pressedBtn.add("Software_Engineering"));
+            if (btnColor18 === "powderblue") {
+              pressedBtn.delete("Software_Engineering");
+              setBtnColor18("white");
             } else {
-              setBtnColor18("skyblue");
+              setBtnColor18("powderblue");
             }
           }}
         >
@@ -398,11 +460,12 @@ const Category = () => {
             ...styles.Category,
           }}
           onPress={() => {
-            setPressedBtn("Electrical_Engineering");
-            if (btnColor19 === "skyblue") {
-              setBtnColor19("powderblue");
+            setPressedBtn(pressedBtn.add("Electrical_Engineering"));
+            if (btnColor19 === "powderblue") {
+              pressedBtn.delete("Electrical_Engineering");
+              setBtnColor19("white");
             } else {
-              setBtnColor19("skyblue");
+              setBtnColor19("powderblue");
             }
           }}
         >
@@ -422,6 +485,17 @@ const Category = () => {
           <Text style={styles.CategoryBtnInnerText}>None</Text>
         </TouchableOpacity>
       </ScrollView>
+      {pressedBtn.size > 0 ? (
+        <TouchableOpacity style={styles.nextNavigation}>
+          {/* <Text style={styles.nextNavigationIcon}>{">"}</Text> */}
+          <Image
+            style={styles.nextNavigationIcon}
+            source={require("../Images/2x/done.png")}
+          />
+        </TouchableOpacity>
+      ) : (
+        <View />
+      )}
     </View>
   );
 };
@@ -439,35 +513,37 @@ const styles = StyleSheet.create({
     marginTop: Dimensions.get("window").width / 3.5,
   },
   Category: {
-    // backgroundColor: "powderblue",
+    // backgroundColor: "white",
     width: 180,
     height: 50,
     marginTop: 30,
     marginLeft: 10,
-    borderRadius: 100,
+    borderRadius: 10,
   },
   CategoryBtnInnerText: {
     fontSize: 15,
     fontWeight: "bold",
     alignSelf: "center",
-    color: "white",
-  },
-  searchBox: {
-    width: 300,
-    height: 50,
-    alignSelf: "center",
-    position: "absolute",
-    top: 50,
-    backgroundColor: "#fafafa",
-    borderRadius: 20,
-    paddingLeft: 120,
-    fontSize: 16,
+    color: "black",
   },
   searchIcon: {
     width: 30,
     height: 30,
     position: "absolute",
-    top: 60,
-    left: 75,
+    left: 10,
+    marginTop: 16,
+    alignSelf: "center",
+  },
+  nextNavigation: {
+    backgroundColor: "skyblue",
+    width: 50,
+    height: 50,
+    borderRadius: 100,
+    position: "absolute",
+    right: 20,
+    bottom: 150,
+  },
+  nextNavigationIcon: {
+    alignSelf: "center",
   },
 });

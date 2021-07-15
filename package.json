@@ -27,6 +27,7 @@
     "react-dom": "16.13.1",
     "react-native": "~0.63.4",
     "react-native-action-button": "^2.8.5",
+    "react-native-animated-searchbox": "0.0.1",
     "react-native-elements": "^3.4.2",
     "react-native-flash-message": "^0.1.23",
     "react-native-gesture-handler": "~1.10.2",
@@ -36,6 +37,7 @@
     "react-native-screens": "~3.0.0",
     "react-native-side-menu-updated": "^1.3.2",
     "react-native-sidebar": "^0.3.0",
+    "react-native-svg": "12.1.0",
     "react-native-unimodules": "~0.13.3",
     "react-native-web": "~0.13.12",
     "react-native-webview": "^11.6.4"
