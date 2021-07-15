@@ -11,11 +11,11 @@ import {
   Image,
 } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
-import { SearchBar } from "react-native-elements";
 
 const Category = () => {
   const [searchVal, setSearchVal] = useState(null); // stores the search value
   const [pressedBtn, setPressedBtn] = useState(new Set()); // Stores the pressed button name
+
   pressedBtn.delete("N");
 
   const [icon, setIcon] = useState(
@@ -45,12 +45,23 @@ const Category = () => {
   const [btnColor17, setBtnColor17] = useState("white");
   const [btnColor18, setBtnColor18] = useState("white");
   const [btnColor19, setBtnColor19] = useState("white");
-  const [animationCalled, setAnimationCalled] = useState(0);
+  const [animationCalled, setAnimationCalled] = useState(false); // for search bar
 
   const animatedSearchBar = new Animated.Value(50);
   const animatedSearchBarHeight = new Animated.Value(50);
+  const animateBtn = new Animated.Value(0);
+  console.log("Animation: ", animationCalled);
 
-  if (animationCalled === 0) {
+  if (pressedBtn.size > 0) {
+    // Checking if button animation is running for the first time and if yes, then animating the next navigation button
+    Animated.timing(animateBtn, {
+      toValue: 50,
+      duration: 1000,
+      useNativeDriver: false,
+    }).start();
+  }
+  console.log("Val", animateBtn);
+  if (animationCalled === false) {
     setTimeout(() => {
       Animated.timing(animatedSearchBar, {
         toValue: 65,
@@ -73,7 +84,9 @@ const Category = () => {
         useNativeDriver: false,
       }).start();
     }, 1500);
-    setAnimationCalled(1);
+    setTimeout(() => {
+      setAnimationCalled(true);
+    }, 3000);
   }
 
   console.log(pressedBtn);
@@ -486,13 +499,29 @@ const Category = () => {
         </TouchableOpacity>
       </ScrollView>
       {pressedBtn.size > 0 ? (
-        <TouchableOpacity style={styles.nextNavigation}>
-          {/* <Text style={styles.nextNavigationIcon}>{">"}</Text> */}
-          <Image
+        <Animated.View
+          style={{
+            backgroundColor: "skyblue",
+            width: animateBtn,
+            height: animateBtn,
+            borderRadius: 100,
+            position: "absolute",
+            right: 20,
+            bottom: 150,
+          }}
+        >
+          <TouchableOpacity
+            onPress={() => {
+              console.log("Hello World");
+            }}
+          >
+            <Text style={styles.nextNavigationIcon}>{">"}</Text>
+            {/* <Image
             style={styles.nextNavigationIcon}
             source={require("../Images/2x/done.png")}
-          />
-        </TouchableOpacity>
+          /> */}
+          </TouchableOpacity>
+        </Animated.View>
       ) : (
         <View />
       )}
@@ -534,16 +563,11 @@ const styles = StyleSheet.create({
     marginTop: 16,
     alignSelf: "center",
   },
-  nextNavigation: {
-    backgroundColor: "skyblue",
-    width: 50,
-    height: 50,
-    borderRadius: 100,
-    position: "absolute",
-    right: 20,
-    bottom: 150,
-  },
+  nextNavigation: {},
   nextNavigationIcon: {
     alignSelf: "center",
+    fontSize: 30,
+    fontWeight: "bold",
+    color: "white",
   },
 });
