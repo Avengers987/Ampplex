@@ -73,7 +73,6 @@ export default function OnboardingScreen({ navigation }) {
   getData();
   async function getData() {
     const value = await AsyncStorage.getItem("onboarding");
-    console.log("on_boarding_resp", value);
     storeData();
     if (value !== null) {
       // If user is already logined then navigating the user to the Home screen

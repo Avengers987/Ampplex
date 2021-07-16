@@ -11,6 +11,9 @@ import {
   Image,
 } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import FlashMessage from "react-native-flash-message";
+import { showMessage } from "react-native-flash-message";
 
 const Category = () => {
   const [searchVal, setSearchVal] = useState(null); // stores the search value
@@ -46,11 +49,53 @@ const Category = () => {
   const [btnColor18, setBtnColor18] = useState("white");
   const [btnColor19, setBtnColor19] = useState("white");
   const [animationCalled, setAnimationCalled] = useState(false); // for search bar
+  const [CategoryUploaded, setCategoryUploaded] = useState(null);
+  const [userID, setUserID] = useState(null);
 
   const animatedSearchBar = new Animated.Value(50);
   const animatedSearchBarHeight = new Animated.Value(50);
   const animateBtn = new Animated.Value(0);
-  console.log("Animation: ", animationCalled);
+
+  function nextNavigationBtnHandler() {
+    getData();
+    const categoryLst = [];
+    const Category_iterator = pressedBtn.values();
+    for (let i = 0; i < pressedBtn.size; i++) {
+      categoryLst.push(Category_iterator.next().value);
+    }
+
+    if (userID !== null) {
+      const url = `https://ampplex-backened.herokuapp.com/Category/${categoryLst}/${userID}`;
+
+      fetch(url)
+        .then((response) => {
+          return response.json();
+        })
+        .then((data) => {
+          if (data.status === "success") {
+            setCategoryUploaded(true);
+          } else if (data.status === "error") {
+            setCategoryUploaded(false);
+          }
+        });
+      console.log(`Category Uploaded ${CategoryUploaded}`);
+    }
+  }
+
+  async function getData() {
+    try {
+      const value = await AsyncStorage.getItem("isLogined_Boolean");
+      const user_id = await AsyncStorage.getItem("user_id");
+      if (value !== null && user_id !== null) {
+        setUserID(user_id);
+      }
+      console.log("respponse: ", value);
+      console.log(`User Id is : ${user_id}`);
+    } catch (e) {
+      // error reading value
+      ErrorFlasher("Error: Failed to retrieve your login info!");
+    }
+  }
 
   if (pressedBtn.size > 0) {
     // Checking if button animation is running for the first time and if yes, then animating the next navigation button
@@ -89,11 +134,9 @@ const Category = () => {
     }, 3000);
   }
 
-  console.log(pressedBtn);
-  console.log(searchVal);
-
   return (
     <View style={styles.container}>
+      <FlashMessage position="bottom" />
       <Animated.View
         style={{
           backgroundColor: "white",
@@ -132,7 +175,7 @@ const Category = () => {
       <View>
         <Text style={styles.TitleStyle}>Select your category</Text>
       </View>
-
+      {/* All buttons */}
       <ScrollView>
         <TouchableOpacity
           style={{
@@ -512,14 +555,11 @@ const Category = () => {
         >
           <TouchableOpacity
             onPress={() => {
-              console.log("Hello World");
+              console.log("Activated!");
+              nextNavigationBtnHandler();
             }}
           >
             <Text style={styles.nextNavigationIcon}>{">"}</Text>
-            {/* <Image
-            style={styles.nextNavigationIcon}
-            source={require("../Images/2x/done.png")}
-          /> */}
           </TouchableOpacity>
         </Animated.View>
       ) : (

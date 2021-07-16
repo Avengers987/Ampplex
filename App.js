@@ -13,7 +13,7 @@ import Category from "./screens/Category";
 
 const Stack = createStackNavigator();
 
-// Till Now Ampplex is made up of 1,204 lines of code!
+// Till Now Ampplex is made up of 2,018 lines of code!
 
 export default function App() {
   return (

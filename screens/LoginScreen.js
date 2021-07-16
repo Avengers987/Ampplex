@@ -35,9 +35,7 @@ export default function LoginScreen(props) {
       const value = await AsyncStorage.getItem("isLogined_Boolean");
       const userName = await AsyncStorage.getItem("user_name");
       const user_id = await AsyncStorage.getItem("user_id");
-      console.log(`Username is ${userName}`);
-      console.log("resp", value);
-      console.log(`User Id is ${user_id}`);
+
       if (value !== null && userName !== null && user_id !== null) {
         props.navigation.replace("Category");
       }
@@ -87,16 +85,12 @@ export default function LoginScreen(props) {
     const url = `https://ampplex-backened.herokuapp.com/Login/${email}/${password}`;
     fetch(url)
       .then((response) => {
-        console.log(response.text);
         return response.json();
       })
       .then((data) => {
         setLoginResponse(data.status);
         setUserName(data.UserName);
         setUserId(data.user_id);
-        console.log(data.status);
-        console.log(userId);
-        console.log(UserName);
       });
   };
 

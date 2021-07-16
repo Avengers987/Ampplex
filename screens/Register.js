@@ -19,7 +19,6 @@ export default function Register(props) {
         return response.text();
       })
       .then((data) => {
-        // console.log(data);
         setLoginResponse(data);
       });
   };
@@ -32,8 +31,6 @@ export default function Register(props) {
   };
 
   const verifyUserInfo = () => {
-    // console.log("Entered in verifyUserInfo function");
-    console.log(username, email, password);
     setLoginResponse(SignUp(username, email, password));
     if (email.length == 0 || password.length == 0 || username.length == 0) {
       setErrorMessage(
@@ -48,7 +45,6 @@ export default function Register(props) {
       password.length >= 8 &&
       username.length > 0
     ) {
-      console.log("Registered!");
       setTimeout(() => {
         showMessage({
           message: "Success: Registered successfully",
@@ -115,9 +111,7 @@ export default function Register(props) {
               message: "JDEF",
               type: "danger",
             });
-            console.log("Register pressed!");
             verifyUserInfo();
-            // props.navigation.navigate("Home");
           }}
         >
           <Text style={styles.RegisterBtnText}>Register</Text>
