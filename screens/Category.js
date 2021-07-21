@@ -51,10 +51,500 @@ const Category = () => {
   const [animationCalled, setAnimationCalled] = useState(false); // for search bar
   const [CategoryUploaded, setCategoryUploaded] = useState(null);
   const [userID, setUserID] = useState(null);
+  const [focused, setFocused] = useState(false);
 
   const animatedSearchBar = new Animated.Value(50);
   const animatedSearchBarHeight = new Animated.Value(50);
   const animateBtn = new Animated.Value(0);
+
+  class Button {
+    Coding() {
+      return (
+        <TouchableOpacity
+          style={{
+            backgroundColor: btnColor,
+            ...styles.Category,
+          }}
+          onPress={() => {
+            setPressedBtn(pressedBtn.add("Coding"));
+            if (btnColor === "powderblue") {
+              pressedBtn.delete("Coding");
+              setBtnColor("white");
+            } else {
+              setBtnColor("powderblue");
+            }
+          }}
+        >
+          <Text style={styles.CategoryBtnInnerText}>Coding {"</>"}</Text>
+        </TouchableOpacity>
+      );
+    }
+
+    JEE() {
+      return (
+        <TouchableOpacity
+          style={{
+            backgroundColor: btnColor1,
+            ...styles.Category,
+          }}
+          onPress={() => {
+            setPressedBtn(pressedBtn.add("JEE"));
+            if (btnColor1 === "powderblue") {
+              pressedBtn.delete("JEE");
+              setBtnColor1("white");
+            } else {
+              setBtnColor1("powderblue");
+            }
+          }}
+        >
+          <Text style={styles.CategoryBtnInnerText}>JEE</Text>
+        </TouchableOpacity>
+      );
+    }
+
+    NEET() {
+      return (
+        <TouchableOpacity
+          style={{
+            backgroundColor: btnColor2,
+            ...styles.Category,
+          }}
+          onPress={() => {
+            setPressedBtn(pressedBtn.add("NEET"));
+            if (btnColor2 === "powderblue") {
+              pressedBtn.delete("NEET");
+              setBtnColor2("white");
+            } else {
+              setBtnColor2("powderblue");
+            }
+          }}
+        >
+          <Text style={styles.CategoryBtnInnerText}>NEET</Text>
+        </TouchableOpacity>
+      );
+    }
+
+    Sports() {
+      return (
+        <TouchableOpacity
+          style={{
+            backgroundColor: btnColor3,
+            ...styles.Category,
+          }}
+          onPress={() => {
+            setPressedBtn(pressedBtn.add("Sports"));
+            if (btnColor3 === "powderblue") {
+              pressedBtn.delete("Sports");
+              setBtnColor3("white");
+            } else {
+              setBtnColor3("powderblue");
+            }
+          }}
+        >
+          <Text style={styles.CategoryBtnInnerText}>Sports</Text>
+        </TouchableOpacity>
+      );
+    }
+
+    Acting() {
+      return (
+        <TouchableOpacity
+          style={{
+            backgroundColor: btnColor4,
+            ...styles.Category,
+          }}
+          onPress={() => {
+            setPressedBtn(pressedBtn.add("Acting"));
+            if (btnColor4 === "powderblue") {
+              pressedBtn.delete("Acting");
+              setBtnColor4("white");
+            } else {
+              setBtnColor4("powderblue");
+            }
+          }}
+        >
+          <Text style={styles.CategoryBtnInnerText}>Acting</Text>
+        </TouchableOpacity>
+      );
+    }
+
+    CBSE_CLASS_1() {
+      return (
+        <TouchableOpacity
+          style={{
+            backgroundColor: btnColor5,
+            ...styles.Category,
+          }}
+          onPress={() => {
+            setPressedBtn(pressedBtn.add("CBSE Class 1"));
+            if (btnColor5 === "powderblue") {
+              pressedBtn.delete("CBSE Class 1");
+              setBtnColor5("white");
+            } else {
+              setBtnColor5("powderblue");
+            }
+          }}
+        >
+          <Text style={styles.CategoryBtnInnerText}>CBSE Class 1</Text>
+        </TouchableOpacity>
+      );
+    }
+
+    CBSE_CLASS_2() {
+      return (
+        <TouchableOpacity
+          style={{
+            backgroundColor: btnColor5,
+            ...styles.Category,
+          }}
+          onPress={() => {
+            setPressedBtn(pressedBtn.add("CBSE Class 1"));
+            if (btnColor5 === "powderblue") {
+              pressedBtn.delete("CBSE Class 1");
+              setBtnColor5("white");
+            } else {
+              setBtnColor5("powderblue");
+            }
+          }}
+        >
+          <Text style={styles.CategoryBtnInnerText}>CBSE Class 2</Text>
+        </TouchableOpacity>
+      );
+    }
+
+    CBSE_CLASS_3() {
+      return (
+        <TouchableOpacity
+          style={{
+            backgroundColor: btnColor7,
+            ...styles.Category,
+          }}
+          onPress={() => {
+            setPressedBtn(pressedBtn.add("CBSE Class 3"));
+            if (btnColor7 === "powderblue") {
+              pressedBtn.delete("CBSE Class 3");
+              setBtnColor7("white");
+            } else {
+              setBtnColor7("powderblue");
+            }
+          }}
+        >
+          <Text style={styles.CategoryBtnInnerText}>CBSE Class 3</Text>
+        </TouchableOpacity>
+      );
+    }
+
+    CBSE_CLASS_4() {
+      return (
+        <TouchableOpacity
+          style={{
+            backgroundColor: btnColor8,
+            ...styles.Category,
+          }}
+          onPress={() => {
+            setPressedBtn(pressedBtn.add("CBSE Class 4"));
+            if (btnColor8 === "powderblue") {
+              pressedBtn.delete("CBSE Class 4");
+              setBtnColor8("white");
+            } else {
+              setBtnColor8("powderblue");
+            }
+          }}
+        >
+          <Text style={styles.CategoryBtnInnerText}>CBSE Class 4</Text>
+        </TouchableOpacity>
+      );
+    }
+
+    CBSE_CLASS_5() {
+      return (
+        <TouchableOpacity
+          style={{
+            backgroundColor: btnColor9,
+            ...styles.Category,
+          }}
+          onPress={() => {
+            setPressedBtn(pressedBtn.add("CBSE Class 5"));
+            if (btnColor9 === "powderblue") {
+              pressedBtn.delete("CBSE Class 5");
+              setBtnColor9("white");
+            } else {
+              setBtnColor9("powderblue");
+            }
+          }}
+        >
+          <Text style={styles.CategoryBtnInnerText}>CBSE Class 5</Text>
+        </TouchableOpacity>
+      );
+    }
+
+    CBSE_CLASS_6() {
+      return (
+        <TouchableOpacity
+          style={{
+            backgroundColor: btnColor10,
+            ...styles.Category,
+          }}
+          onPress={() => {
+            setPressedBtn(pressedBtn.add("CBSE Class 6"));
+            if (btnColor10 === "powderblue") {
+              pressedBtn.delete("CBSE Class 6");
+              setBtnColor10("white");
+            } else {
+              setBtnColor10("powderblue");
+            }
+          }}
+        >
+          <Text style={styles.CategoryBtnInnerText}>CBSE Class 6</Text>
+        </TouchableOpacity>
+      );
+    }
+
+    CBSE_CLASS_7() {
+      return (
+        <TouchableOpacity
+          style={{
+            backgroundColor: btnColor11,
+            ...styles.Category,
+          }}
+          onPress={() => {
+            setPressedBtn(pressedBtn.add("CBSE Class 7"));
+            if (btnColor11 === "powderblue") {
+              pressedBtn.delete("CBSE Class 7");
+              setBtnColor11("white");
+            } else {
+              setBtnColor11("powderblue");
+            }
+          }}
+        >
+          <Text style={styles.CategoryBtnInnerText}>CBSE Class 7</Text>
+        </TouchableOpacity>
+      );
+    }
+
+    CBSE_CLASS_8() {
+      return (
+        <TouchableOpacity
+          style={{
+            backgroundColor: btnColor12,
+            ...styles.Category,
+          }}
+          onPress={() => {
+            setPressedBtn(pressedBtn.add("CBSE Class 8"));
+            if (btnColor12 === "powderblue") {
+              pressedBtn.delete("CBSE Class 8");
+              setBtnColor12("white");
+            } else {
+              setBtnColor12("powderblue");
+            }
+          }}
+        >
+          <Text style={styles.CategoryBtnInnerText}>CBSE Class 8</Text>
+        </TouchableOpacity>
+      );
+    }
+
+    CBSE_CLASS_9() {
+      return (
+        <TouchableOpacity
+          style={{
+            backgroundColor: btnColor13,
+            ...styles.Category,
+          }}
+          onPress={() => {
+            setPressedBtn(pressedBtn.add("CBSE Class 9"));
+            if (btnColor13 === "powderblue") {
+              pressedBtn.delete("CBSE Class 9");
+              setBtnColor13("white");
+            } else {
+              setBtnColor13("powderblue");
+            }
+          }}
+        >
+          <Text style={styles.CategoryBtnInnerText}>CBSE Class 9</Text>
+        </TouchableOpacity>
+      );
+    }
+
+    CBSE_CLASS_10() {
+      return (
+        <TouchableOpacity
+          style={{
+            backgroundColor: btnColor14,
+            ...styles.Category,
+          }}
+          onPress={() => {
+            setPressedBtn(pressedBtn.add("CBSE Class 10"));
+            if (btnColor14 === "powderblue") {
+              pressedBtn.delete("CBSE Class 10");
+              setBtnColor14("white");
+            } else {
+              setBtnColor14("powderblue");
+            }
+          }}
+        >
+          <Text style={styles.CategoryBtnInnerText}>CBSE Class 10</Text>
+        </TouchableOpacity>
+      );
+    }
+
+    CBSE_CLASS_11() {
+      return (
+        <TouchableOpacity
+          style={{
+            backgroundColor: btnColor15,
+            ...styles.Category,
+          }}
+          onPress={() => {
+            setPressedBtn(pressedBtn.add("CBSE Class 11"));
+            if (btnColor15 === "powderblue") {
+              pressedBtn.delete("CBSE Class 11");
+              setBtnColor15("white");
+            } else {
+              setBtnColor15("powderblue");
+            }
+          }}
+        >
+          <Text style={styles.CategoryBtnInnerText}>CBSE Class 11</Text>
+        </TouchableOpacity>
+      );
+    }
+
+    CBSE_CLASS_12() {
+      return (
+        <TouchableOpacity
+          style={{
+            backgroundColor: btnColor16,
+            ...styles.Category,
+          }}
+          onPress={() => {
+            setPressedBtn(pressedBtn.add("CBSE Class 12"));
+            if (btnColor16 === "powderblue") {
+              pressedBtn.delete("CBSE Class 12");
+              setBtnColor16("white");
+            } else {
+              setBtnColor16("powderblue");
+            }
+          }}
+        >
+          <Text style={styles.CategoryBtnInnerText}>CBSE Class 12</Text>
+        </TouchableOpacity>
+      );
+    }
+
+    Mechanical_Engineering() {
+      return (
+        <TouchableOpacity
+          style={{
+            backgroundColor: btnColor17,
+            ...styles.Category,
+          }}
+          onPress={() => {
+            setPressedBtn(pressedBtn.add("Mechanical_Engineering"));
+            if (btnColor17 === "powderblue") {
+              pressedBtn.delete("Mechanical_Engineering");
+              setBtnColor17("white");
+            } else {
+              setBtnColor17("powderblue");
+            }
+          }}
+        >
+          <Text style={styles.CategoryBtnInnerText}>Mechanical</Text>
+          <Text numberOfLines={2} style={styles.CategoryBtnInnerText}>
+            Engineering
+          </Text>
+        </TouchableOpacity>
+      );
+    }
+    Software_Engineering() {
+      return (
+        <TouchableOpacity
+          style={{
+            backgroundColor: btnColor18,
+            ...styles.Category,
+          }}
+          onPress={() => {
+            setPressedBtn(pressedBtn.add("Software_Engineering"));
+            if (btnColor18 === "powderblue") {
+              pressedBtn.delete("Software_Engineering");
+              setBtnColor18("white");
+            } else {
+              setBtnColor18("powderblue");
+            }
+          }}
+        >
+          <Text style={styles.CategoryBtnInnerText}>Software</Text>
+          <Text numberOfLines={2} style={styles.CategoryBtnInnerText}>
+            Engineering
+          </Text>
+        </TouchableOpacity>
+      );
+    }
+
+    Electrical_Engineering() {
+      return (
+        <TouchableOpacity
+          style={{
+            backgroundColor: btnColor19,
+            ...styles.Category,
+          }}
+          onPress={() => {
+            setPressedBtn(pressedBtn.add("Electrical_Engineering"));
+            if (btnColor19 === "powderblue") {
+              pressedBtn.delete("Electrical_Engineering");
+              setBtnColor19("white");
+            } else {
+              setBtnColor19("powderblue");
+            }
+          }}
+        >
+          <Text style={styles.CategoryBtnInnerText}>Electrical</Text>
+          <Text numberOfLines={2} style={styles.CategoryBtnInnerText}>
+            Engineering
+          </Text>
+        </TouchableOpacity>
+      );
+    }
+    None() {
+      return (
+        <TouchableOpacity
+          style={{
+            backgroundColor: btnColor,
+            ...styles.Category,
+          }}
+        >
+          <Text style={styles.CategoryBtnInnerText}>None</Text>
+        </TouchableOpacity>
+      );
+    }
+    RenderAllBtn() {
+      return (
+        <>
+          {this.Coding()}
+          {this.JEE()}
+          {this.NEET()}
+          {this.Sports()}
+          {this.Acting()}
+          {this.CBSE_CLASS_1()}
+          {this.CBSE_CLASS_2()}
+          {this.CBSE_CLASS_3()}
+          {this.CBSE_CLASS_4()}
+          {this.CBSE_CLASS_5()}
+          {this.CBSE_CLASS_6()}
+          {this.CBSE_CLASS_7()}
+          {this.CBSE_CLASS_8()}
+          {this.CBSE_CLASS_9()}
+          {this.CBSE_CLASS_10()}
+          {this.CBSE_CLASS_11()}
+          {this.CBSE_CLASS_12()}
+          {this.Mechanical_Engineering()}
+          {this.Software_Engineering()}
+          {this.Electrical_Engineering()}
+          {this.None()}
+        </>
+      );
+    }
+  }
 
   function nextNavigationBtnHandler() {
     getData();
@@ -158,7 +648,11 @@ const Category = () => {
             marginLeft: 55,
             fontSize: 20,
           }}
-          onChangeText={(srch_val) => setSearchVal(srch_val)}
+          onFocus={() => setFocused(true)}
+          showSoftInputOnFocus
+          onChangeText={(srch_val) =>
+            setSearchVal(srch_val.trim().toLowerCase())
+          }
           placeholder={"Search..."}
         />
         <Image
@@ -177,369 +671,23 @@ const Category = () => {
       </View>
       {/* All buttons */}
       <ScrollView>
-        <TouchableOpacity
-          style={{
-            backgroundColor: btnColor,
-            ...styles.Category,
-          }}
-          onPress={() => {
-            setPressedBtn(pressedBtn.add("Coding"));
-            if (btnColor === "powderblue") {
-              pressedBtn.delete("Coding");
-              setBtnColor("white");
-            } else {
-              setBtnColor("powderblue");
-            }
-          }}
-        >
-          <Text style={styles.CategoryBtnInnerText}>Coding {"</>"}</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={{
-            backgroundColor: btnColor1,
-            ...styles.Category,
-          }}
-          onPress={() => {
-            setPressedBtn(pressedBtn.add("JEE"));
-            if (btnColor1 === "powderblue") {
-              pressedBtn.delete("JEE");
-              setBtnColor1("white");
-            } else {
-              setBtnColor1("powderblue");
-            }
-          }}
-        >
-          <Text style={styles.CategoryBtnInnerText}>JEE</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={{
-            backgroundColor: btnColor2,
-            ...styles.Category,
-          }}
-          onPress={() => {
-            setPressedBtn(pressedBtn.add("NEET"));
-            if (btnColor2 === "powderblue") {
-              pressedBtn.delete("NEET");
-              setBtnColor2("white");
-            } else {
-              setBtnColor2("powderblue");
-            }
-          }}
-        >
-          <Text style={styles.CategoryBtnInnerText}>NEET</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={{
-            backgroundColor: btnColor3,
-            ...styles.Category,
-          }}
-          onPress={() => {
-            setPressedBtn(pressedBtn.add("Sports"));
-            if (btnColor3 === "powderblue") {
-              pressedBtn.delete("Sports");
-              setBtnColor3("white");
-            } else {
-              setBtnColor3("powderblue");
-            }
-          }}
-        >
-          <Text style={styles.CategoryBtnInnerText}>Sports</Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity
-          style={{
-            backgroundColor: btnColor4,
-            ...styles.Category,
-          }}
-          onPress={() => {
-            setPressedBtn(pressedBtn.add("Acting"));
-            if (btnColor4 === "powderblue") {
-              pressedBtn.delete("Acting");
-              setBtnColor4("white");
-            } else {
-              setBtnColor4("powderblue");
-            }
-          }}
-        >
-          <Text style={styles.CategoryBtnInnerText}>Acting</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={{
-            backgroundColor: btnColor5,
-            ...styles.Category,
-          }}
-          onPress={() => {
-            setPressedBtn(pressedBtn.add("CBSE Class 1"));
-            if (btnColor5 === "powderblue") {
-              pressedBtn.delete("CBSE Class 1");
-              setBtnColor5("white");
-            } else {
-              setBtnColor5("powderblue");
-            }
-          }}
-        >
-          <Text style={styles.CategoryBtnInnerText}>CBSE Class 1</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={{
-            backgroundColor: btnColor6,
-            ...styles.Category,
-          }}
-          onPress={() => {
-            setPressedBtn(pressedBtn.add("CBSE Class 2"));
-            if (btnColor6 === "powderblue") {
-              pressedBtn.delete("CBSE Class 2");
-              setBtnColor6("white");
-            } else {
-              setBtnColor6("powderblue");
-            }
-          }}
-        >
-          <Text style={styles.CategoryBtnInnerText}>CBSE Class 2</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={{
-            backgroundColor: btnColor7,
-            ...styles.Category,
-          }}
-          onPress={() => {
-            setPressedBtn(pressedBtn.add("CBSE Class 3"));
-            if (btnColor7 === "powderblue") {
-              pressedBtn.delete("CBSE Class 3");
-              setBtnColor7("white");
-            } else {
-              setBtnColor7("powderblue");
-            }
-          }}
-        >
-          <Text style={styles.CategoryBtnInnerText}>CBSE Class 3</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={{
-            backgroundColor: btnColor8,
-            ...styles.Category,
-          }}
-          onPress={() => {
-            setPressedBtn(pressedBtn.add("CBSE Class 4"));
-            if (btnColor8 === "powderblue") {
-              pressedBtn.delete("CBSE Class 4");
-              setBtnColor8("white");
-            } else {
-              setBtnColor8("powderblue");
-            }
-          }}
-        >
-          <Text style={styles.CategoryBtnInnerText}>CBSE Class 4</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={{
-            backgroundColor: btnColor9,
-            ...styles.Category,
-          }}
-          onPress={() => {
-            setPressedBtn(pressedBtn.add("CBSE Class 5"));
-            if (btnColor9 === "powderblue") {
-              pressedBtn.delete("CBSE Class 5");
-              setBtnColor9("white");
-            } else {
-              setBtnColor9("powderblue");
-            }
-          }}
-        >
-          <Text style={styles.CategoryBtnInnerText}>CBSE Class 5</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={{
-            backgroundColor: btnColor10,
-            ...styles.Category,
-          }}
-          onPress={() => {
-            setPressedBtn(pressedBtn.add("CBSE Class 6"));
-            if (btnColor10 === "powderblue") {
-              pressedBtn.delete("CBSE Class 6");
-              setBtnColor10("white");
-            } else {
-              setBtnColor10("powderblue");
-            }
-          }}
-        >
-          <Text style={styles.CategoryBtnInnerText}>CBSE Class 6</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={{
-            backgroundColor: btnColor11,
-            ...styles.Category,
-          }}
-          onPress={() => {
-            setPressedBtn(pressedBtn.add("CBSE Class 7"));
-            if (btnColor11 === "powderblue") {
-              pressedBtn.delete("CBSE Class 7");
-              setBtnColor11("white");
-            } else {
-              setBtnColor11("powderblue");
-            }
-          }}
-        >
-          <Text style={styles.CategoryBtnInnerText}>CBSE Class 7</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={{
-            backgroundColor: btnColor12,
-            ...styles.Category,
-          }}
-          onPress={() => {
-            setPressedBtn(pressedBtn.add("CBSE Class 8"));
-            if (btnColor12 === "powderblue") {
-              pressedBtn.delete("CBSE Class 8");
-              setBtnColor12("white");
-            } else {
-              setBtnColor12("powderblue");
-            }
-          }}
-        >
-          <Text style={styles.CategoryBtnInnerText}>CBSE Class 8</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={{
-            backgroundColor: btnColor13,
-            ...styles.Category,
-          }}
-          onPress={() => {
-            setPressedBtn(pressedBtn.add("CBSE Class 9"));
-            if (btnColor13 === "powderblue") {
-              pressedBtn.delete("CBSE Class 9");
-              setBtnColor13("white");
-            } else {
-              setBtnColor13("powderblue");
-            }
-          }}
-        >
-          <Text style={styles.CategoryBtnInnerText}>CBSE Class 9</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={{
-            backgroundColor: btnColor14,
-            ...styles.Category,
-          }}
-          onPress={() => {
-            setPressedBtn(pressedBtn.add("CBSE Class 10"));
-            if (btnColor14 === "powderblue") {
-              pressedBtn.delete("CBSE Class 10");
-              setBtnColor14("white");
-            } else {
-              setBtnColor14("powderblue");
-            }
-          }}
-        >
-          <Text style={styles.CategoryBtnInnerText}>CBSE Class 10</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={{
-            backgroundColor: btnColor15,
-            ...styles.Category,
-          }}
-          onPress={() => {
-            setPressedBtn(pressedBtn.add("CBSE Class 11"));
-            if (btnColor15 === "powderblue") {
-              pressedBtn.delete("CBSE Class 11");
-              setBtnColor15("white");
-            } else {
-              setBtnColor15("powderblue");
-            }
-          }}
-        >
-          <Text style={styles.CategoryBtnInnerText}>CBSE Class 11</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={{
-            backgroundColor: btnColor16,
-            ...styles.Category,
-          }}
-          onPress={() => {
-            setPressedBtn(pressedBtn.add("CBSE Class 12"));
-            if (btnColor16 === "powderblue") {
-              pressedBtn.delete("CBSE Class 12");
-              setBtnColor16("white");
-            } else {
-              setBtnColor16("powderblue");
-            }
-          }}
-        >
-          <Text style={styles.CategoryBtnInnerText}>CBSE Class 12</Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity
-          style={{
-            backgroundColor: btnColor17,
-            ...styles.Category,
-          }}
-          onPress={() => {
-            setPressedBtn(pressedBtn.add("Mechanical_Engineering"));
-            if (btnColor17 === "powderblue") {
-              pressedBtn.delete("Mechanical_Engineering");
-              setBtnColor17("white");
-            } else {
-              setBtnColor17("powderblue");
-            }
-          }}
-        >
-          <Text style={styles.CategoryBtnInnerText}>Mechanical</Text>
-          <Text numberOfLines={2} style={styles.CategoryBtnInnerText}>
-            Engineering
-          </Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity
-          style={{
-            backgroundColor: btnColor18,
-            ...styles.Category,
-          }}
-          onPress={() => {
-            setPressedBtn(pressedBtn.add("Software_Engineering"));
-            if (btnColor18 === "powderblue") {
-              pressedBtn.delete("Software_Engineering");
-              setBtnColor18("white");
-            } else {
-              setBtnColor18("powderblue");
-            }
-          }}
-        >
-          <Text style={styles.CategoryBtnInnerText}>Software</Text>
-          <Text numberOfLines={2} style={styles.CategoryBtnInnerText}>
-            Engineering
-          </Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity
-          style={{
-            backgroundColor: btnColor19,
-            ...styles.Category,
-          }}
-          onPress={() => {
-            setPressedBtn(pressedBtn.add("Electrical_Engineering"));
-            if (btnColor19 === "powderblue") {
-              pressedBtn.delete("Electrical_Engineering");
-              setBtnColor19("white");
-            } else {
-              setBtnColor19("powderblue");
-            }
-          }}
-        >
-          <Text style={styles.CategoryBtnInnerText}>Electrical</Text>
-          <Text numberOfLines={2} style={styles.CategoryBtnInnerText}>
-            Engineering
-          </Text>
-        </TouchableOpacity>
-
-        {/* None Button */}
-        <TouchableOpacity
-          style={{
-            backgroundColor: btnColor,
-            ...styles.Category,
-          }}
-        >
-          <Text style={styles.CategoryBtnInnerText}>None</Text>
-        </TouchableOpacity>
+        {(searchVal === "") | (searchVal === null) ? (
+          new Button().RenderAllBtn()
+        ) : searchVal === "coding" ? (
+          new Button().Coding()
+        ) : searchVal === "jee" ? (
+          new Button().JEE()
+        ) : searchVal === "neet" ? (
+          new Button().NEET()
+        ) : searchVal === "sports" ? (
+          new Button().Sports()
+        ) : searchVal === "acting" ? (
+          new Button().Acting()
+        ) : (searchVal === "cbse class 1") | (searchVal === "class 1") ? (
+          new Button().CBSE_CLASS_1()
+        ) : (
+          <Text style={styles.NoResultsFoundStyle}>No results found :(</Text>
+        )}
       </ScrollView>
       {pressedBtn.size > 0 ? (
         <Animated.View
@@ -570,6 +718,7 @@ const Category = () => {
 };
 
 export default Category;
+
 const styles = StyleSheet.create({
   container: {
     display: "flex",
@@ -603,11 +752,16 @@ const styles = StyleSheet.create({
     marginTop: 16,
     alignSelf: "center",
   },
-  nextNavigation: {},
   nextNavigationIcon: {
     alignSelf: "center",
     fontSize: 30,
     fontWeight: "bold",
     color: "white",
+  },
+  NoResultsFoundStyle: {
+    fontSize: 25,
+    fontWeight: "bold",
+    marginTop: 50,
+    color: "skyblue",
   },
 });
