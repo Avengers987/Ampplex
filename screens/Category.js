@@ -15,7 +15,38 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import FlashMessage from "react-native-flash-message";
 import { showMessage } from "react-native-flash-message";
 
-const Category = () => {
+const ErrorFlasher = (msg) => {
+  showMessage({
+    message: msg,
+    type: "danger",
+  });
+};
+
+const Category = ({ navigation }) => {
+  const storeData = async () => {
+    try {
+      await AsyncStorage.setItem("Category", "true");
+    } catch {
+      ErrorFlasher("Error: Failed to store category info!");
+    }
+  };
+
+  const getCategoryData = () => {
+    try {
+      const bool_value = AsyncStorage.getItem("Category");
+      bool_value.then((response) => {
+        if (response === null) {
+          storeData();
+        } else {
+          navigation.navigate("Home");
+        }
+      });
+    } catch {
+      ErrorFlasher("Error: Failed to get category info!");
+    }
+  };
+
+  getCategoryData();
   const [searchVal, setSearchVal] = useState(null); // stores the search value
   const [pressedBtn, setPressedBtn] = useState(new Set()); // Stores the pressed button name
 
@@ -194,16 +225,16 @@ const Category = () => {
       return (
         <TouchableOpacity
           style={{
-            backgroundColor: btnColor5,
+            backgroundColor: btnColor6,
             ...styles.Category,
           }}
           onPress={() => {
-            setPressedBtn(pressedBtn.add("CBSE Class 1"));
-            if (btnColor5 === "powderblue") {
-              pressedBtn.delete("CBSE Class 1");
-              setBtnColor5("white");
+            setPressedBtn(pressedBtn.add("CBSE Class 2"));
+            if (btnColor6 === "powderblue") {
+              pressedBtn.delete("CBSE Class 2");
+              setBtnColor6("white");
             } else {
-              setBtnColor5("powderblue");
+              setBtnColor6("powderblue");
             }
           }}
         >
@@ -685,6 +716,34 @@ const Category = () => {
           new Button().Acting()
         ) : (searchVal === "cbse class 1") | (searchVal === "class 1") ? (
           new Button().CBSE_CLASS_1()
+        ) : (searchVal === "cbse class 2") | (searchVal === "class 2") ? (
+          new Button().CBSE_CLASS_2()
+        ) : (searchVal === "cbse class 3") | (searchVal === "class 3") ? (
+          new Button().CBSE_CLASS_3()
+        ) : (searchVal === "cbse class 4") | (searchVal === "class 4") ? (
+          new Button().CBSE_CLASS_4()
+        ) : (searchVal === "cbse class 5") | (searchVal === "class 5") ? (
+          new Button().CBSE_CLASS_5()
+        ) : (searchVal === "cbse class 6") | (searchVal === "class 6") ? (
+          new Button().CBSE_CLASS_6()
+        ) : (searchVal === "cbse class 7") | (searchVal === "class 7") ? (
+          new Button().CBSE_CLASS_7()
+        ) : (searchVal === "cbse class 8") | (searchVal === "class 8") ? (
+          new Button().CBSE_CLASS_8()
+        ) : (searchVal === "cbse class 9") | (searchVal === "class 9") ? (
+          new Button().CBSE_CLASS_9()
+        ) : (searchVal === "cbse class 10") | (searchVal === "class 10") ? (
+          new Button().CBSE_CLASS_10()
+        ) : (searchVal === "cbse class 11") | (searchVal === "class 11") ? (
+          new Button().CBSE_CLASS_11()
+        ) : (searchVal === "cbse class 12") | (searchVal === "class 12") ? (
+          new Button().CBSE_CLASS_12()
+        ) : searchVal === "mechanical engineering" ? (
+          new Button().Mechanical_Engineering()
+        ) : searchVal === "software engineering" ? (
+          new Button().Software_Engineering()
+        ) : searchVal === "electrical engineering" ? (
+          new Button().Electrical_Engineering()
         ) : (
           <Text style={styles.NoResultsFoundStyle}>No results found :(</Text>
         )}
@@ -757,6 +816,7 @@ const styles = StyleSheet.create({
     fontSize: 30,
     fontWeight: "bold",
     color: "white",
+    position: "absolute",
   },
   NoResultsFoundStyle: {
     fontSize: 25,
