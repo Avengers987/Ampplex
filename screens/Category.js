@@ -35,9 +35,8 @@ const Category = ({ navigation }) => {
     try {
       const bool_value = AsyncStorage.getItem("Category");
       bool_value.then((response) => {
-        if (response === null) {
-          storeData();
-        } else {
+        if (response !== null) {
+          console.log(response);
           navigation.navigate("Home");
         }
       });
@@ -87,7 +86,7 @@ const Category = ({ navigation }) => {
   const animatedSearchBar = new Animated.Value(50);
   const animatedSearchBarHeight = new Animated.Value(50);
   const animateBtn = new Animated.Value(0);
-
+  console.log(pressedBtn);
   class Button {
     Coding() {
       return (
@@ -579,6 +578,8 @@ const Category = ({ navigation }) => {
 
   function nextNavigationBtnHandler() {
     getData();
+    getCategoryData();
+
     const categoryLst = [];
     const Category_iterator = pressedBtn.values();
     for (let i = 0; i < pressedBtn.size; i++) {
@@ -601,6 +602,7 @@ const Category = ({ navigation }) => {
         });
       console.log(`Category Uploaded ${CategoryUploaded}`);
     }
+    storeData();
   }
 
   async function getData() {
@@ -610,7 +612,7 @@ const Category = ({ navigation }) => {
       if (value !== null && user_id !== null) {
         setUserID(user_id);
       }
-      console.log("respponse: ", value);
+      console.log("response: ", value);
       console.log(`User Id is : ${user_id}`);
     } catch (e) {
       // error reading value
@@ -749,26 +751,22 @@ const Category = ({ navigation }) => {
         )}
       </ScrollView>
       {pressedBtn.size > 0 ? (
-        <Animated.View
+        <TouchableOpacity
           style={{
             backgroundColor: "skyblue",
-            width: animateBtn,
-            height: animateBtn,
+            width: 50,
+            height: 50,
             borderRadius: 100,
             position: "absolute",
             right: 20,
             bottom: 150,
           }}
+          onPress={() => {
+            nextNavigationBtnHandler();
+          }}
         >
-          <TouchableOpacity
-            onPress={() => {
-              console.log("Activated!");
-              nextNavigationBtnHandler();
-            }}
-          >
-            <Text style={styles.nextNavigationIcon}>{">"}</Text>
-          </TouchableOpacity>
-        </Animated.View>
+          <Text style={styles.nextNavigationIcon}>{">"}</Text>
+        </TouchableOpacity>
       ) : (
         <View />
       )}

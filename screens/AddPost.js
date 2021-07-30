@@ -66,7 +66,7 @@ export default function AddPost({ navigation, route }) {
     }
   };
 
-  // SetImage();
+  SetImage();
 
   const ErrorFlasher = (msg) => {
     showMessage({
