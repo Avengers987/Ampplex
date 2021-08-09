@@ -88,6 +88,7 @@ export default function LoginScreen(props) {
         return response.json();
       })
       .then((data) => {
+        console.log(data.status);
         setLoginResponse(data.status);
         setUserName(data.UserName);
         setUserId(data.user_id);

@@ -17,6 +17,8 @@ import FlashMessage from "react-native-flash-message";
 import { showMessage } from "react-native-flash-message";
 import * as firebase from "firebase";
 import { StatusBar } from "expo-status-bar";
+import storage from "@react-native-firebase/storage";
+// import firebase from "react-native-firebase";
 
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
@@ -49,25 +51,24 @@ require("firebase/firebase-storage");
 export default function AddPost({ navigation, route }) {
   const [image, setImage] = useState(null);
   const [userId, setUserId] = useState("");
-  const [postTxt, setPostTxt] = useState("");
+  const [postTxt, setPostTxt] = useState(null);
   const [camImg, setCamImg] = useState(null);
 
-  if (route !== undefined) {
-    console.log(route);
-  } else {
-    console.warn("I'm null!");
-  }
+  console.log(`route: ${route.params}}`);
+  // if (route !== undefined) {
+  //   setCamImg(route.params.image);
+  //   // setCamImg(route.params.image);
+  // } else {
+  //   console.warn("I'm null!");
+  // }
 
   const SetImage = () => {
     try {
-      setCamImg(route.params.image);
+      setImage(route.params.image);
     } catch {
       console.log("No image selected!");
     }
   };
-
-  SetImage();
-
   const ErrorFlasher = (msg) => {
     showMessage({
       message: `Error: ${msg}`,
@@ -98,21 +99,21 @@ export default function AddPost({ navigation, route }) {
     }
   }
 
-  const sendPostToCloudServer = async () => {
+  const sendPostToCloudServer = () => {
     console.log("Posting...");
     SetImage();
-
     if (image !== null) {
-      const uploadUri = image;
-      let filename = uploadUri.substring(uploadUri.lastIndexOf("/") + 1);
-      console.log("firebase!!!!!", uploadUri);
+      const URI = image;
+      let filename = URI.substring(URI.lastIndexOf("/") + 1);
+      console.log("firebase!!!!!", URI);
       try {
-        console.log("img path", uploadUri);
-        await firebase.storage().ref(filename).put(uploadUri);
+        const uploadUri =
+          Platform.OS === "ios" ? uri.replace("file://", "") : URI;
+        const task = storage().ref(filename).putFile(uploadUri);
       } catch (e) {
         console.log(e);
       }
-    } else if (image === null && postTxt === "") {
+    } else if ((image === null && postTxt === "") || postTxt === null) {
       ErrorFlasher("Please type or attach your post");
     } else {
       console.log(postTxt);
@@ -143,11 +144,10 @@ export default function AddPost({ navigation, route }) {
           <TextInput
             style={styles.PostInputStyle}
             placeholder="What's on your mind?"
+            type="email"
             value={postTxt}
             autoFocus
-            onChangeText={(e) => {
-              setPostTxt(e);
-            }}
+            onChangeText={(e) => setPostTxt(e)}
           />
         </View>
 

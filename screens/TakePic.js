@@ -24,7 +24,6 @@ export default function TakePic({ navigation }) {
       console.log("Taking Picture...");
       const getImg = await camera.takePictureAsync();
       setImage(getImg.uri);
-
       if (image !== null) {
         console.log("image is : ", image);
         navigation.navigate("AddPost", { image: image });
@@ -33,7 +32,6 @@ export default function TakePic({ navigation }) {
       }
     }
   };
-
   if (hasPermission === null) {
     return <View />;
   } else if (hasPermission === false) {
