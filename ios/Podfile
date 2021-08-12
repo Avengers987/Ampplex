@@ -20,4 +20,6 @@ target 'Ampplex' do
   # end
   pod 'RNImageCropPicker', :path => '../node_modules/react-native-image-crop-picker'
 
+  pod 'RNFirebase', :path => '../node_modules/react-native-firebase'
+
 end

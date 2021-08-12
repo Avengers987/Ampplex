@@ -11,11 +11,28 @@ import Home from "./screens/Home";
 import TakePic from "./screens/TakePic";
 import Category from "./screens/Category";
 
-const Stack = createStackNavigator();
+import * as firebase from "firebase";
+
+// For Firebase JS SDK v7.20.0 and later, measurementId is optional
 
 // Till Now Ampplex is made up of 2,018 lines of code!
 
+const firebaseConfig = {
+  apiKey: "AIzaSyB_vMbdEOmrMH_Eo4IuNkuObyY_ACLI5-k",
+  authDomain: "ampplex-75da7.firebaseapp.com",
+  databaseURL: "https://ampplex-75da7-default-rtdb.firebaseio.com",
+  projectId: "ampplex-75da7",
+  storageBucket: "ampplex-75da7.appspot.com",
+  messagingSenderId: "730587965700",
+  appId: "1:730587965700:web:7c71f40fd541c7b91bc851",
+  measurementId: "G-BSPPZFVTMS",
+};
+if (firebase.apps.length === 0) {
+  firebase.initializeApp(firebaseConfig);
+}
+
 export default function App() {
+  const Stack = createStackNavigator();
   return (
     <NavigationContainer>
       <StatusBar style="light" />
@@ -31,6 +48,7 @@ export default function App() {
             headerShown: false,
           }}
         />
+
         <Stack.Screen
           name="Login"
           component={LoginScreen}
@@ -38,6 +56,7 @@ export default function App() {
             headerShown: false,
           }}
         />
+
         <Stack.Screen
           name="Home"
           component={Home}

@@ -110,8 +110,8 @@ export default function TakePic({ navigation }) {
       </Camera>
     </View>
   );
-}
 
+}
 const styles = StyleSheet.create({
   container: {
     // Add Style if needed

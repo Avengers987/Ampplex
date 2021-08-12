@@ -61,7 +61,7 @@ export default function LoginScreen(props) {
       }, 1000);
       setTimeout(() => {
         storeData("true");
-        props.navigation.navigate("Category");
+        props.navigation.replace("Category");
         setEmail("");
         setPassword("");
       }, 1100);

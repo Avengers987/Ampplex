@@ -15,26 +15,26 @@ import Icon from "react-native-vector-icons/Ionicons";
 import * as ImagePicker from "expo-image-picker";
 import FlashMessage from "react-native-flash-message";
 import { showMessage } from "react-native-flash-message";
-import * as firebase from "firebase";
 import { StatusBar } from "expo-status-bar";
-import storage from "@react-native-firebase/storage";
+// import storage from "@react-native-firebase/storage";
 // import firebase from "react-native-firebase";
+// import * as firebase from "firebase";
+import firebase from "firebase";
 
-// For Firebase JS SDK v7.20.0 and later, measurementId is optional
-const firebaseConfig = {
-  apiKey: "AIzaSyB_vMbdEOmrMH_Eo4IuNkuObyY_ACLI5-k",
-  authDomain: "ampplex-75da7.firebaseapp.com",
-  databaseURL: "https://ampplex-75da7-default-rtdb.firebaseio.com",
-  projectId: "ampplex-75da7",
-  storageBucket: "ampplex-75da7.appspot.com",
-  messagingSenderId: "730587965700",
-  appId: "1:730587965700:web:7c71f40fd541c7b91bc851",
-  measurementId: "G-BSPPZFVTMS",
-};
+// const firebaseConfig = {
+//   apiKey: "AIzaSyB_vMbdEOmrMH_Eo4IuNkuObyY_ACLI5-k",
+//   authDomain: "ampplex-75da7.firebaseapp.com",
+//   databaseURL: "https://ampplex-75da7-default-rtdb.firebaseio.com",
+//   projectId: "ampplex-75da7",
+//   storageBucket: "ampplex-75da7.appspot.com",
+//   messagingSenderId: "730587965700",
+//   appId: "1:730587965700:web:7c71f40fd541c7b91bc851",
+//   measurementId: "G-BSPPZFVTMS",
+// };
 
-if (firebase.apps.length === 0) {
-  firebase.initializeApp(firebaseConfig);
-}
+// if (firebase.apps.length === 0) {
+//   firebase.initializeApp(firebaseConfig);
+// }
 
 const getWindowDimensionsWidth = () => {
   const dimensions = Dimensions.get("window").width;
@@ -55,12 +55,6 @@ export default function AddPost({ navigation, route }) {
   const [camImg, setCamImg] = useState(null);
 
   console.log(`route: ${route.params}}`);
-  // if (route !== undefined) {
-  //   setCamImg(route.params.image);
-  //   // setCamImg(route.params.image);
-  // } else {
-  //   console.warn("I'm null!");
-  // }
 
   const SetImage = () => {
     try {
@@ -99,17 +93,22 @@ export default function AddPost({ navigation, route }) {
     }
   }
 
-  const sendPostToCloudServer = () => {
+  const sendPostToCloudServer = async () => {
     console.log("Posting...");
     SetImage();
     if (image !== null) {
       const URI = image;
+      const response = await fetch(URI);
+      const blob = response.blob();
+      const childPath = `post/${userId}/${Math.random().toString(36)}`;
+      console.log(`Child Path is : ${childPath}`);
+
       let filename = URI.substring(URI.lastIndexOf("/") + 1);
       console.log("firebase!!!!!", URI);
       try {
         const uploadUri =
           Platform.OS === "ios" ? uri.replace("file://", "") : URI;
-        const task = storage().ref(filename).putFile(uploadUri);
+        const task = firebase.storage().ref().child(childPath).put(blob);
       } catch (e) {
         console.log(e);
       }

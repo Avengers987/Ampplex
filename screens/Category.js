@@ -37,7 +37,7 @@ const Category = ({ navigation }) => {
       bool_value.then((response) => {
         if (response !== null) {
           console.log(response);
-          navigation.navigate("Home");
+          navigation.replace("Home");
         }
       });
     } catch {
