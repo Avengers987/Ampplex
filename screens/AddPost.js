@@ -98,17 +98,26 @@ export default function AddPost({ navigation, route }) {
     SetImage();
     if (image !== null) {
       const URI = image;
+      let filename = URI.substring(URI.lastIndexOf("/") + 1);
       const response = await fetch(URI);
       const blob = response.blob();
-      const childPath = `post/${userId}/${Math.random().toString(36)}`;
+      const childPath = `post/${userId}/${filename}`;
       console.log(`Child Path is : ${childPath}`);
 
-      let filename = URI.substring(URI.lastIndexOf("/") + 1);
       console.log("firebase!!!!!", URI);
+
+      let metadata = {
+        contentType: "image/jpeg",
+      };
+
       try {
         const uploadUri =
           Platform.OS === "ios" ? uri.replace("file://", "") : URI;
-        const task = firebase.storage().ref().child(childPath).put(blob);
+        const task = firebase
+          .storage()
+          .ref()
+          .child(childPath)
+          .put(blob, metadata);
       } catch (e) {
         console.log(e);
       }
