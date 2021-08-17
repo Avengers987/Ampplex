@@ -42,7 +42,6 @@ const HomeScreen = () => {
             }}
             style={styles.postImg}
           />
-          {/* <TouchableWithoutFeedback></TouchableWithoutFeedback> */}
         </View>
         <View style={styles.postView}>
           <Image
@@ -51,7 +50,6 @@ const HomeScreen = () => {
             }}
             style={styles.postImg}
           />
-          {/* <TouchableWithoutFeedback></TouchableWithoutFeedback> */}
         </View>
         <View style={styles.postView}>
           <Image
@@ -60,7 +58,6 @@ const HomeScreen = () => {
             }}
             style={styles.postImg}
           />
-          {/* <TouchableWithoutFeedback></TouchableWithoutFeedback> */}
         </View>
         <View style={styles.postView}>
           <Image
@@ -69,7 +66,6 @@ const HomeScreen = () => {
             }}
             style={styles.postImg}
           />
-          {/* <TouchableWithoutFeedback></TouchableWithoutFeedback> */}
         </View>
         <View style={styles.postView}>
           <Image
@@ -78,7 +74,6 @@ const HomeScreen = () => {
             }}
             style={styles.postImg}
           />
-          {/* <TouchableWithoutFeedback></TouchableWithoutFeedback> */}
         </View>
         <View style={styles.postView}>
           <Image

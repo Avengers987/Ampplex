@@ -5,7 +5,6 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import * as FaceDetector from "expo-face-detector";
 
 export default function TakePic({ navigation }) {
-  console.log("Hello Cam");
   const [hasPermission, setHasPermission] = useState(null);
   const [type, setType] = useState(Camera.Constants.Type.front);
   const [camera, setCamera] = useState(null);
@@ -110,7 +109,6 @@ export default function TakePic({ navigation }) {
       </Camera>
     </View>
   );
-
 }
 const styles = StyleSheet.create({
   container: {
@@ -129,13 +127,13 @@ const styles = StyleSheet.create({
     marginTop: 50,
   },
   takePicBtn: {
-    width: 90,
-    height: 90,
+    width: 65,
+    height: 65,
     backgroundColor: "#fafafa",
     borderRadius: 100,
     position: "absolute",
     bottom: 25,
-    marginLeft: 130,
+    marginLeft: 156,
   },
   FlashStyle: {
     position: "absolute",

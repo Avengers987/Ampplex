@@ -26,7 +26,7 @@ const getWindowDimensionsHeight = () => {
 
 const Tab = createBottomTabNavigator();
 
-const Home = ({ navigation }) => {
+const Home = ({ navigation, route }) => {
   return (
     <>
       <StatusBar style="auto" />
@@ -69,7 +69,9 @@ const Home = ({ navigation }) => {
       <TouchableOpacity
         style={styles.PostBtnStyle}
         onPress={() => {
-          navigation.navigate("AddPost");
+          const userID = route.params.userID;
+          console.log("Home : ", userID);
+          navigation.navigate("AddPost", { userID });
         }}
       >
         <View>

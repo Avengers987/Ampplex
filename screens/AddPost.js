@@ -16,25 +16,26 @@ import * as ImagePicker from "expo-image-picker";
 import FlashMessage from "react-native-flash-message";
 import { showMessage } from "react-native-flash-message";
 import { StatusBar } from "expo-status-bar";
-// import storage from "@react-native-firebase/storage";
-// import firebase from "react-native-firebase";
-// import * as firebase from "firebase";
+
 import firebase from "firebase";
 
-// const firebaseConfig = {
-//   apiKey: "AIzaSyB_vMbdEOmrMH_Eo4IuNkuObyY_ACLI5-k",
-//   authDomain: "ampplex-75da7.firebaseapp.com",
-//   databaseURL: "https://ampplex-75da7-default-rtdb.firebaseio.com",
-//   projectId: "ampplex-75da7",
-//   storageBucket: "ampplex-75da7.appspot.com",
-//   messagingSenderId: "730587965700",
-//   appId: "1:730587965700:web:7c71f40fd541c7b91bc851",
-//   measurementId: "G-BSPPZFVTMS",
-// };
-
-// if (firebase.apps.length === 0) {
-//   firebase.initializeApp(firebaseConfig);
-// }
+const Push_User_Data_To_RealTime_DB = (imgPath, caption, timestamp, userID) => {
+  console.warn("User ID is : ", userID);
+  firebase
+    .database()
+    .ref(`User/${userID}/Post/`)
+    .push({
+      imgPath,
+      caption,
+      timestamp,
+    })
+    .then((res) => {
+      console.log(`Success: ${res}`);
+    })
+    .catch((error) => {
+      console.log(`Error: ${error}`);
+    });
+};
 
 const getWindowDimensionsWidth = () => {
   const dimensions = Dimensions.get("window").width;
@@ -50,11 +51,11 @@ require("firebase/firebase-storage");
 
 export default function AddPost({ navigation, route }) {
   const [image, setImage] = useState(null);
-  const [userId, setUserId] = useState("");
+  const [userId, setUserId] = useState(null);
   const [postTxt, setPostTxt] = useState(null);
   const [camImg, setCamImg] = useState(null);
 
-  console.log(`route: ${route.params}}`);
+  console.log("MY ID IS THIS : ", route.params.userID);
 
   const SetImage = () => {
     try {
@@ -82,17 +83,6 @@ export default function AddPost({ navigation, route }) {
     })();
   }, []);
 
-  async function getData() {
-    try {
-      const userName = await AsyncStorage.getItem("user_name");
-      const user_id = await AsyncStorage.getItem("user_id");
-      setUserId(user_id);
-    } catch (e) {
-      // error reading value
-      ErrorFlasher("Failed to retrieve your login info!");
-    }
-  }
-
   const sendPostToCloudServer = async () => {
     console.log("Posting...");
     SetImage();
@@ -101,7 +91,7 @@ export default function AddPost({ navigation, route }) {
       let filename = URI.substring(URI.lastIndexOf("/") + 1);
       const response = await fetch(URI);
       const blob = response.blob();
-      const childPath = `post/${userId}/${filename}`;
+      const childPath = `post/${route.params.userID}/${filename}`;
       console.log(`Child Path is : ${childPath}`);
 
       console.log("firebase!!!!!", URI);
@@ -118,6 +108,44 @@ export default function AddPost({ navigation, route }) {
           .ref()
           .child(childPath)
           .put(blob, metadata);
+
+        task.on(
+          "state_changed",
+          (snapshot) => {
+            // Observe state change events such as progress, pause, and resume
+            // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
+            var progress =
+              (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+            console.log("Upload is " + progress + "% done");
+            switch (snapshot.state) {
+              case firebase.storage.TaskState.PAUSED: // or 'paused'
+                console.log("Upload is paused");
+                break;
+              case firebase.storage.TaskState.RUNNING: // or 'running'
+                console.log("Upload is running");
+                break;
+            }
+          },
+          (error) => {
+            // Handle unsuccessful uploads
+            ErrorFlasher("Some error occured! :(");
+          },
+          () => {
+            // Handle successful uploads on complete
+            // For instance, get the download URL: https://firebasestorage.googleapis.com/...
+            task.snapshot.ref.getDownloadURL().then((downloadURL) => {
+              console.log("File available at", downloadURL);
+              Push_User_Data_To_RealTime_DB(
+                downloadURL,
+                postTxt,
+                new Date().toLocaleTimeString() +
+                  " | " +
+                  new Date().toDateString(),
+                route.params.userID
+              );
+            });
+          }
+        );
       } catch (e) {
         console.log(e);
       }
@@ -190,7 +218,7 @@ export default function AddPost({ navigation, route }) {
       <View style={styles.container}>
         {image && (
           <Image
-            source={{ uri: image === null ? camImg : image }}
+            source={{ uri: image }}
             style={{
               width: getWindowDimensionsWidth(),
               height: getWindowDimensionsWidth(),

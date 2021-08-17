@@ -22,7 +22,8 @@ const ErrorFlasher = (msg) => {
   });
 };
 
-const Category = ({ navigation }) => {
+const Category = ({ navigation, route }) => {
+  console.log("USER IS : ", route.params.user_id);
   const storeData = async () => {
     try {
       await AsyncStorage.setItem("Category", "true");
@@ -37,7 +38,9 @@ const Category = ({ navigation }) => {
       bool_value.then((response) => {
         if (response !== null) {
           console.log(response);
-          navigation.replace("Home");
+          setUserID(route.params.user_id);
+          console.log("Category", userID);
+          navigation.replace("Home", { userID });
         }
       });
     } catch {
@@ -87,6 +90,7 @@ const Category = ({ navigation }) => {
   const animatedSearchBarHeight = new Animated.Value(50);
   const animateBtn = new Animated.Value(0);
   console.log(pressedBtn);
+  console.log("User is this one: ", userID);
   class Button {
     Coding() {
       return (
@@ -577,7 +581,7 @@ const Category = ({ navigation }) => {
   }
 
   function nextNavigationBtnHandler() {
-    getData();
+    // getData();
     getCategoryData();
 
     const categoryLst = [];
@@ -605,20 +609,20 @@ const Category = ({ navigation }) => {
     storeData();
   }
 
-  async function getData() {
-    try {
-      const value = await AsyncStorage.getItem("isLogined_Boolean");
-      const user_id = await AsyncStorage.getItem("user_id");
-      if (value !== null && user_id !== null) {
-        setUserID(user_id);
-      }
-      console.log("response: ", value);
-      console.log(`User Id is : ${user_id}`);
-    } catch (e) {
-      // error reading value
-      ErrorFlasher("Error: Failed to retrieve your login info!");
-    }
-  }
+  // async function getData() {
+  //   try {
+  //     const value = await AsyncStorage.getItem("isLogined_Boolean");
+  //     const user_id = await AsyncStorage.getItem("user_id");
+  //     if (value !== null && user_id !== null) {
+  //       setUserID(user_id);
+  //     }
+  //     console.log("response: ", value);
+  //     console.log(`User Id is : ${user_id}`);
+  //   } catch (e) {
+  //     // error reading value
+  //     ErrorFlasher("Error: Failed to retrieve your login info!");
+  //   }
+  // }
 
   if (pressedBtn.size > 0) {
     // Checking if button animation is running for the first time and if yes, then animating the next navigation button
