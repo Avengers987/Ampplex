@@ -53,7 +53,6 @@ export default function AddPost({ navigation, route }) {
   const [image, setImage] = useState(null);
   const [userId, setUserId] = useState(null);
   const [postTxt, setPostTxt] = useState(null);
-  const [camImg, setCamImg] = useState(null);
 
   console.log("MY ID IS THIS : ", route.params.userID);
 
@@ -90,7 +89,8 @@ export default function AddPost({ navigation, route }) {
       const URI = image;
       let filename = URI.substring(URI.lastIndexOf("/") + 1);
       const response = await fetch(URI);
-      const blob = response.blob();
+      const blob = await response.blob();
+      console.log(blob);
       const childPath = `post/${route.params.userID}/${filename}`;
       console.log(`Child Path is : ${childPath}`);
 
@@ -103,11 +103,7 @@ export default function AddPost({ navigation, route }) {
       try {
         const uploadUri =
           Platform.OS === "ios" ? uri.replace("file://", "") : URI;
-        const task = firebase
-          .storage()
-          .ref()
-          .child(childPath)
-          .put(blob, metadata);
+        const task = firebase.storage().ref().child(childPath).put(blob);
 
         task.on(
           "state_changed",
