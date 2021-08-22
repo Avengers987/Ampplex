@@ -609,21 +609,6 @@ const Category = ({ navigation, route }) => {
     storeData();
   }
 
-  // async function getData() {
-  //   try {
-  //     const value = await AsyncStorage.getItem("isLogined_Boolean");
-  //     const user_id = await AsyncStorage.getItem("user_id");
-  //     if (value !== null && user_id !== null) {
-  //       setUserID(user_id);
-  //     }
-  //     console.log("response: ", value);
-  //     console.log(`User Id is : ${user_id}`);
-  //   } catch (e) {
-  //     // error reading value
-  //     ErrorFlasher("Error: Failed to retrieve your login info!");
-  //   }
-  // }
-
   if (pressedBtn.size > 0) {
     // Checking if button animation is running for the first time and if yes, then animating the next navigation button
     Animated.timing(animateBtn, {
