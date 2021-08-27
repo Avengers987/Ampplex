@@ -32,6 +32,7 @@ if (firebase.apps.length === 0) {
 }
 
 export default function App() {
+  console.ignoredYellowBox = ["Warning: Each", "Warning: Failed"];
   const Stack = createStackNavigator();
   return (
     <NavigationContainer>

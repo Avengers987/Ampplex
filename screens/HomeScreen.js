@@ -10,9 +10,10 @@ import {
 } from "react-native";
 import { createDrawerNavigator } from "@react-navigation/drawer";
 import Profile from "./Profile";
+import Header from "./Header";
 
 const HomeScreen = () => {
-  let [response, setResponse] = useState("");
+  let [response, setResponse] = useState([]);
   const getPostInfo = async () => {
     const url = "https://ampplex-backened.herokuapp.com/GetPostJson/";
 
@@ -25,58 +26,27 @@ const HomeScreen = () => {
       });
   };
 
-  // function RenderUserPost(key) {
-  //   // console.log(response[key]["UserName"]);
-  //   return (
-  //     <View style={styles.postView}>
-  //       <View>
-  //         <Text style={{ fontSize: 20 }}>{response[key]["Caption"]}</Text>
-  //       </View>
-  //       <Image
-  //         source={{
-  //           uri: response[key]["ImgPath"],
-  //         }}
-  //         style={styles.postImg}
-  //       />
-  //     </View>
-  //   );
-  // }
-
-  getPostInfo();
-  // for (let key in response) {
-  console.log(typeof response);
-  // let obj = { abo: "Hello", op: "kl" };
-  // Object.keys(response).map((e) => {
-  //   return (
-  //     <View>
-  //       <Image
-  //         source={{
-  //           uri: response[e]["ImgPath"],
-  //         }}
-  //       />
-  //     </View>
-  //   );
-  // });
+  getPostInfo(); // Calling the getPost API for retrieving user posts
 
   return (
     <View style={styles.Profile}>
       <ScrollView>
-        {Object.keys(response).map((e) => {
-          {
-            console.log(response[e]["UserName"]);
-          }
+        <Header />
+        {response.map((element) => {
           return (
-            <View style={styles.postView}>
-              <View>
-                <Text style={{ fontSize: 20 }}>{response[e]["Caption"]}</Text>
+            <>
+              <View style={styles.postView}>
+                <View>
+                  <Text style={{ fontSize: 20 }}>{element["Caption"]}</Text>
+                </View>
+                <Image
+                  source={{
+                    uri: element["ImgPath"],
+                  }}
+                  style={styles.postImg}
+                />
               </View>
-              <Image
-                source={{
-                  uri: response[e]["ImgPath"],
-                }}
-                style={styles.postImg}
-              />
-            </View>
+            </>
           );
         })}
       </ScrollView>
