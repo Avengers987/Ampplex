@@ -33,7 +33,7 @@ const Home = ({ navigation, route }) => {
       <Tab.Navigator>
         <Tab.Screen
           name="Home"
-          component={HomeScreen}
+          children={() => <HomeScreen userID={route.params.userID} />}
           options={{
             tabBarLabel: "Search",
             tabBarIcon: ({ color, size }) => (
@@ -53,7 +53,7 @@ const Home = ({ navigation, route }) => {
         />
         <Tab.Screen
           name="Profile"
-          component={Profile}
+          children={() => <Profile userID={route.params.userID} />}
           options={{
             tabBarLabel: "Profile",
             tabBarIcon: ({ color, size }) => (
