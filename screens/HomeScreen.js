@@ -30,8 +30,8 @@ const HomeScreen = () => {
 
   return (
     <View style={styles.Profile}>
+      <Header />
       <ScrollView>
-        <Header />
         {response.map((element) => {
           return (
             <>

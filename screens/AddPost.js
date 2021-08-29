@@ -49,12 +49,12 @@ const getWindowDimensionsHeight = () => {
 require("firebase/firestore");
 require("firebase/firebase-storage");
 
-export default function AddPost({ navigation, route }) {
+export default function AddPost({ navigation, route, userID }) {
   const [image, setImage] = useState(null);
   const [userId, setUserId] = useState(null);
   const [postTxt, setPostTxt] = useState(null);
 
-  console.log("MY ID IS THIS : ", route.params.userID);
+  console.log("MY ID IS THIS : ", userID);
 
   const SetImage = () => {
     try {
@@ -91,14 +91,10 @@ export default function AddPost({ navigation, route }) {
       const response = await fetch(URI);
       const blob = await response.blob();
       console.log(blob);
-      const childPath = `post/${route.params.userID}/${filename}`;
+      const childPath = `post/${userID}/${filename}`;
       console.log(`Child Path is : ${childPath}`);
 
       console.log("firebase!!!!!", URI);
-
-      let metadata = {
-        contentType: "image/jpeg",
-      };
 
       try {
         const uploadUri =
@@ -137,7 +133,7 @@ export default function AddPost({ navigation, route }) {
                 new Date().toLocaleTimeString() +
                   " | " +
                   new Date().toDateString(),
-                route.params.userID
+                userID
               );
             });
           }

@@ -17,7 +17,7 @@ const PostBtn = ({ navigation }) => {
 
   return (
     <View>
-      <TouchableOpacity
+      {/* <TouchableOpacity
         style={styles.PostBtnStyle}
         onPress={() => {
           navigation.navigate("AddPost");
@@ -35,7 +35,7 @@ const PostBtn = ({ navigation }) => {
             +
           </Text>
         </View>
-      </TouchableOpacity>
+      </TouchableOpacity> */}
     </View>
   );
 };

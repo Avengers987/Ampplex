@@ -40,7 +40,9 @@ const Category = ({ navigation, route }) => {
           console.log(response);
           setUserID(route.params.user_id);
           console.log("Category", userID);
-          navigation.replace("Home", { userID });
+          const userName = route.params.userName;
+          console.log(`Category UserName: ${userName}`);
+          navigation.replace("Home", { userID, userName });
         }
       });
     } catch {

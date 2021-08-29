@@ -11,9 +11,9 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { MaterialCommunityIcons, Ionicons } from "@expo/vector-icons";
 import Search from "./Search";
 import Profile from "./Profile";
-import PostBtn from "./PostBtn";
 import HomeScreen from "./HomeScreen";
 import { StatusBar } from "expo-status-bar";
+import AddPost from "./AddPost";
 
 const getWindowDimensions = () => {
   const dimensions = Dimensions.get("window").width;
@@ -52,8 +52,27 @@ const Home = ({ navigation, route }) => {
           }}
         />
         <Tab.Screen
+          name="AddPost"
+          children={() => (
+            <AddPost userID={route.params.userID} navigation={navigation} />
+          )}
+          options={{
+            tabBarLabel: "Add Post",
+            tabBarIcon: ({ color, size }) => (
+              <Text
+                style={{
+                  color: color,
+                  fontSize: size,
+                }}
+              >
+                +
+              </Text>
+            ),
+          }}
+        />
+        <Tab.Screen
           name="Profile"
-          children={() => <Profile userID={route.params.userID} />}
+          children={() => <Profile userName={route.params.userName} />}
           options={{
             tabBarLabel: "Profile",
             tabBarIcon: ({ color, size }) => (
@@ -66,7 +85,7 @@ const Home = ({ navigation, route }) => {
           }}
         />
       </Tab.Navigator>
-      <TouchableOpacity
+      {/* <TouchableOpacity
         style={styles.PostBtnStyle}
         onPress={() => {
           const userID = route.params.userID;
@@ -86,7 +105,7 @@ const Home = ({ navigation, route }) => {
             +
           </Text>
         </View>
-      </TouchableOpacity>
+      </TouchableOpacity> */}
     </>
   );
 };

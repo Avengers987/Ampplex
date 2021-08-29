@@ -37,7 +37,7 @@ export default function LoginScreen(props) {
       const user_id = await AsyncStorage.getItem("user_id");
 
       if (value !== null && userName !== null && user_id !== null) {
-        props.navigation.replace("Category", { user_id });
+        props.navigation.replace("Category", { user_id, userName });
       }
     } catch (e) {
       // error reading value
