@@ -72,7 +72,12 @@ const Home = ({ navigation, route }) => {
         />
         <Tab.Screen
           name="Profile"
-          children={() => <Profile userName={route.params.userName} />}
+          children={() => (
+            <Profile
+              userName={route.params.userName}
+              userID={route.params.userID}
+            />
+          )}
           options={{
             tabBarLabel: "Profile",
             tabBarIcon: ({ color, size }) => (
@@ -85,27 +90,6 @@ const Home = ({ navigation, route }) => {
           }}
         />
       </Tab.Navigator>
-      {/* <TouchableOpacity
-        style={styles.PostBtnStyle}
-        onPress={() => {
-          const userID = route.params.userID;
-          console.log("Home : ", userID);
-          navigation.navigate("AddPost", { userID });
-        }}
-      >
-        <View>
-          <Text
-            style={{
-              color: "white",
-              fontSize: 25,
-              alignSelf: "center",
-              marginTop: 5,
-            }}
-          >
-            +
-          </Text>
-        </View>
-      </TouchableOpacity> */}
     </>
   );
 };

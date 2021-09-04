@@ -22,7 +22,7 @@ export default function TakePic({ navigation }) {
     if (camera) {
       console.log("Taking Picture...");
       const getImg = await camera.takePictureAsync();
-      setImage(getImg.uri);
+      await setImage(getImg.uri);
       if (image !== null) {
         console.log("image is : ", image);
         navigation.navigate("AddPost", { image: image });
@@ -36,7 +36,7 @@ export default function TakePic({ navigation }) {
   } else if (hasPermission === false) {
     return (
       <View>
-        <Text>No Access to Camera</Text>
+        <Text>Access denied</Text>
       </View>
     );
   }

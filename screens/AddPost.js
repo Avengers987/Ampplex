@@ -136,6 +136,8 @@ export default function AddPost({ navigation, route, userID }) {
                 userID
               );
             });
+            setImage(null);
+            setPostTxt(null);
           }
         );
       } catch (e) {
