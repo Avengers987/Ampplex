@@ -8,6 +8,9 @@
     "assetBundlePatterns": [
       "**/*"
     ],
-    "description": ""
+    "description": "",
+    "android": {
+      "package": "com.ankeshkumar.Ampplex"
+    }
   }
 }

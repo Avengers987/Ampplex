@@ -4,7 +4,7 @@ import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import * as FaceDetector from "expo-face-detector";
 
-export default function TakePic({ navigation }) {
+export default function TakePic({ navigation, route }) {
   const [hasPermission, setHasPermission] = useState(null);
   const [type, setType] = useState(Camera.Constants.Type.front);
   const [camera, setCamera] = useState(null);
@@ -25,7 +25,11 @@ export default function TakePic({ navigation }) {
       await setImage(getImg.uri);
       if (image !== null) {
         console.log("image is : ", image);
-        navigation.navigate("AddPost", { image: image });
+        route.params.navParent === "AddPost"
+          ? navigation.navigate("AddPost", { image: image })
+          : route.params.navParent === "Profile"
+          ? navigation.navigate("Profile", { image: image })
+          : "Error";
       } else {
         console.log("I am null plz help me! :(");
       }

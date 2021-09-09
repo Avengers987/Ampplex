@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, createRef } from "react";
 import {
   View,
   Text,
@@ -6,11 +6,115 @@ import {
   Image,
   Dimensions,
   ScrollView,
+  TouchableOpacity,
+  TouchableHighlight,
+  Alert,
 } from "react-native";
+import ActionSheet from "react-native-actions-sheet";
+import * as ImagePicker from "expo-image-picker";
+import firebase from "firebase";
 
-const Profile = ({ userName, userID }) => {
+const actionSheetRef = createRef();
+
+const Push_User_Data_To_RealTime_DB = (imgPath, userID) => {
+  console.warn("User ID is : ", userID);
+  firebase
+    .database()
+    .ref(`User/${userID}/`)
+    .push({
+      imgPath,
+    })
+    .then((res) => {
+      console.log(`Success: ${res}`);
+    })
+    .catch((error) => {
+      console.log(`Error: ${error}`);
+    });
+};
+
+const Profile = ({ userName, userID, navigation, route }) => {
   const [posts, SetPosts] = useState(0);
   const [response, setResponse] = useState([]);
+  const [profilePic, setProfilePic] = useState(
+    "https://source.unsplash.com/random/200x200?sig=incrementingIdentifier"
+  );
+  let actionSheet;
+
+  const pickImage = async () => {
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.All,
+
+      allowsEditing: true,
+      aspect: [5, 4],
+      quality: 1,
+    });
+
+    console.log(result);
+
+    if (!result.cancelled) {
+      setProfilePic(result.uri);
+    }
+  };
+
+  const SetImage = async () => {
+    try {
+      const URI = route.params.image;
+      console.log("Profile Pic : ", URI);
+
+      let filename = URI.substring(URI.lastIndexOf("/") + 1);
+      const response = await fetch(URI);
+      const blob = await response.blob();
+
+      const childPath = `post/${userID}/${filename}`;
+      console.log(`Child Path is : ${childPath}`);
+
+      console.log("firebase!!!!!", URI);
+
+      try {
+        const uploadUri =
+          Platform.OS === "ios" ? uri.replace("file://", "") : URI;
+        const task = firebase.storage().ref().child(childPath).put(blob);
+
+        task.on(
+          "state_changed",
+          (snapshot) => {
+            // Observe state change events such as progress, pause, and resume
+            // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
+            var progress =
+              (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+            console.log("Upload is " + progress + "% done");
+            switch (snapshot.state) {
+              case firebase.storage.TaskState.PAUSED: // or 'paused'
+                console.log("Upload is paused");
+                break;
+              case firebase.storage.TaskState.RUNNING: // or 'running'
+                console.log("Upload is running");
+                break;
+            }
+          },
+          (error) => {
+            // Handle unsuccessful uploads
+            ErrorFlasher("Some error occured! :(");
+          },
+          () => {
+            // Handle successful uploads on complete
+            // For instance, get the download URL: https://firebasestorage.googleapis.com/...
+            task.snapshot.ref.getDownloadURL().then((downloadURL) => {
+              console.log("File available at", downloadURL);
+              Push_User_Data_To_RealTime_DB(downloadURL, userID);
+            });
+            Alert.alert("Post status", "Image Uploaded!");
+          }
+        );
+      } catch (e) {
+        console.log(e);
+      }
+    } catch {
+      console.log("No image selected!");
+    }
+  };
+
+  SetImage();
 
   const getPost = () => {
     const url = `https://ampplex-backened.herokuapp.com/Count_Posts/${userID}`;
@@ -42,12 +146,32 @@ const Profile = ({ userName, userID }) => {
     <>
       <View style={styles.Profile}>
         <Text style={styles.UserName}>{userName}</Text>
-        <Image
-          style={styles.Profile_Picture}
-          source={{
-            uri: "https://source.unsplash.com/random/200x200?sig=incrementingIdentifier",
+        <TouchableOpacity
+          onPress={() => actionSheetRef.current?.setModalVisible()}
+          style={{
+            position: "absolute",
+            left: 0,
+            top: 20,
           }}
-        />
+        >
+          <View
+            style={{
+              width: 100,
+              height: 90,
+              borderRadius: 100,
+              marginTop: 70,
+              opacity: 0,
+            }}
+          ></View>
+
+          <Image
+            style={styles.Profile_Picture}
+            source={{
+              uri: profilePic,
+            }}
+          />
+        </TouchableOpacity>
+
         <View>
           <Text style={styles.PostsNumber}>{posts}</Text>
           <Text
@@ -132,6 +256,67 @@ const Profile = ({ userName, userID }) => {
           );
         })}
       </ScrollView>
+      <ActionSheet ref={actionSheetRef} bounceOnOpen={true}>
+        <View style={styles.ActionSheetStyle}>
+          <Text
+            style={{
+              fontSize: 18,
+              fontWeight: "bold",
+            }}
+          >
+            Edit Profile Picture
+          </Text>
+          {/* Take Picture from camera */}
+          <TouchableOpacity
+            onPress={() =>
+              navigation.navigate("TakePic", { navParent: "Profile" })
+            }
+          >
+            <View>
+              <Image
+                style={{
+                  width: 35,
+                  height: 35,
+                  position: "absolute",
+                  left: -70,
+                  top: 25,
+                }}
+                source={require("../Images/outline_photo_camera_black_24dp.png")}
+              />
+              <Text
+                style={{
+                  marginTop: 28,
+                  fontSize: 18,
+                }}
+              >
+                Take Picture
+              </Text>
+            </View>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={() => pickImage()}>
+            <View>
+              <Image
+                style={{
+                  width: 35,
+                  height: 35,
+                  position: "absolute",
+                  left: -60,
+                  top: 38,
+                }}
+                source={require("../Images/gallery.png")}
+              />
+              <Text
+                style={{
+                  marginTop: 38,
+                  fontSize: 18,
+                }}
+              >
+                Choose Picture
+              </Text>
+            </View>
+          </TouchableOpacity>
+        </View>
+      </ActionSheet>
     </>
   );
 };
@@ -199,5 +384,11 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     borderRadius: 30,
     marginTop: 30,
+  },
+  ActionSheetStyle: {
+    display: "flex",
+    justifyContent: "flex-start",
+    alignItems: "center",
+    height: 200,
   },
 });

@@ -8,7 +8,8 @@ import {
   Platform,
   Dimensions,
   TouchableOpacity,
-  ImageEditor,
+  ActivityIndicator,
+  Alert,
 } from "react-native";
 import ActionButton from "react-native-action-button";
 import Icon from "react-native-vector-icons/Ionicons";
@@ -16,7 +17,6 @@ import * as ImagePicker from "expo-image-picker";
 import FlashMessage from "react-native-flash-message";
 import { showMessage } from "react-native-flash-message";
 import { StatusBar } from "expo-status-bar";
-
 import firebase from "firebase";
 
 const Push_User_Data_To_RealTime_DB = (imgPath, caption, timestamp, userID) => {
@@ -53,6 +53,10 @@ export default function AddPost({ navigation, route, userID }) {
   const [image, setImage] = useState(null);
   const [userId, setUserId] = useState(null);
   const [postTxt, setPostTxt] = useState(null);
+  const [posted, setPosted] = useState(null);
+  const [uploadStatus, setUploadStatus] = useState("");
+  const [error, setError] = useState(false); // if true then user have not attached picture or video or not written caption
+  const [clickedPost, setClickedPost] = useState(false);
 
   console.log("MY ID IS THIS : ", userID);
 
@@ -63,6 +67,7 @@ export default function AddPost({ navigation, route, userID }) {
       console.log("No image selected!");
     }
   };
+
   const ErrorFlasher = (msg) => {
     showMessage({
       message: `Error: ${msg}`,
@@ -83,14 +88,16 @@ export default function AddPost({ navigation, route, userID }) {
   }, []);
 
   const sendPostToCloudServer = async () => {
+    setClickedPost(true);
     console.log("Posting...");
+    setPosted(false);
     SetImage();
     if (image !== null) {
       const URI = image;
       let filename = URI.substring(URI.lastIndexOf("/") + 1);
       const response = await fetch(URI);
       const blob = await response.blob();
-      console.log(blob);
+
       const childPath = `post/${userID}/${filename}`;
       console.log(`Child Path is : ${childPath}`);
 
@@ -109,6 +116,7 @@ export default function AddPost({ navigation, route, userID }) {
             var progress =
               (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
             console.log("Upload is " + progress + "% done");
+            setUploadStatus(progress);
             switch (snapshot.state) {
               case firebase.storage.TaskState.PAUSED: // or 'paused'
                 console.log("Upload is paused");
@@ -136,6 +144,8 @@ export default function AddPost({ navigation, route, userID }) {
                 userID
               );
             });
+            Alert.alert("Post status", "Image Uploaded!");
+            setPosted(true);
             setImage(null);
             setPostTxt(null);
           }
@@ -145,6 +155,7 @@ export default function AddPost({ navigation, route, userID }) {
       }
     } else if ((image === null && postTxt === "") || postTxt === null) {
       ErrorFlasher("Please type or attach your post");
+      setError(true);
     } else {
       console.log(postTxt);
     }
@@ -176,7 +187,7 @@ export default function AddPost({ navigation, route, userID }) {
             placeholder="What's on your mind?"
             type="email"
             value={postTxt}
-            autoFocus
+            autoFocus={true}
             onChangeText={(e) => setPostTxt(e)}
           />
         </View>
@@ -186,7 +197,7 @@ export default function AddPost({ navigation, route, userID }) {
             buttonColor="#9b59b6"
             title="Camera"
             onPress={() => {
-              navigation.navigate("TakePic");
+              navigation.navigate("TakePic", { navParent: "AddPost" });
             }}
           >
             <Icon name="camera-outline" style={styles.actionButtonIcon} />
@@ -205,7 +216,7 @@ export default function AddPost({ navigation, route, userID }) {
       </>
     );
   };
-
+  console.log(error);
   return (
     <>
       <PostBtn />
@@ -217,6 +228,7 @@ export default function AddPost({ navigation, route, userID }) {
               width: getWindowDimensionsWidth(),
               height: getWindowDimensionsWidth(),
               alignSelf: "center",
+
               marginTop: 20,
             }}
           />
@@ -229,6 +241,37 @@ export default function AddPost({ navigation, route, userID }) {
             <Text style={styles.postBtnTextStyle}>Post</Text>
           </TouchableOpacity>
         </View>
+        {posted === false && error === false ? (
+          <View
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              alignSelf: "center",
+            }}
+          >
+            <Text
+              style={{
+                fontSize: 20,
+              }}
+            ></Text>
+            <ActivityIndicator size="large" color="skyblue" />
+          </View>
+        ) : (
+          <View />
+        )}
+        {clickedPost === true ? (
+          <View>
+            <Text
+              style={{
+                fontSize: 17,
+              }}
+            >
+              Uploaded : {uploadStatus}
+            </Text>
+          </View>
+        ) : (
+          <View />
+        )}
       </View>
     </>
   );

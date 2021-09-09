@@ -76,6 +76,7 @@ const Home = ({ navigation, route }) => {
             <Profile
               userName={route.params.userName}
               userID={route.params.userID}
+              navigation={navigation}
             />
           )}
           options={{
