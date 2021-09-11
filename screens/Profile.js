@@ -16,13 +16,13 @@ import firebase from "firebase";
 
 const actionSheetRef = createRef();
 
-const Push_User_Data_To_RealTime_DB = (imgPath, userID) => {
+const Push_User_Data_To_RealTime_DB = (profilePicPath, userID) => {
   console.warn("User ID is : ", userID);
   firebase
     .database()
     .ref(`User/${userID}/`)
-    .push({
-      imgPath,
+    .update({
+      profilePicPath,
     })
     .then((res) => {
       console.log(`Success: ${res}`);
@@ -35,9 +35,7 @@ const Push_User_Data_To_RealTime_DB = (imgPath, userID) => {
 const Profile = ({ userName, userID, navigation, route }) => {
   const [posts, SetPosts] = useState(0);
   const [response, setResponse] = useState([]);
-  const [profilePic, setProfilePic] = useState(
-    "https://source.unsplash.com/random/200x200?sig=incrementingIdentifier"
-  );
+  const [profilePic, setProfilePicGallery] = useState(null);
   let actionSheet;
 
   const pickImage = async () => {
@@ -52,16 +50,18 @@ const Profile = ({ userName, userID, navigation, route }) => {
     console.log(result);
 
     if (!result.cancelled) {
-      setProfilePic(result.uri);
+      setProfilePicGallery(result.uri);
+    }
+    try {
+      SetImage(profilePic);
+    } catch (e) {
+      console.log("Picture from gallery is not selected");
     }
   };
 
-  const SetImage = async () => {
+  const SetImage = async (URI) => {
     try {
-      const URI = route.params.image;
-      console.log("Profile Pic : ", URI);
-
-      let filename = URI.substring(URI.lastIndexOf("/") + 1);
+      let filename = "profilePicture";
       const response = await fetch(URI);
       const blob = await response.blob();
 
@@ -70,51 +70,49 @@ const Profile = ({ userName, userID, navigation, route }) => {
 
       console.log("firebase!!!!!", URI);
 
-      try {
-        const uploadUri =
-          Platform.OS === "ios" ? uri.replace("file://", "") : URI;
-        const task = firebase.storage().ref().child(childPath).put(blob);
+      const task = firebase.storage().ref().child(childPath).put(blob);
 
-        task.on(
-          "state_changed",
-          (snapshot) => {
-            // Observe state change events such as progress, pause, and resume
-            // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
-            var progress =
-              (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-            console.log("Upload is " + progress + "% done");
-            switch (snapshot.state) {
-              case firebase.storage.TaskState.PAUSED: // or 'paused'
-                console.log("Upload is paused");
-                break;
-              case firebase.storage.TaskState.RUNNING: // or 'running'
-                console.log("Upload is running");
-                break;
-            }
-          },
-          (error) => {
-            // Handle unsuccessful uploads
-            ErrorFlasher("Some error occured! :(");
-          },
-          () => {
-            // Handle successful uploads on complete
-            // For instance, get the download URL: https://firebasestorage.googleapis.com/...
-            task.snapshot.ref.getDownloadURL().then((downloadURL) => {
-              console.log("File available at", downloadURL);
-              Push_User_Data_To_RealTime_DB(downloadURL, userID);
-            });
-            Alert.alert("Post status", "Image Uploaded!");
+      task.on(
+        "state_changed",
+        (snapshot) => {
+          // Observe state change events such as progress, pause, and resume
+          // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
+          var progress =
+            (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+          console.log("Upload is " + progress + "% done");
+          switch (snapshot.state) {
+            case firebase.storage.TaskState.PAUSED: // or 'paused'
+              console.log("Upload is paused");
+              break;
+            case firebase.storage.TaskState.RUNNING: // or 'running'
+              console.log("Upload is running");
+              break;
           }
-        );
-      } catch (e) {
-        console.log(e);
-      }
-    } catch {
-      console.log("No image selected!");
+        },
+        (error) => {
+          // Handle unsuccessful uploads
+          console.log(error);
+        },
+        () => {
+          // Handle successful uploads on complete
+          // For instance, get the download URL: https://firebasestorage.googleapis.com/...
+          task.snapshot.ref.getDownloadURL().then((downloadURL) => {
+            console.log("File available at", downloadURL);
+            Push_User_Data_To_RealTime_DB(downloadURL, userID);
+          });
+          Alert.alert("Post status", "Image Uploaded!");
+        }
+      );
+    } catch (e) {
+      console.log("");
     }
   };
 
-  SetImage();
+  try {
+    SetImage(route.params.image);
+  } catch (e) {
+    console.log("Picture from cam is not selected");
+  }
 
   const getPost = () => {
     const url = `https://ampplex-backened.herokuapp.com/Count_Posts/${userID}`;
@@ -124,6 +122,9 @@ const Profile = ({ userName, userID, navigation, route }) => {
       })
       .then((data) => {
         SetPosts(data.Posts);
+      })
+      .catch((err) => {
+        console.log("");
       });
   };
 
@@ -136,6 +137,9 @@ const Profile = ({ userName, userID, navigation, route }) => {
       })
       .then((data) => {
         setResponse(data);
+      })
+      .catch((e) => {
+        console.log("");
       });
   };
 
@@ -167,7 +171,10 @@ const Profile = ({ userName, userID, navigation, route }) => {
           <Image
             style={styles.Profile_Picture}
             source={{
-              uri: profilePic,
+              uri:
+                profilePic === null
+                  ? "https://source.unsplash.com/random/200x200?sig=incrementingIdentifier"
+                  : profilePic,
             }}
           />
         </TouchableOpacity>

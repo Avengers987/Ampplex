@@ -74,25 +74,6 @@ const HomeScreen = () => {
       </ScrollView>
     </View>
   );
-
-  return (
-    <View
-      style={{
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-      }}
-    >
-      <Text
-        style={{
-          fontSize: 20,
-          fontWeight: "bold",
-        }}
-      >
-        404 NOT FOUND
-      </Text>
-    </View>
-  );
 };
 
 export default HomeScreen;
