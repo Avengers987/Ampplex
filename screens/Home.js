@@ -35,7 +35,7 @@ const Home = ({ navigation, route }) => {
           name="Home"
           children={() => <HomeScreen userID={route.params.userID} />}
           options={{
-            tabBarLabel: "Search",
+            tabBarLabel: "Home",
             tabBarIcon: ({ color, size }) => (
               <Ionicons name="home" color={color} size={size} />
             ),

@@ -7,6 +7,7 @@ import {
   ScrollView,
   Image,
   TouchableWithoutFeedback,
+  ActivityIndicator,
 } from "react-native";
 import { createDrawerNavigator } from "@react-navigation/drawer";
 import Profile from "./Profile";
@@ -41,7 +42,10 @@ const HomeScreen = () => {
                   <Image
                     style={styles.profilePicture}
                     source={{
-                      uri: "https://source.unsplash.com/random/200x200?sig=incrementingIdentifier",
+                      uri:
+                        element["profilePicPath"] != "null"
+                          ? element["profilePicPath"]
+                          : "https://images.unsplash.com/photo-1514923995763-768e52f5af87?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80",
                     }}
                   />
                 </View>

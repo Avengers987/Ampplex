@@ -58,6 +58,10 @@ export default function AddPost({ navigation, route, userID }) {
   const [error, setError] = useState(false); // if true then user have not attached picture or video or not written caption
   const [clickedPost, setClickedPost] = useState(false);
 
+  if (userID === undefined) {
+    userID = route.params.userID;
+  }
+
   console.log("MY ID IS THIS : ", userID);
 
   const SetImage = () => {
@@ -188,7 +192,9 @@ export default function AddPost({ navigation, route, userID }) {
             type="email"
             value={postTxt}
             autoFocus={true}
-            onChangeText={(e) => setPostTxt(e)}
+            onChangeText={(e) => {
+              setPostTxt(e);
+            }}
           />
         </View>
 
@@ -197,7 +203,7 @@ export default function AddPost({ navigation, route, userID }) {
             buttonColor="#9b59b6"
             title="Camera"
             onPress={() => {
-              navigation.navigate("TakePic", { navParent: "AddPost" });
+              navigation.navigate("TakePic", { navParent: "AddPost", userID });
             }}
           >
             <Icon name="camera-outline" style={styles.actionButtonIcon} />

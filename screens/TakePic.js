@@ -25,10 +25,11 @@ export default function TakePic({ navigation, route }) {
       await setImage(getImg.uri);
       if (image !== null) {
         console.log("image is : ", image);
+        const userID = route.params.userID;
         route.params.navParent === "AddPost"
-          ? navigation.navigate("AddPost", { image: image })
+          ? navigation.navigate("AddPost", { image: image, userID })
           : route.params.navParent === "Profile"
-          ? navigation.navigate("Profile", { image: image })
+          ? navigation.navigate("Profile", { image: image, userID })
           : "Error";
       } else {
         console.log("I am null plz help me! :(");

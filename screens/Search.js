@@ -1,38 +1,39 @@
 import React, { useEffect, useState } from "react";
-import { View, Text, StyleSheet } from "react-native";
-// import SkeletonPlaceholder from "react-native-skeleton-placeholder";
-import { LinearGradient } from "expo-linear-gradient";
-import { Animated } from "react-native";
+import {
+  View,
+  TextInput,
+  Text,
+  StyleSheet,
+  Dimensions,
+  Image,
+} from "react-native";
 
 const Search = () => {
-  const gradient_Coordinate = new Animated.Value(0);
+  const [searchValue, setSearchValue] = useState(null);
 
-  Animated.timing(gradient_Coordinate, {
-    toValue: 1,
-    duration: 500,
-    useNativeDriver: true,
-  }).start();
+  console.log(searchValue);
 
   return (
-    <>
-      <Animated.View
-        style={{
-          width: 500,
-          alignItems: "center",
-        }}
-      >
-        <LinearGradient
-          start={{ x: 0.5, y: 0.7 }}
-          end={{ x: 0, y: 0 }}
-          colors={["white", "silver"]}
-          style={styles.linearGradient}
-        ></LinearGradient>
-      </Animated.View>
-    </>
+    <View style={styles.container}>
+      <View style={styles.SearchBar}>
+        <TextInput
+          placeholder={"Search for users..."}
+          value={searchValue}
+          onChangeText={(e) => setSearchValue(e)}
+          style={{
+            fontSize: 16,
+            marginTop: 12,
+            marginLeft: 45,
+          }}
+        />
+      </View>
+      <Image
+        source={require("../Images/search.png")}
+        style={styles.SearchIcon}
+      />
+    </View>
   );
 };
-
-const AnimatedLinearGradient = Animated.createAnimatedComponent(LinearGradient);
 
 export default Search;
 
@@ -42,16 +43,26 @@ const styles = StyleSheet.create({
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
+    backgroundColor: "#fff",
   },
   Profile: {
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
   },
-  linearGradient: {
-    width: 300,
-    height: 350,
-    marginRight: 90,
-    marginTop: 50,
+  SearchBar: {
+    backgroundColor: "#fafafa",
+    width: Dimensions.get("window").width / 1.2,
+    height: 55,
+    borderRadius: 70,
+    position: "absolute",
+    top: 40,
+  },
+  SearchIcon: {
+    width: 25,
+    height: 25,
+    position: "absolute",
+    top: 54,
+    left: 43,
   },
 });

@@ -9,6 +9,7 @@ import {
   TouchableOpacity,
   TouchableHighlight,
   Alert,
+  ActivityIndicator,
 } from "react-native";
 import ActionSheet from "react-native-actions-sheet";
 import * as ImagePicker from "expo-image-picker";
@@ -20,7 +21,7 @@ const Push_User_Data_To_RealTime_DB = (profilePicPath, userID) => {
   console.warn("User ID is : ", userID);
   firebase
     .database()
-    .ref(`User/${userID}/`)
+    .ref(`User/${userID}/ProfilePicture`)
     .update({
       profilePicPath,
     })
@@ -36,7 +37,15 @@ const Profile = ({ userName, userID, navigation, route }) => {
   const [posts, SetPosts] = useState(0);
   const [response, setResponse] = useState([]);
   const [profilePic, setProfilePicGallery] = useState(null);
+  const [myProfilePic, setMyProfilePic] = useState(null);
+  const [profilePicLoading, setProfilePicLoading] = useState(false);
   let actionSheet;
+
+  if (userID == undefined) {
+    userID = route.params.userID;
+  }
+
+  console.log(`MY Profile ID IS  THIS : ${userID}`);
 
   const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
@@ -59,7 +68,25 @@ const Profile = ({ userName, userID, navigation, route }) => {
     }
   };
 
+  const getProfilePicture = () => {
+    const url = `https://ampplex-backened.herokuapp.com/getProfilePicture/${userID}`;
+    fetch(url)
+      .then((response) => {
+        return response.json();
+      })
+      .then((data) => {
+        setMyProfilePic(data.profilePic);
+      })
+      .catch((err) => {
+        console.log("");
+      });
+  };
+
+  getProfilePicture();
+  console.log(myProfilePic);
+
   const SetImage = async (URI) => {
+    setProfilePicLoading(true);
     try {
       let filename = "profilePicture";
       const response = await fetch(URI);
@@ -100,19 +127,14 @@ const Profile = ({ userName, userID, navigation, route }) => {
             console.log("File available at", downloadURL);
             Push_User_Data_To_RealTime_DB(downloadURL, userID);
           });
-          Alert.alert("Post status", "Image Uploaded!");
+          Alert.alert("Post status", "profile picture successfully updated!");
+          setProfilePicLoading(false);
         }
       );
     } catch (e) {
       console.log("");
     }
   };
-
-  try {
-    SetImage(route.params.image);
-  } catch (e) {
-    console.log("Picture from cam is not selected");
-  }
 
   const getPost = () => {
     const url = `https://ampplex-backened.herokuapp.com/Count_Posts/${userID}`;
@@ -172,11 +194,24 @@ const Profile = ({ userName, userID, navigation, route }) => {
             style={styles.Profile_Picture}
             source={{
               uri:
-                profilePic === null
-                  ? "https://source.unsplash.com/random/200x200?sig=incrementingIdentifier"
-                  : profilePic,
+                myProfilePic != null
+                  ? myProfilePic
+                  : "https://images.unsplash.com/photo-1514923995763-768e52f5af87?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80",
             }}
           />
+          {profilePicLoading === true ? (
+            <View
+              style={{
+                marginLeft: 50,
+                position: "absolute",
+                top: 100,
+              }}
+            >
+              <ActivityIndicator size="large" color="black" />
+            </View>
+          ) : (
+            <View />
+          )}
         </TouchableOpacity>
 
         <View>
@@ -233,7 +268,7 @@ const Profile = ({ userName, userID, navigation, route }) => {
                 <Image
                   style={styles.profilePicture}
                   source={{
-                    uri: "https://source.unsplash.com/random/200x200?sig=incrementingIdentifier",
+                    uri: myProfilePic,
                   }}
                 />
               </View>
@@ -275,9 +310,15 @@ const Profile = ({ userName, userID, navigation, route }) => {
           </Text>
           {/* Take Picture from camera */}
           <TouchableOpacity
-            onPress={() =>
-              navigation.navigate("TakePic", { navParent: "Profile" })
-            }
+            onPress={() => {
+              navigation.navigate("TakePic", { navParent: "Profile", userID });
+
+              try {
+                SetImage(route.params.image);
+              } catch (e) {
+                console.log("Picture from cam is not selected");
+              }
+            }}
           >
             <View>
               <Image
