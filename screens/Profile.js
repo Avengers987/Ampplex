@@ -14,6 +14,7 @@ import {
 import ActionSheet from "react-native-actions-sheet";
 import * as ImagePicker from "expo-image-picker";
 import firebase from "firebase";
+import { Video, AVPlaybackStatus } from "expo-av";
 
 const actionSheetRef = createRef();
 
@@ -40,6 +41,8 @@ const Profile = ({ userName, userID, navigation, route }) => {
   const [myProfilePic, setMyProfilePic] = useState(null);
   const [profilePicLoading, setProfilePicLoading] = useState(false);
   let actionSheet;
+  const video = React.useRef(null);
+  const [status, setStatus] = React.useState({});
 
   if (userID == undefined) {
     userID = route.params.userID;
@@ -275,12 +278,28 @@ const Profile = ({ userName, userID, navigation, route }) => {
               <View style={styles.UserNameContainer}>
                 <Text style={styles.UserName}>{element["UserName"]}</Text>
               </View>
-              <Image
-                source={{
-                  uri: element["ImgPath"],
-                }}
-                style={styles.postImg}
-              />
+              {element.Type == "Image" ? (
+                <Image
+                  source={{
+                    uri: element["ImgPath"],
+                  }}
+                  style={styles.postImg}
+                />
+              ) : (
+                <Video
+                  ref={video}
+                  style={styles.video}
+                  source={{
+                    uri: element.ImgPath,
+                  }}
+                  useNativeControls
+                  resizeMode="cover"
+                  isLooping
+                  onMoveShouldSetResponder={() => console.log("Touched!")}
+                  onLoadStart={() => console.log("Loading...")}
+                  onPlaybackStatusUpdate={(status) => setStatus(() => status)}
+                />
+              )}
               <View>
                 <Text
                   style={{
@@ -420,14 +439,14 @@ const styles = StyleSheet.create({
   },
   postImg: {
     width: 350,
-    height: 350,
+    height: 450,
     borderRadius: 20,
     marginTop: 10,
     marginLeft: 20,
   },
   postView: {
     width: 400,
-    height: 460,
+    height: 600,
     backgroundColor: "white",
     alignSelf: "center",
     borderRadius: 30,
@@ -438,5 +457,11 @@ const styles = StyleSheet.create({
     justifyContent: "flex-start",
     alignItems: "center",
     height: 200,
+  },
+  video: {
+    alignSelf: "center",
+    width: 365,
+    height: 490,
+    borderRadius: 15,
   },
 });

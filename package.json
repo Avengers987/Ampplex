@@ -9,6 +9,7 @@
   "dependencies": {
     "@react-native-async-storage/async-storage": "^1.13.0",
     "@react-native-community/async-storage": "^1.12.1",
+    "@react-native-community/hooks": "^2.6.0",
     "@react-native-firebase/app": "^12.4.0",
     "@react-native-firebase/storage": "^12.4.0",
     "@react-native-masked-view/masked-view": "^0.2.6",
@@ -17,6 +18,7 @@
     "@react-navigation/native": "^5.9.6",
     "@react-navigation/stack": "^5.14.7",
     "expo": "^41.0.1",
+    "expo-av": "~9.1.2",
     "expo-camera": "~11.0.2",
     "expo-cli": "^4.11.0",
     "expo-face-detector": "~10.0.1",
@@ -47,6 +49,7 @@
     "react-native-skeleton-placeholder": "^5.0.0",
     "react-native-svg": "12.1.0",
     "react-native-unimodules": "~0.13.3",
+    "react-native-video": "^5.1.1",
     "react-native-web": "^0.17.1",
     "react-native-webview": "^11.13.0"
   },

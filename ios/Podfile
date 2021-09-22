@@ -24,4 +24,6 @@ target 'Ampplex' do
 
   pod 'RNCMaskedView', :path => '../node_modules/@react-native-masked-view/masked-view'
 
+  pod 'react-native-video', :path => '../node_modules/react-native-video'
+
 end

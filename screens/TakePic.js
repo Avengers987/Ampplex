@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import * as FaceDetector from "expo-face-detector";
+import { useDeviceOrientation } from "@react-native-community/hooks";
 
 export default function TakePic({ navigation, route }) {
   const [hasPermission, setHasPermission] = useState(null);

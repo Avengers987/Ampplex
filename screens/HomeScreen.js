@@ -12,9 +12,12 @@ import {
 import { createDrawerNavigator } from "@react-navigation/drawer";
 import Profile from "./Profile";
 import Header from "./Header";
+import { Video, AVPlaybackStatus } from "expo-av";
 
 const HomeScreen = () => {
   let [response, setResponse] = useState([]);
+  const video = React.useRef(null);
+  const [status, setStatus] = React.useState({});
   const getPostInfo = async () => {
     const url = "https://ampplex-backened.herokuapp.com/GetPostJson/";
 
@@ -52,12 +55,28 @@ const HomeScreen = () => {
                 <View style={styles.UserNameContainer}>
                   <Text style={styles.UserName}>{element["UserName"]}</Text>
                 </View>
-                <Image
-                  source={{
-                    uri: element["ImgPath"],
-                  }}
-                  style={styles.postImg}
-                />
+                {element.Type == "Image" ? (
+                  <Image
+                    source={{
+                      uri: element["ImgPath"],
+                    }}
+                    style={styles.postImg}
+                  />
+                ) : (
+                  <Video
+                    ref={video}
+                    style={styles.video}
+                    source={{
+                      uri: element.ImgPath,
+                    }}
+                    useNativeControls
+                    resizeMode="cover"
+                    isLooping
+                    onMoveShouldSetResponder={() => console.log("Touched!")}
+                    onLoadStart={() => console.log("Loading...")}
+                    onPlaybackStatusUpdate={(status) => setStatus(() => status)}
+                  />
+                )}
                 <View>
                   <Text
                     style={{
@@ -75,6 +94,11 @@ const HomeScreen = () => {
             </>
           );
         })}
+        <View
+          style={{
+            height: 55,
+          }}
+        />
       </ScrollView>
     </View>
   );
@@ -123,5 +147,23 @@ const styles = StyleSheet.create({
     borderRadius: 50,
     marginTop: 10,
     marginLeft: 15,
+  },
+  backgroundVideo: {
+    position: "absolute",
+    top: 0,
+    left: 0,
+    bottom: 0,
+    right: 0,
+  },
+  video: {
+    alignSelf: "center",
+    width: 365,
+    height: 490,
+    borderRadius: 15,
+  },
+  buttons: {
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
   },
 });

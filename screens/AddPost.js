@@ -19,7 +19,13 @@ import { showMessage } from "react-native-flash-message";
 import { StatusBar } from "expo-status-bar";
 import firebase from "firebase";
 
-const Push_User_Data_To_RealTime_DB = (imgPath, caption, timestamp, userID) => {
+const Push_User_Data_To_RealTime_DB = (
+  imgPath,
+  caption,
+  timestamp,
+  userID,
+  type
+) => {
   console.warn("User ID is : ", userID);
   firebase
     .database()
@@ -28,6 +34,7 @@ const Push_User_Data_To_RealTime_DB = (imgPath, caption, timestamp, userID) => {
       imgPath,
       caption,
       timestamp,
+      type,
     })
     .then((res) => {
       console.log(`Success: ${res}`);
@@ -57,6 +64,7 @@ export default function AddPost({ navigation, route, userID }) {
   const [uploadStatus, setUploadStatus] = useState("");
   const [error, setError] = useState(false); // if true then user have not attached picture or video or not written caption
   const [clickedPost, setClickedPost] = useState(false);
+  const [mediaType, setMediaType] = useState(null);
 
   if (userID === undefined) {
     userID = route.params.userID;
@@ -92,11 +100,11 @@ export default function AddPost({ navigation, route, userID }) {
   }, []);
 
   const sendPostToCloudServer = async () => {
-    setClickedPost(true);
     console.log("Posting...");
     setPosted(false);
     SetImage();
     if (image !== null) {
+      setClickedPost(true);
       const URI = image;
       let filename = URI.substring(URI.lastIndexOf("/") + 1);
       const response = await fetch(URI);
@@ -145,10 +153,15 @@ export default function AddPost({ navigation, route, userID }) {
                 new Date().toLocaleTimeString() +
                   " | " +
                   new Date().toDateString(),
-                userID
+                userID,
+                mediaType
               );
             });
-            Alert.alert("Post status", "Image Uploaded!");
+            Alert.alert("Post status", "Successfully posted!");
+            showMessage({
+              message: `Success: Successfully posted!`,
+              type: "success",
+            });
             setPosted(true);
             setImage(null);
             setPostTxt(null);
@@ -157,8 +170,8 @@ export default function AddPost({ navigation, route, userID }) {
       } catch (e) {
         console.log(e);
       }
-    } else if ((image === null && postTxt === "") || postTxt === null) {
-      ErrorFlasher("Please type or attach your post");
+    } else if (image === null || postTxt === "" || postTxt === null) {
+      ErrorFlasher("Please type caption or attach media to your post");
       setError(true);
     } else {
       console.log(postTxt);
@@ -171,7 +184,7 @@ export default function AddPost({ navigation, route, userID }) {
         mediaTypes: ImagePicker.MediaTypeOptions.All,
 
         allowsEditing: true,
-        aspect: [5, 4],
+        aspect: [8, 8],
         quality: 1,
       });
 
@@ -179,6 +192,27 @@ export default function AddPost({ navigation, route, userID }) {
 
       if (!result.cancelled) {
         setImage(result.uri);
+        setMediaType("Image");
+      }
+    };
+
+    const pickVideo = async () => {
+      let result = await ImagePicker.launchImageLibraryAsync({
+        mediaTypes: ImagePicker.MediaTypeOptions.All,
+
+        allowsEditing: true,
+        aspect: [5, 4],
+        quality: 1,
+      });
+
+      console.log(result);
+
+      if (!result.cancelled) {
+        if (result.uri.substring(result.uri.lastIndexOf(".")) != ".mp4") {
+          console.log("Please select a video");
+        }
+        setImage(result.uri);
+        setMediaType("Video");
       }
     };
 
@@ -213,6 +247,15 @@ export default function AddPost({ navigation, route, userID }) {
             title="Choose pictures"
             onPress={() => {
               pickImage();
+            }}
+          >
+            <Icon name="md-images-outline" style={styles.actionButtonIcon} />
+          </ActionButton.Item>
+          <ActionButton.Item
+            buttonColor="#3498db"
+            title="Choose Video"
+            onPress={() => {
+              pickVideo();
             }}
           >
             <Icon name="md-images-outline" style={styles.actionButtonIcon} />
