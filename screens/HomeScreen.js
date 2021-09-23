@@ -8,13 +8,14 @@ import {
   Image,
   TouchableWithoutFeedback,
   ActivityIndicator,
+  TouchableOpacity,
 } from "react-native";
 import { createDrawerNavigator } from "@react-navigation/drawer";
 import Profile from "./Profile";
 import Header from "./Header";
 import { Video, AVPlaybackStatus } from "expo-av";
 
-const HomeScreen = () => {
+const HomeScreen = ({ navigation, userID }) => {
   let [response, setResponse] = useState([]);
   const video = React.useRef(null);
   const [status, setStatus] = React.useState({});
@@ -52,9 +53,23 @@ const HomeScreen = () => {
                     }}
                   />
                 </View>
-                <View style={styles.UserNameContainer}>
+                <TouchableOpacity
+                  style={styles.UserNameContainer}
+                  onPress={() => {
+                    console.log(`User Id of the user is : ${element.UserID}`);
+                    const clickedUserID = element.UserID;
+                    const clickedUserName = element.UserName;
+                    const myUserId = userID;
+                    console.log(userID);
+                    navigation.navigate("UserProfile", {
+                      clickedUserID,
+                      clickedUserName,
+                      myUserId,
+                    });
+                  }}
+                >
                   <Text style={styles.UserName}>{element["UserName"]}</Text>
-                </View>
+                </TouchableOpacity>
                 {element.Type == "Image" ? (
                   <Image
                     source={{
@@ -73,10 +88,10 @@ const HomeScreen = () => {
                     resizeMode="cover"
                     isLooping
                     onMoveShouldSetResponder={() => console.log("Touched!")}
-                    onLoadStart={() => console.log("Loading...")}
                     onPlaybackStatusUpdate={(status) => setStatus(() => status)}
                   />
                 )}
+
                 <View>
                   <Text
                     style={{

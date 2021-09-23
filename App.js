@@ -11,6 +11,7 @@ import Home from "./screens/Home";
 import TakePic from "./screens/TakePic";
 import Category from "./screens/Category";
 import Profile from "./screens/Profile";
+import UserProfile from "./screens/UserProfile";
 
 import * as firebase from "firebase";
 
@@ -109,6 +110,13 @@ export default function App() {
         <Stack.Screen
           name="Profile"
           component={Profile}
+          options={{
+            headerShown: false,
+          }}
+        />
+        <Stack.Screen
+          name="UserProfile"
+          component={UserProfile}
           options={{
             headerShown: false,
           }}

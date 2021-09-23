@@ -182,9 +182,9 @@ export default function AddPost({ navigation, route, userID }) {
     const pickImage = async () => {
       let result = await ImagePicker.launchImageLibraryAsync({
         mediaTypes: ImagePicker.MediaTypeOptions.Images,
-
+        allowsMultipleSelection: false,
         allowsEditing: true,
-        aspect: [8, 8],
+        aspect: [1, 1],
         quality: 1,
       });
 
@@ -199,10 +199,10 @@ export default function AddPost({ navigation, route, userID }) {
     const pickVideo = async () => {
       let result = await ImagePicker.launchImageLibraryAsync({
         mediaTypes: ImagePicker.MediaTypeOptions.Videos,
-
-        allowsEditing: true,
-        aspect: [5, 4],
+        aspect: [1, 1],
         quality: 1,
+        allowsMultipleSelection: false,
+        videoQuality: 7,
       });
 
       console.log(result);
