@@ -181,7 +181,7 @@ export default function AddPost({ navigation, route, userID }) {
   const PostBtn = () => {
     const pickImage = async () => {
       let result = await ImagePicker.launchImageLibraryAsync({
-        mediaTypes: ImagePicker.MediaTypeOptions.All,
+        mediaTypes: ImagePicker.MediaTypeOptions.Images,
 
         allowsEditing: true,
         aspect: [8, 8],
@@ -198,7 +198,7 @@ export default function AddPost({ navigation, route, userID }) {
 
     const pickVideo = async () => {
       let result = await ImagePicker.launchImageLibraryAsync({
-        mediaTypes: ImagePicker.MediaTypeOptions.All,
+        mediaTypes: ImagePicker.MediaTypeOptions.Videos,
 
         allowsEditing: true,
         aspect: [5, 4],
