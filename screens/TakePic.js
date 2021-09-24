@@ -11,6 +11,9 @@ export default function TakePic({ navigation, route }) {
   const [camera, setCamera] = useState(null);
   const [image, setImage] = useState(null);
   const [flashType, setFlashType] = useState(null);
+  let Orientation = useDeviceOrientation().portrait ? "portrait" : "landscape";
+
+  console.log(Orientation);
 
   useEffect(() => {
     (async () => {
@@ -23,7 +26,7 @@ export default function TakePic({ navigation, route }) {
     if (camera) {
       console.log("Taking Picture...");
       const getImg = await camera.takePictureAsync();
-      await setImage(getImg.uri);
+      setImage(getImg.uri);
       if (image !== null) {
         console.log("image is : ", image);
         const userID = route.params.userID;
@@ -50,7 +53,10 @@ export default function TakePic({ navigation, route }) {
   return (
     <View style={styles.CameraStyle}>
       <Camera
-        style={styles.FixedAspectRatio}
+        style={{
+          flex: 1,
+          aspectRatio: Orientation == "portrait" ? 0.7 : 2.0,
+        }}
         onFacesDetected={() => {
           console.log("Face Detected!");
         }}
@@ -117,15 +123,11 @@ export default function TakePic({ navigation, route }) {
   );
 }
 const styles = StyleSheet.create({
-  container: {
-    // Add Style if needed
-  },
   CameraStyle: {
     flex: 1,
-  },
-  FixedAspectRatio: {
-    flex: 1,
-    aspectRatio: 0.7,
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
   },
   FlipBtnStyle: {
     alignSelf: "center",
@@ -140,6 +142,7 @@ const styles = StyleSheet.create({
     position: "absolute",
     bottom: 25,
     marginLeft: 156,
+    alignSelf: "center",
   },
   FlashStyle: {
     position: "absolute",

@@ -11,6 +11,9 @@
     "description": "",
     "android": {
       "package": "com.ankeshkumar.Ampplex"
+    },
+    "ios": {
+      "bundleIdentifier": "com.ankeshkumar.Ampplex"
     }
   }
 }

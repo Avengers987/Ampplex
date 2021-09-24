@@ -43,6 +43,7 @@ const Profile = ({ route }) => {
   const [follower, setFollower] = useState(0);
   const video = React.useRef(null);
   const [status, setStatus] = React.useState({});
+  const [alreadyFollowed, setAlreadyFollowed] = useState(null);
   const userID = route.params.clickedUserID;
   const userName = route.params.clickedUserName;
   const myUserId = route.params.myUserId;
@@ -69,8 +70,38 @@ const Profile = ({ route }) => {
 
   getFollowers();
 
+  const Check_Followed = () => {
+    const url = `http://ampplex-backened.herokuapp.com/Check_Followed/${userID}/MyID/${myUserId}`;
+    console.log(url, "See me!");
+    fetch(url)
+      .then((response) => {
+        return response.json();
+      })
+      .then((data) => {
+        if (data.status === "success" && data.Already_Followed == "true") {
+          console.log("Already followed!");
+          setAlreadyFollowed(true);
+        } else if (
+          data.status === "success" &&
+          data.Already_Followed == "false"
+        ) {
+          setAlreadyFollowed(false);
+          console.log("Following for the first time!");
+        }
+      })
+      .catch((e) => {
+        console.log("");
+      });
+  };
+
+  if (userID != myUserId) {
+    Check_Followed();
+  }
+
+  console.log(alreadyFollowed);
+
   const IncreaseFollower = () => {
-    const url = `http://ampplex-backened.herokuapp.com/Increament_Followers/${userID}/`;
+    const url = `http://ampplex-backened.herokuapp.com/Increament_Followers/${userID}/MyID/${myUserId}`;
     console.log(url, "See me!");
     fetch(url)
       .then((response) => {
@@ -185,25 +216,50 @@ const Profile = ({ route }) => {
             Followers
           </Text>
         </View>
-
-        <TouchableOpacity
-          style={styles.FollowBtn}
-          onPress={() => {
-            IncreaseFollower();
-            setFollower(follower + 1);
-          }}
-        >
-          <Text
-            style={{
-              fontSize: 17,
-              fontWeight: "bold",
-              color: "white",
-              alignSelf: "center",
+        {alreadyFollowed == true ? (
+          <TouchableOpacity
+            style={styles.FollowBtn}
+            onPress={() => {
+              if (follower < 0) {
+                setFollower(0);
+              } else {
+                setFollower(follower - 1);
+              }
             }}
           >
-            Follow
-          </Text>
-        </TouchableOpacity>
+            <Text
+              style={{
+                fontSize: 17,
+                fontWeight: "bold",
+                color: "white",
+                alignSelf: "center",
+              }}
+            >
+              Unfollow
+            </Text>
+          </TouchableOpacity>
+        ) : alreadyFollowed == false ? (
+          <TouchableOpacity
+            style={styles.FollowBtn}
+            onPress={() => {
+              IncreaseFollower();
+              setFollower(follower - 1);
+            }}
+          >
+            <Text
+              style={{
+                fontSize: 17,
+                fontWeight: "bold",
+                color: "white",
+                alignSelf: "center",
+              }}
+            >
+              Follow
+            </Text>
+          </TouchableOpacity>
+        ) : (
+          <View />
+        )}
 
         <View>
           <Text
