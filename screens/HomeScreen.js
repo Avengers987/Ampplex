@@ -154,14 +154,29 @@ const HomeScreen = ({ navigation, userID }) => {
                       color={liked ? "red" : "black"}
                     />
                   </TouchableOpacity>
+                  <Text
+                    style={{
+                      position: "absolute",
+                      top: -117,
+                      left: 20,
+                    }}
+                  >
+                    0 likes
+                  </Text>
                   <TouchableOpacity
                     style={{
                       marginLeft: 90,
-                      marginTop: -30,
+                      marginTop: -33,
                     }}
                     onPress={() => console.log("Comment button pressed!")}
                   >
-                    <Image source={require("../Images/comment-icon.png")} />
+                    <Image
+                      style={{
+                        width: 32,
+                        height: 32,
+                      }}
+                      source={require("../Images/comment-icon.png")}
+                    />
                   </TouchableOpacity>
                   <View>
                     <Text
@@ -170,7 +185,7 @@ const HomeScreen = ({ navigation, userID }) => {
                         fontWeight: "600",
                         alignSelf: "flex-start",
                         marginLeft: 20,
-                        marginTop: 10,
+                        marginTop: 35,
                       }}
                     >
                       {element["Caption"]}
