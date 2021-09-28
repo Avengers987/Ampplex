@@ -45,7 +45,9 @@ const Home = ({ navigation, route }) => {
         />
         <Tab.Screen
           name="Search"
-          component={Search}
+          children={() => (
+            <Search navigation={navigation} userID={route.params.userID} />
+          )}
           options={{
             tabBarLabel: "Search",
             tabBarIcon: ({ color, size }) => (

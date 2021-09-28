@@ -130,9 +130,11 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   FlipBtnStyle: {
+    position: "absolute",
     alignSelf: "center",
-    marginRight: 50,
-    marginTop: 50,
+    top: 50,
+    alignItems: "center",
+    right: 330,
   },
   takePicBtn: {
     width: 65,
@@ -141,12 +143,11 @@ const styles = StyleSheet.create({
     borderRadius: 100,
     position: "absolute",
     bottom: 25,
-    marginLeft: 156,
     alignSelf: "center",
   },
   FlashStyle: {
     position: "absolute",
     top: 55,
-    marginLeft: 80,
+    right: 170,
   },
 });

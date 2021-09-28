@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import {
   View,
   TextInput,
@@ -6,20 +6,54 @@ import {
   StyleSheet,
   Dimensions,
   Image,
+  TouchableOpacity,
+  ActivityIndicator,
 } from "react-native";
 
-const Search = () => {
-  const [searchValue, setSearchValue] = useState(null);
+const searchForUser = (searchValue, UserName) => {
+  console.log(
+    searchValue === UserName.substring(0, searchValue.length),
+    " : ",
+    UserName.substring(0, searchValue.length)
+  );
 
-  console.log(searchValue);
+  if (
+    searchValue !== "" &&
+    searchValue === UserName.substring(0, searchValue.length)
+  ) {
+    console.log(searchValue === UserName.substring(0, searchValue.length));
+    return true;
+  }
+  return false;
+};
+
+const Search = ({ navigation, userID }) => {
+  const [searchValue, setSearchValue] = useState(null);
+  const [response, setResponse] = useState(null);
+  const [showUsers, setShowUsers] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  const getUserName = () => {
+    const url = `http://ampplex-backened.herokuapp.com/GetUserNames/`;
+
+    fetch(url)
+      .then((response) => {
+        return response.json();
+      })
+      .then((data) => {
+        setResponse(data);
+        setLoading(false);
+      });
+  };
+
+  getUserName();
 
   return (
     <View style={styles.container}>
       <View style={styles.SearchBar}>
         <TextInput
           placeholder={"Search for users..."}
-          value={searchValue}
-          onChangeText={(e) => setSearchValue(e)}
+          onChangeText={(e) => setSearchValue(e.trim())}
           style={{
             fontSize: 16,
             marginTop: 12,
@@ -31,6 +65,68 @@ const Search = () => {
         source={require("../Images/search.png")}
         style={styles.SearchIcon}
       />
+
+      {loading ? (
+        <View
+          style={{
+            alignSelf: "center",
+            marginTop: 20,
+          }}
+        >
+          <ActivityIndicator size="large" color="skyblue" />
+        </View>
+      ) : (
+        <View />
+      )}
+
+      {response != null && searchValue != null ? (
+        response.map((value) => {
+          let clickedUserID = value.userID;
+          let clickedUserName = value.UserName;
+          let myUserId = userID;
+
+          if (
+            searchForUser(
+              searchValue.toLowerCase(),
+              value.UserName.toLowerCase()
+            )
+          ) {
+            return (
+              <TouchableOpacity
+                style={styles.UserView}
+                onPress={() =>
+                  navigation.navigate("UserProfile", {
+                    clickedUserID,
+                    clickedUserName, // Check if follow feature is working or not
+                    myUserId,
+                  })
+                }
+              >
+                <Text
+                  style={{
+                    fontSize: 15,
+                    fontWeight: "700",
+                    alignSelf: "center",
+                  }}
+                >
+                  {value.UserName}
+                </Text>
+                <Image
+                  source={{
+                    uri:
+                      value.ProfilePicPath === null
+                        ? "https://images.unsplash.com/photo-1514923995763-768e52f5af87?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80"
+                        : value.ProfilePicPath,
+                  }}
+                  style={styles.ProfilePicture}
+                />
+              </TouchableOpacity>
+            );
+          }
+        })
+      ) : (
+        <View />
+      )}
     </View>
   );
 };
@@ -64,5 +160,23 @@ const styles = StyleSheet.create({
     position: "absolute",
     top: 54,
     left: 43,
+  },
+  UserView: {
+    width: 300,
+    height: 80,
+    backgroundColor: "#FAFAFA",
+    borderRadius: 20,
+    position: "absolute",
+    alignSelf: "center",
+    position: "absolute",
+    top: 150,
+  },
+  ProfilePicture: {
+    width: 65,
+    height: 65,
+    borderRadius: 60,
+    position: "absolute",
+    top: 5,
+    left: 10,
   },
 });

@@ -8,7 +8,6 @@
   },
   "dependencies": {
     "@react-native-async-storage/async-storage": "^1.13.0",
-    "@react-native-community/async-storage": "^1.12.1",
     "@react-native-community/hooks": "^2.6.0",
     "@react-native-firebase/app": "^12.4.0",
     "@react-native-firebase/storage": "^12.4.0",
@@ -24,6 +23,7 @@
     "expo-face-detector": "~10.0.1",
     "expo-image-picker": "~10.1.4",
     "expo-linear-gradient": "^9.2.0",
+    "expo-sms": "~9.1.2",
     "expo-splash-screen": "^0.10.3",
     "expo-status-bar": "~1.0.4",
     "expo-updates": "~0.5.4",
@@ -52,7 +52,7 @@
     "react-native-video": "^5.1.1",
     "react-native-web": "^0.17.1",
     "react-native-webview": "^11.13.0",
-    "expo-sms": "~9.1.2"
+    "undefined": "react-native-masked-view\\masked-view"
   },
   "devDependencies": {
     "@babel/core": "^7.15.0"

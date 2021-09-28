@@ -7,43 +7,22 @@ import {
   Dimensions,
   ScrollView,
   TouchableOpacity,
-  TouchableHighlight,
   Alert,
   ActivityIndicator,
 } from "react-native";
-import ActionSheet from "react-native-actions-sheet";
-import * as ImagePicker from "expo-image-picker";
-import firebase from "firebase";
-import { Video, AVPlaybackStatus } from "expo-av";
+import { Video } from "expo-av";
 
-const actionSheetRef = createRef();
-
-const Push_User_Data_To_RealTime_DB = (profilePicPath, userID) => {
-  console.warn("User ID is : ", userID);
-  firebase
-    .database()
-    .ref(`User/${userID}/ProfilePicture`)
-    .update({
-      profilePicPath,
-    })
-    .then((res) => {
-      console.log(`Success: ${res}`);
-    })
-    .catch((error) => {
-      console.log(`Error: ${error}`);
-    });
-};
-
-const Profile = ({ route }) => {
+const Profile = ({ navigation, route }) => {
   const [posts, SetPosts] = useState(0);
   const [response, setResponse] = useState([]);
-  const [profilePic, setProfilePicGallery] = useState(null);
   const [myProfilePic, setMyProfilePic] = useState(null);
-  const [profilePicLoading, setProfilePicLoading] = useState(false);
+  const [profilePicLoading, setProfilePicLoading] = useState(true);
   const [follower, setFollower] = useState(0);
   const video = React.useRef(null);
   const [status, setStatus] = React.useState({});
   const [alreadyFollowed, setAlreadyFollowed] = useState(null);
+  const [loading, setLoading] = useState(true);
+
   const userID = route.params.clickedUserID;
   const userName = route.params.clickedUserName;
   const myUserId = route.params.myUserId;
@@ -51,10 +30,10 @@ const Profile = ({ route }) => {
   console.log(`My personal USER ID is : ${myUserId}`);
   console.log(`MY Profile ID IS  THIS : ${userID}`);
 
-  const getFollowers = () => {
+  const getFollowers = async () => {
     const url = `http://ampplex-backened.herokuapp.com/GetFollower/${userID}/`;
     console.log(url, "See me!");
-    fetch(url)
+    await fetch(url)
       .then((response) => {
         return response.json();
       })
@@ -70,10 +49,10 @@ const Profile = ({ route }) => {
 
   getFollowers();
 
-  const Check_Followed = () => {
+  const Check_Followed = async () => {
     const url = `http://ampplex-backened.herokuapp.com/Check_Followed/${userID}/MyID/${myUserId}`;
     console.log(url, "See me!");
-    fetch(url)
+    await fetch(url)
       .then((response) => {
         return response.json();
       })
@@ -125,6 +104,7 @@ const Profile = ({ route }) => {
       })
       .then((data) => {
         setMyProfilePic(data.profilePic);
+        setProfilePicLoading(false);
       })
       .catch((err) => {
         console.log("");
@@ -134,10 +114,10 @@ const Profile = ({ route }) => {
   getProfilePicture();
   console.log(myProfilePic);
 
-  const getPost = () => {
+  const getPost = async () => {
     const url = `https://ampplex-backened.herokuapp.com/Count_Posts/${userID}`;
 
-    fetch(url)
+    await fetch(url)
       .then((response) => {
         return response.json();
       })
@@ -152,12 +132,13 @@ const Profile = ({ route }) => {
   const getMyPosts = async () => {
     const url = `https://ampplex-backened.herokuapp.com/getMyPosts/${userID}`;
 
-    fetch(url)
+    await fetch(url)
       .then((response) => {
         return response.json();
       })
       .then((data) => {
         setResponse(data);
+        setLoading(false);
       })
       .catch((e) => {
         console.log("");
@@ -187,6 +168,19 @@ const Profile = ({ route }) => {
                   : "https://images.unsplash.com/photo-1514923995763-768e52f5af87?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80",
             }}
           />
+          {profilePicLoading === true ? (
+            <View
+              style={{
+                marginLeft: 50,
+                position: "absolute",
+                top: 100,
+              }}
+            >
+              <ActivityIndicator size="large" color="black" />
+            </View>
+          ) : (
+            <View />
+          )}
         </View>
 
         <View>
@@ -280,59 +274,70 @@ const Profile = ({ route }) => {
           marginTop: 10,
         }}
       >
-        {response.map((element) => {
-          return (
-            <View style={styles.postView}>
-              <View>
-                {/*Profile Picture*/}
-                <Image
-                  style={styles.profilePicture}
-                  source={{
-                    uri: myProfilePic,
-                  }}
-                />
+        {loading ? (
+          <View
+            style={{
+              alignSelf: "center",
+              marginTop: 20,
+            }}
+          >
+            <ActivityIndicator size="large" color="skyblue" />
+          </View>
+        ) : (
+          response.map((element) => {
+            return (
+              <View style={styles.postView}>
+                <View>
+                  {/*Profile Picture*/}
+                  <Image
+                    style={styles.profilePicture}
+                    source={{
+                      uri: myProfilePic,
+                    }}
+                  />
+                </View>
+                <View style={styles.UserNameContainer}>
+                  <Text style={styles.UserName}>{element["UserName"]}</Text>
+                </View>
+                {element.Type == "Image" ? (
+                  <Image
+                    source={{
+                      uri: element["ImgPath"],
+                    }}
+                    style={styles.postImg}
+                  />
+                ) : (
+                  <Video
+                    ref={video}
+                    style={styles.video}
+                    source={{
+                      uri: element.ImgPath,
+                    }}
+                    useNativeControls
+                    resizeMode="cover"
+                    isLooping
+                    onMoveShouldSetResponder={() => console.log("Touched!")}
+                    onLoadStart={() => console.log("Loading...")}
+                    onPlaybackStatusUpdate={(status) => setStatus(() => status)}
+                  />
+                )}
+                <View>
+                  <Text
+                    style={{
+                      fontSize: 15,
+                      fontWeight: "600",
+                      alignSelf: "flex-start",
+                      marginLeft: 20,
+                      marginTop: 10,
+                    }}
+                  >
+                    {element["Caption"]}
+                  </Text>
+                </View>
               </View>
-              <View style={styles.UserNameContainer}>
-                <Text style={styles.UserName}>{element["UserName"]}</Text>
-              </View>
-              {element.Type == "Image" ? (
-                <Image
-                  source={{
-                    uri: element["ImgPath"],
-                  }}
-                  style={styles.postImg}
-                />
-              ) : (
-                <Video
-                  ref={video}
-                  style={styles.video}
-                  source={{
-                    uri: element.ImgPath,
-                  }}
-                  useNativeControls
-                  resizeMode="cover"
-                  isLooping
-                  onMoveShouldSetResponder={() => console.log("Touched!")}
-                  onLoadStart={() => console.log("Loading...")}
-                  onPlaybackStatusUpdate={(status) => setStatus(() => status)}
-                />
-              )}
-              <View>
-                <Text
-                  style={{
-                    fontSize: 15,
-                    fontWeight: "600",
-                    alignSelf: "flex-start",
-                    marginLeft: 20,
-                    marginTop: 10,
-                  }}
-                >
-                  {element["Caption"]}
-                </Text>
-              </View>
-            </View>
-          );
-        })}
+            );
+          })
+        )}
       </ScrollView>
     </>
   );

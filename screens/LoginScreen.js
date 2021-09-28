@@ -19,6 +19,7 @@ const ErrorFlasher = (msg) => {
 
 export default function LoginScreen(props) {
   getData();
+
   const storeData = async (value) => {
     // value take boolean type value
     try {
@@ -61,7 +62,7 @@ export default function LoginScreen(props) {
       }, 1000);
       setTimeout(() => {
         storeData("true");
-        props.navigation.replace("Category");
+        props.navigation.replace("Category", { userId });
         setEmail("");
         setPassword("");
       }, 1100);
@@ -92,6 +93,9 @@ export default function LoginScreen(props) {
         setLoginResponse(data.status);
         setUserName(data.UserName);
         setUserId(data.user_id);
+      })
+      .catch((error) => {
+        console.log(error);
       });
   };
 

@@ -43,6 +43,7 @@ const Profile = ({ userName, userID, navigation, route }) => {
   const video = React.useRef(null);
   const [status, setStatus] = React.useState({});
   const [follower, setFollower] = useState(0);
+  const [loading, setLoading] = useState(true);
 
   if (userID == undefined) {
     userID = route.params.userID;
@@ -53,7 +54,7 @@ const Profile = ({ userName, userID, navigation, route }) => {
   const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
-
+      allowsMultipleSelection: false,
       allowsEditing: true,
       aspect: [1, 1],
       quality: 1,
@@ -63,11 +64,7 @@ const Profile = ({ userName, userID, navigation, route }) => {
 
     if (!result.cancelled) {
       setProfilePicGallery(result.uri);
-    }
-    try {
-      SetImage(profilePic);
-    } catch (e) {
-      console.log("Picture from gallery is not selected");
+      await SetImage(profilePic);
     }
   };
 
@@ -89,7 +86,6 @@ const Profile = ({ userName, userID, navigation, route }) => {
   console.log(myProfilePic);
 
   const SetImage = async (URI) => {
-    setProfilePicLoading(true);
     try {
       let filename = "profilePicture";
       const response = await fetch(URI);
@@ -105,6 +101,7 @@ const Profile = ({ userName, userID, navigation, route }) => {
       task.on(
         "state_changed",
         (snapshot) => {
+          setProfilePicLoading(true);
           // Observe state change events such as progress, pause, and resume
           // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
           var progress =
@@ -130,7 +127,7 @@ const Profile = ({ userName, userID, navigation, route }) => {
             console.log("File available at", downloadURL);
             Push_User_Data_To_RealTime_DB(downloadURL, userID);
           });
-          Alert.alert("Post status", "profile picture successfully updated!");
+          Alert.alert("Post status", "Profile picture successfully updated!");
           setProfilePicLoading(false);
         }
       );
@@ -162,6 +159,7 @@ const Profile = ({ userName, userID, navigation, route }) => {
       })
       .then((data) => {
         setResponse(data);
+        setLoading(false);
       })
       .catch((e) => {
         console.log("");
@@ -282,59 +280,82 @@ const Profile = ({ userName, userID, navigation, route }) => {
           marginTop: 10,
         }}
       >
-        {response.map((element) => {
-          return (
-            <View style={styles.postView}>
-              <View>
-                {/*Profile Picture*/}
-                <Image
-                  style={styles.profilePicture}
-                  source={{
-                    uri: myProfilePic,
-                  }}
-                />
+        {loading ? (
+          <View
+            style={{
+              alignSelf: "center",
+              marginTop: 20,
+            }}
+          >
+            <ActivityIndicator size="large" color="skyblue" />
+          </View>
+        ) : (
+          response.map((element) => {
+            return (
+              <View style={styles.postView}>
+                <View>
+                  {/*Profile Picture*/}
+                  <Image
+                    style={styles.profilePicture}
+                    source={{
+                      uri: myProfilePic,
+                    }}
+                  />
+                </View>
+                <View style={styles.UserNameContainer}>
+                  <Text
+                    style={{
+                      fontSize: 19,
+                      fontWeight: "bold",
+                    }}
+                  >
+                    {userName}
+                  </Text>
+                </View>
+                {element.Type == "Image" ? (
+                  <Image
+                    source={{
+                      uri: element["ImgPath"],
+                    }}
+                    style={styles.postImg}
+                  />
+                ) : (
+                  <Video
+                    ref={video}
+                    style={styles.video}
+                    source={{
+                      uri: element.ImgPath,
+                    }}
+                    useNativeControls
+                    resizeMode="cover"
+                    isLooping
+                    onMoveShouldSetResponder={() => console.log("Touched!")}
+                    onLoadStart={() => console.log("Loading...")}
+                    onPlaybackStatusUpdate={(status) => setStatus(() => status)}
+                  />
+                )}
+                <View>
+                  <Text
+                    style={{
+                      fontSize: 15,
+                      fontWeight: "600",
+                      alignSelf: "flex-start",
+                      marginLeft: 20,
+                      marginTop: 10,
+                    }}
+                  >
+                    {element["Caption"]}
+                  </Text>
+                </View>
               </View>
-              <View style={styles.UserNameContainer}>
-                <Text style={styles.UserName}>{element["UserName"]}</Text>
-              </View>
-              {element.Type == "Image" ? (
-                <Image
-                  source={{
-                    uri: element["ImgPath"],
-                  }}
-                  style={styles.postImg}
-                />
-              ) : (
-                <Video
-                  ref={video}
-                  style={styles.video}
-                  source={{
-                    uri: element.ImgPath,
-                  }}
-                  useNativeControls
-                  resizeMode="cover"
-                  isLooping
-                  onMoveShouldSetResponder={() => console.log("Touched!")}
-                  onLoadStart={() => console.log("Loading...")}
-                  onPlaybackStatusUpdate={(status) => setStatus(() => status)}
-                />
-              )}
-              <View>
-                <Text
-                  style={{
-                    fontSize: 15,
-                    fontWeight: "600",
-                    alignSelf: "flex-start",
-                    marginLeft: 20,
-                    marginTop: 10,
-                  }}
-                >
-                  {element["Caption"]}
-                </Text>
-              </View>
-            </View>
-          );
-        })}
+            );
+          })
+        )}
+        <View
+          style={{
+            height: 55,
+          }}
+        />
       </ScrollView>
       <ActionSheet ref={actionSheetRef} bounceOnOpen={true}>
         <View style={styles.ActionSheetStyle}>
@@ -482,5 +503,17 @@ const styles = StyleSheet.create({
     width: 365,
     height: 490,
     borderRadius: 15,
+  },
+  profilePicture: {
+    width: 43,
+    height: 43,
+    borderRadius: 50,
+    marginTop: 10,
+    marginLeft: 15,
+  },
+  UserNameContainer: {
+    marginLeft: 80,
+    position: "absolute",
+    top: 20,
   },
 });

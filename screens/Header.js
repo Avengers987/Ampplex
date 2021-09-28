@@ -18,7 +18,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     height: 70,
     width: Dimensions.get("window").width,
-    backgroundColor: "white",
+    backgroundColor: "#fff",
   },
   HeaderTitle: {
     fontSize: 25,

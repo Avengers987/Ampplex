@@ -26,7 +26,8 @@ const Push_User_Data_To_RealTime_DB = (
   userID,
   type
 ) => {
-  console.warn("User ID is : ", userID);
+  const Likes = 0; // Initial likes are 0
+
   firebase
     .database()
     .ref(`User/${userID}/Post/`)
@@ -35,6 +36,7 @@ const Push_User_Data_To_RealTime_DB = (
       caption,
       timestamp,
       type,
+      Likes,
     })
     .then((res) => {
       console.log(`Success: ${res}`);
@@ -65,6 +67,7 @@ export default function AddPost({ navigation, route, userID }) {
   const [error, setError] = useState(false); // if true then user have not attached picture or video or not written caption
   const [clickedPost, setClickedPost] = useState(false);
   const [mediaType, setMediaType] = useState(null);
+  const [autoFocus, setAutoFocus] = useState(true);
 
   if (userID === undefined) {
     userID = route.params.userID;
@@ -128,7 +131,8 @@ export default function AddPost({ navigation, route, userID }) {
             var progress =
               (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
             console.log("Upload is " + progress + "% done");
-            setUploadStatus(progress);
+            setUploadStatus(progress.toFixed(2) + "%");
+            setAutoFocus(false);
             switch (snapshot.state) {
               case firebase.storage.TaskState.PAUSED: // or 'paused'
                 console.log("Upload is paused");
@@ -157,14 +161,12 @@ export default function AddPost({ navigation, route, userID }) {
                 mediaType
               );
             });
+
             Alert.alert("Post status", "Successfully posted!");
-            showMessage({
-              message: `Success: Successfully posted!`,
-              type: "success",
-            });
             setPosted(true);
             setImage(null);
             setPostTxt(null);
+            setAutoFocus(true);
           }
         );
       } catch (e) {
@@ -223,9 +225,8 @@ export default function AddPost({ navigation, route, userID }) {
           <TextInput
             style={styles.PostInputStyle}
             placeholder="What's on your mind?"
-            type="email"
             value={postTxt}
-            autoFocus={true}
+            autoFocus={autoFocus}
             onChangeText={(e) => {
               setPostTxt(e);
             }}
