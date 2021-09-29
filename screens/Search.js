@@ -9,6 +9,7 @@ import {
   TouchableOpacity,
   ActivityIndicator,
 } from "react-native";
+import LottieView from "lottie-react-native";
 
 const searchForUser = (searchValue, UserName) => {
   console.log(
@@ -73,7 +74,12 @@ const Search = ({ navigation, userID }) => {
             marginTop: 20,
           }}
         >
-          <ActivityIndicator size="large" color="skyblue" />
+          <LottieView
+            style={styles.LoadingIndicator}
+            source={require("../assets/lottie/loading.json")}
+            autoPlay
+            loop={true}
+          />
         </View>
       ) : (
         <View />
@@ -178,5 +184,11 @@ const styles = StyleSheet.create({
     position: "absolute",
     top: 5,
     left: 10,
+  },
+  LoadingIndicator: {
+    width: 120,
+    height: 120,
+    marginTop: -10,
+    alignItems: "center",
   },
 });

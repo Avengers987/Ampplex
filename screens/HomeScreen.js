@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import {
   View,
   Text,
@@ -15,6 +15,9 @@ import Profile from "./Profile";
 import Header from "./Header";
 import { Video, AVPlaybackStatus } from "expo-av";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
+import LottieView from "lottie-react-native";
+import Like from "../components/Like";
+import NetInfo from "@react-native-community/netinfo";
 
 const wait = (timeout) => {
   return new Promise((resolve) => setTimeout(resolve, timeout));
@@ -28,8 +31,21 @@ const HomeScreen = ({ navigation, userID }) => {
   const [loading, setLoading] = useState(true);
   const [liked, setLiked] = useState(false);
   const DOUBLE_PRESS_DELAY = 300;
-  const [lastTap, setLastTap] = useState(null);
 
+  const handledDoubleTap = () => {
+    if (lastTap && Date.now() - lastTap < DOUBLE_PRESS_DELAY) {
+      liked ? setLiked(false) : setLiked(true);
+    } else {
+      setLastTap(Date.now());
+    }
+  };
+  const ConnectedToInternet = () => {
+    let connected = null;
+    NetInfo.addEventListener((networkState) => {
+      connected = networkState.isConnected;
+    });
+    return connected;
+  };
   const getPostInfo = async () => {
     const url = "https://ampplex-backened.herokuapp.com/GetPostJson/";
 
@@ -44,14 +60,6 @@ const HomeScreen = ({ navigation, userID }) => {
       .catch((error) => {
         console.log(error);
       });
-  };
-
-  const handledDoubleTap = (event) => {
-    if (lastTap && Date.now() - lastTap < DOUBLE_PRESS_DELAY) {
-      liked ? setLiked(false) : setLiked(true);
-    } else {
-      setLastTap(Date.now());
-    }
   };
 
   const onRefresh = React.useCallback(() => {
@@ -70,14 +78,44 @@ const HomeScreen = ({ navigation, userID }) => {
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
         }
       >
-        {loading ? (
+        {ConnectedToInternet() == false ? (
+          <>
+            <Text
+              style={{
+                fontSize: 22,
+                fontWeight: "bold",
+                marginTop: 30,
+              }}
+            >
+              Not connected to internet !
+            </Text>
+            <View
+              style={{
+                alignSelf: "center",
+                marginTop: Dimensions.get("window").height / 2.5,
+              }}
+            >
+              <LottieView
+                style={styles.notConnectedToInternet}
+                source={require("../assets/lottie/no-internet.json")}
+                autoPlay
+                loop={true}
+              />
+            </View>
+          </>
+        ) : loading ? (
           <View
             style={{
               alignSelf: "center",
               marginTop: Dimensions.get("window").height / 2.5,
             }}
           >
-            <ActivityIndicator size="large" color="skyblue" />
+            <LottieView
+              style={styles.LoadingIndicator}
+              source={require("../assets/lottie/loading.json")}
+              autoPlay
+              loop={true}
+            />
           </View>
         ) : (
           response.map((element) => {
@@ -114,9 +152,7 @@ const HomeScreen = ({ navigation, userID }) => {
                     <Text style={styles.UserName}>{element["UserName"]}</Text>
                   </TouchableOpacity>
                   {element.Type == "Image" ? (
-                    <TouchableWithoutFeedback
-                      onPress={() => handledDoubleTap()}
-                    >
+                    <TouchableWithoutFeedback>
                       <Image
                         importantForAccessibility={"yes"}
                         source={{
@@ -141,40 +177,16 @@ const HomeScreen = ({ navigation, userID }) => {
                       }
                     />
                   )}
-
-                  <TouchableOpacity
-                    onPress={() => setLiked((isLiked) => !isLiked)}
-                  >
-                    <MaterialCommunityIcons
-                      name={liked ? "heart" : "heart-outline"}
-                      size={32}
-                      style={{
-                        marginLeft: 20,
-                      }}
-                      color={liked ? "red" : "black"}
-                    />
-                  </TouchableOpacity>
-                  <Text
-                    style={{
-                      position: "absolute",
-                      top: -117,
-                      left: 20,
-                    }}
-                  >
-                    0 likes
-                  </Text>
+                  <Like postID={element.Post_ID} />
                   <TouchableOpacity
                     style={{
                       marginLeft: 90,
-                      marginTop: -33,
+                      marginTop: -47,
                     }}
                     onPress={() => console.log("Comment button pressed!")}
                   >
                     <Image
-                      style={{
-                        width: 32,
-                        height: 32,
-                      }}
+                      style={styles.comment}
                       source={require("../Images/comment-icon.png")}
                     />
                   </TouchableOpacity>
@@ -184,7 +196,7 @@ const HomeScreen = ({ navigation, userID }) => {
                         fontSize: 15,
                         fontWeight: "600",
                         alignSelf: "flex-start",
-                        marginLeft: 20,
+                        marginLeft: 22,
                         marginTop: 35,
                       }}
                     >
@@ -218,7 +230,7 @@ const styles = StyleSheet.create({
   },
   postView: {
     width: Dimensions.get("window").width - 20,
-    height: Dimensions.get("window").height / 1.1,
+    height: Dimensions.get("window").height / 1.1 + 20,
     backgroundColor: "#fafafa",
     alignSelf: "center",
     borderRadius: 30,
@@ -262,6 +274,22 @@ const styles = StyleSheet.create({
   buttons: {
     flexDirection: "row",
     justifyContent: "center",
+    alignItems: "center",
+  },
+  LoadingIndicator: {
+    width: 120,
+    height: 120,
+    marginTop: -10,
+    alignItems: "center",
+  },
+  comment: {
+    width: 27,
+    height: 27,
+  },
+  notConnectedToInternet: {
+    width: 320,
+    height: 320,
+    marginTop: -100,
     alignItems: "center",
   },
 });
