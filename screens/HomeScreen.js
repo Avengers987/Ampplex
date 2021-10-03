@@ -31,6 +31,8 @@ const HomeScreen = ({ navigation, userID }) => {
   const [loading, setLoading] = useState(true);
   const [liked, setLiked] = useState(false);
   const DOUBLE_PRESS_DELAY = 300;
+  let checkLikedCounter = 0;
+  let checkGetLikesCounter = 0;
 
   const handledDoubleTap = () => {
     if (lastTap && Date.now() - lastTap < DOUBLE_PRESS_DELAY) {
@@ -46,6 +48,43 @@ const HomeScreen = ({ navigation, userID }) => {
     });
     return connected;
   };
+
+  const CheckLiked = (myUserId, postID) => {
+    const url = `https://ampplex-backened.herokuapp.com/isLiked/${myUserId}/${postID}`;
+
+    fetch(url)
+      .then((response) => {
+        return response.json();
+      })
+      .then((data) => {
+        if (data.likedPosts === true) {
+          setLiked(true);
+        } else {
+          setLiked(false);
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+    checkLikedCounter += 1;
+  };
+
+  const GetLikes = (pressedUserID, postID) => {
+    const url = `https://ampplex-backened.herokuapp.com/GetLikes/${pressedUserID}/${postID}`;
+
+    fetch(url)
+      .then((response) => {
+        return response.json();
+      })
+      .then((data) => {
+        setLikesCount(data.Likes);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+    checkGetLikesCounter += 1;
+  };
+
   const getPostInfo = async () => {
     const url = "https://ampplex-backened.herokuapp.com/GetPostJson/";
 
@@ -69,6 +108,8 @@ const HomeScreen = ({ navigation, userID }) => {
   }, []);
 
   getPostInfo(); // Calling the getPost API for retrieving user posts
+
+  ConnectedToInternet();
 
   return (
     <View style={styles.container}>
@@ -177,7 +218,11 @@ const HomeScreen = ({ navigation, userID }) => {
                       }
                     />
                   )}
-                  <Like postID={element.Post_ID} />
+                  <Like
+                    postID={element.Post_ID}
+                    myUserId={userID}
+                    pressedUserID={element.UserID}
+                  />
                   <TouchableOpacity
                     style={{
                       marginLeft: 90,

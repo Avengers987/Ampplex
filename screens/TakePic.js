@@ -22,6 +22,8 @@ export default function TakePic({ navigation, route }) {
     })();
   }, []);
 
+ 
+
   const takePicture = async () => {
     if (camera) {
       console.log("Taking Picture...");

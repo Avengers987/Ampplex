@@ -237,7 +237,7 @@ const Profile = ({ navigation, route }) => {
             style={styles.FollowBtn}
             onPress={() => {
               IncreaseFollower();
-              setFollower(follower - 1);
+              setFollower(follower + 1);
             }}
           >
             <Text

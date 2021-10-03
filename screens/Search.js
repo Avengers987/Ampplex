@@ -19,7 +19,7 @@ const searchForUser = (searchValue, UserName) => {
   );
 
   if (
-    searchValue !== "" &&
+    searchValue != "" &&
     searchValue === UserName.substring(0, searchValue.length)
   ) {
     console.log(searchValue === UserName.substring(0, searchValue.length));

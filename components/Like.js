@@ -4,27 +4,37 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import LottieView from "lottie-react-native";
 
 const Like = (props) => {
-  const [liked, setLiked] = useState(false);
-  const [isliked, setisLiked] = useState(false);
+  const [liked, setLiked] = useState(null);
   const animation = useRef(null);
+  const DoubleTapanimation = useRef(null);
   const isFirstRun = useRef(true);
   const [lastTap, setLastTap] = useState(null);
   const DOUBLE_PRESS_DELAY = 300;
   const [doubleTapLike, setDoubleTapLike] = useState(false);
+  const [likesCount, setLikesCount] = useState(null);
+  const [disbleCheckLiked, setDisbleCheckLiked] = useState(false);
+  let checkLikedCounter = 0;
+  let checkGetLikesCounter = 0;
 
   const handledDoubleTap = () => {
     if (lastTap && Date.now() - lastTap < DOUBLE_PRESS_DELAY) {
-      isliked ? setLiked(false) : setLiked(true);
-      setTimeout(() => {
-        setDoubleTapLike(true);
-      }, 3000);
-      setDoubleTapLike(false);
+      if (liked) {
+        setDisbleCheckLiked(true);
+        setLiked(false);
+        console.log(liked);
+        setLikesCount(likesCount - 1);
+        Decreament_Likes();
+      } else {
+        setDisbleCheckLiked(true);
+        setLiked(true);
+        console.log(liked);
+        setLikesCount(likesCount + 1);
+        Increament_Likes();
+      }
     } else {
       setLastTap(Date.now());
     }
   };
-
-  console.log(props.postID);
 
   React.useEffect(() => {
     if (isFirstRun.current) {
@@ -37,14 +47,121 @@ const Like = (props) => {
     } else if (liked) {
       animation.current.play(20, 50);
     } else {
-      animation.current.play(0, 19);
+      animation.current.play(0, 20);
     }
   }, [liked]);
+
+  // React.useEffect(() => {
+  //   if (liked) {
+  //     setDoubleTapLike(true);
+  //     animation.current.play(20, 50);
+  //   } else {
+  //     setDoubleTapLike(false);
+  //     animation.current.play(0, 20);
+  //   }
+  // }, [liked]);
+
+  const CheckLiked = () => {
+    const url = `https://ampplex-backened.herokuapp.com/isLiked/${props.myUserId}/${props.postID}`;
+
+    fetch(url)
+      .then((response) => {
+        return response.json();
+      })
+      .then((data) => {
+        if (data.likedPosts === true) {
+          setLiked(true);
+        } else {
+          setLiked(false);
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+    checkLikedCounter += 1;
+  };
+
+  const Increament_Likes = () => {
+    const url = `https://ampplex-backened.herokuapp.com/UpdateLikes/${props.myUserId}/${props.postID}/${props.pressedUserID}/Like`;
+    console.log("[Increamenting Likes]");
+    console.log(url);
+
+    fetch(url)
+      .then((response) => {
+        return response.json();
+      })
+      .then((data) => {
+        setLiked(true);
+        console.log("Inc: ", data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
+  const Decreament_Likes = () => {
+    const url = `https://ampplex-backened.herokuapp.com/UpdateLikes/${props.myUserId}/${props.postID}/${props.pressedUserID}/Dislike`;
+    console.log("[Decreamenting Likes]");
+    console.log(url);
+
+    fetch(url)
+      .then((response) => {
+        return response.json();
+      })
+      .then((data) => {
+        setLiked(false);
+        console.log("Dec: ", data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
+  const GetLikes = () => {
+    const url = `https://ampplex-backened.herokuapp.com/GetLikes/${props.pressedUserID}/${props.postID}`;
+
+    fetch(url)
+      .then((response) => {
+        return response.json();
+      })
+      .then((data) => {
+        setLikesCount(data.Likes);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+    checkGetLikesCounter += 1;
+  };
+
+  console.log(disbleCheckLiked);
+
+  if (disbleCheckLiked === false) {
+    GetLikes();
+  }
+
+  if (disbleCheckLiked === false) {
+    CheckLiked();
+  }
+
+  const likePost = () => {
+    return (
+      <View>
+        <LottieView
+          style={styles.DoubleTapLike}
+          source={require("../assets/lottie/like.json")}
+          autoPlay
+          loop={false}
+        />
+      </View>
+    );
+  };
 
   return (
     <View>
       <Pressable
-        onPress={() => handledDoubleTap()}
+        onPress={() => {
+          handledDoubleTap();
+        }}
         style={{
           width: Dimensions.get("window").width - 20,
           height: Dimensions.get("window").height / 1.5,
@@ -54,17 +171,26 @@ const Like = (props) => {
           opacity: 0,
         }}
       />
-      {doubleTapLike ? (
-        <LottieView
-          style={styles.DoubleTapLike}
-          source={require("../assets/lottie/like.json")}
-          autoPlay={true}
-          loop={false}
-        />
-      ) : (
-        <View />
-      )}
-      <Pressable onPress={() => setLiked((liked) => !liked)}>
+      {/* {doubleTapLike ? likePost() : <View />} */}
+      <Pressable
+        onPress={() => {
+          if (liked) {
+            console.log(liked, "Already Likes");
+            setDisbleCheckLiked(true);
+            setLiked(false);
+            console.log(liked);
+            setLikesCount(likesCount - 1);
+            Decreament_Likes();
+          } else {
+            console.log(liked, "Liking for the first time");
+            setDisbleCheckLiked(true);
+            setLiked(true);
+            console.log(liked);
+            setLikesCount(likesCount + 1);
+            Increament_Likes();
+          }
+        }}
+      >
         {/* <MaterialCommunityIcons
           name={liked ? "heart" : "heart-outline"}
           size={32}
@@ -86,7 +212,7 @@ const Like = (props) => {
           left: 20,
         }}
       >
-        0 likes
+        {likesCount} likes
       </Text>
     </View>
   );
