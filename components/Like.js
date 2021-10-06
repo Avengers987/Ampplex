@@ -12,20 +12,15 @@ const Like = (props) => {
   const DOUBLE_PRESS_DELAY = 300;
   const [doubleTapLike, setDoubleTapLike] = useState(false);
   const [likesCount, setLikesCount] = useState(null);
-  const [disbleCheckLiked, setDisbleCheckLiked] = useState(false);
-  let checkLikedCounter = 0;
-  let checkGetLikesCounter = 0;
 
   const handledDoubleTap = () => {
     if (lastTap && Date.now() - lastTap < DOUBLE_PRESS_DELAY) {
       if (liked) {
-        setDisbleCheckLiked(true);
         setLiked(false);
         console.log(liked);
         setLikesCount(likesCount - 1);
         Decreament_Likes();
       } else {
-        setDisbleCheckLiked(true);
         setLiked(true);
         console.log(liked);
         setLikesCount(likesCount + 1);
@@ -78,7 +73,6 @@ const Like = (props) => {
       .catch((error) => {
         console.log(error);
       });
-    checkLikedCounter += 1;
   };
 
   const Increament_Likes = () => {
@@ -130,18 +124,12 @@ const Like = (props) => {
       .catch((error) => {
         console.log(error);
       });
-    checkGetLikesCounter += 1;
   };
 
-  console.log(disbleCheckLiked);
-
-  if (disbleCheckLiked === false) {
+  useEffect(() => {
     GetLikes();
-  }
-
-  if (disbleCheckLiked === false) {
     CheckLiked();
-  }
+  }, []);
 
   const likePost = () => {
     return (
@@ -176,14 +164,12 @@ const Like = (props) => {
         onPress={() => {
           if (liked) {
             console.log(liked, "Already Likes");
-            setDisbleCheckLiked(true);
             setLiked(false);
             console.log(liked);
             setLikesCount(likesCount - 1);
             Decreament_Likes();
           } else {
             console.log(liked, "Liking for the first time");
-            setDisbleCheckLiked(true);
             setLiked(true);
             console.log(liked);
             setLikesCount(likesCount + 1);

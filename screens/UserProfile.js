@@ -1,4 +1,4 @@
-import React, { useState, createRef } from "react";
+import React, { useState, createRef, useEffect } from "react";
 import {
   View,
   Text,
@@ -43,11 +43,13 @@ const Profile = ({ navigation, route }) => {
         }
       })
       .catch((e) => {
-        console.log("");
+        console.log(e);
       });
   };
 
-  getFollowers();
+  useEffect(() => {
+    getFollowers();
+  }, []);
 
   const Check_Followed = async () => {
     const url = `http://ampplex-backened.herokuapp.com/Check_Followed/${userID}/MyID/${myUserId}`;
@@ -69,7 +71,7 @@ const Profile = ({ navigation, route }) => {
         }
       })
       .catch((e) => {
-        console.log("");
+        console.log(e);
       });
   };
 
@@ -79,10 +81,10 @@ const Profile = ({ navigation, route }) => {
 
   console.log(alreadyFollowed);
 
-  const IncreaseFollower = () => {
+  const IncreaseFollower = async () => {
     const url = `http://ampplex-backened.herokuapp.com/Increament_Followers/${userID}/MyID/${myUserId}`;
     console.log(url, "See me!");
-    fetch(url)
+    await fetch(url)
       .then((response) => {
         return response.json();
       })
@@ -92,13 +94,13 @@ const Profile = ({ navigation, route }) => {
         }
       })
       .catch((e) => {
-        console.log("");
+        console.log(e);
       });
   };
 
-  const getProfilePicture = () => {
+  const getProfilePicture = async () => {
     const url = `https://ampplex-backened.herokuapp.com/getProfilePicture/${userID}`;
-    fetch(url)
+    await fetch(url)
       .then((response) => {
         return response.json();
       })
@@ -107,12 +109,14 @@ const Profile = ({ navigation, route }) => {
         setProfilePicLoading(false);
       })
       .catch((err) => {
-        console.log("");
+        console.log(e);
       });
   };
 
-  getProfilePicture();
-  console.log(myProfilePic);
+  useEffect(() => {
+    getProfilePicture();
+    console.log(myProfilePic);
+  }, []);
 
   const getPost = async () => {
     const url = `https://ampplex-backened.herokuapp.com/Count_Posts/${userID}`;
@@ -125,7 +129,7 @@ const Profile = ({ navigation, route }) => {
         SetPosts(data.Posts);
       })
       .catch((err) => {
-        console.log("");
+        console.log(e);
       });
   };
 
@@ -141,12 +145,14 @@ const Profile = ({ navigation, route }) => {
         setLoading(false);
       })
       .catch((e) => {
-        console.log("");
+        console.log(e);
       });
   };
 
-  getPost();
-  getMyPosts();
+  useEffect(() => {
+    getPost();
+    getMyPosts();
+  }, []);
 
   return (
     <>
@@ -214,9 +220,7 @@ const Profile = ({ navigation, route }) => {
           <TouchableOpacity
             style={styles.FollowBtn}
             onPress={() => {
-              if (follower < 0) {
-                setFollower(0);
-              } else {
+              if (follower >= 0) {
                 setFollower(follower - 1);
               }
             }}

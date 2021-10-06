@@ -73,8 +73,6 @@ export default function AddPost({ navigation, route, userID }) {
     userID = route.params.userID;
   }
 
-  console.log("MY ID IS THIS : ", userID);
-
   const SetImage = () => {
     try {
       setImage(route.params.image);
@@ -266,7 +264,7 @@ export default function AddPost({ navigation, route, userID }) {
       </>
     );
   };
-  console.log(error);
+
   return (
     <>
       <PostBtn />

@@ -13,7 +13,7 @@ export default function TakePic({ navigation, route }) {
   const [flashType, setFlashType] = useState(null);
   let Orientation = useDeviceOrientation().portrait ? "portrait" : "landscape";
 
-  console.log(Orientation);
+  // console.log(Orientation);
 
   useEffect(() => {
     (async () => {
@@ -21,8 +21,6 @@ export default function TakePic({ navigation, route }) {
       setHasPermission(status === "granted");
     })();
   }, []);
-
- 
 
   const takePicture = async () => {
     if (camera) {

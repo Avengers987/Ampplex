@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   View,
   TextInput,
@@ -12,17 +12,17 @@ import {
 import LottieView from "lottie-react-native";
 
 const searchForUser = (searchValue, UserName) => {
-  console.log(
-    searchValue === UserName.substring(0, searchValue.length),
-    " : ",
-    UserName.substring(0, searchValue.length)
-  );
+  // console.log(
+  //   searchValue === UserName.substring(0, searchValue.length),
+  //   " : ",
+  //   UserName.substring(0, searchValue.length)
+  // );
 
   if (
     searchValue != "" &&
     searchValue === UserName.substring(0, searchValue.length)
   ) {
-    console.log(searchValue === UserName.substring(0, searchValue.length));
+    // console.log(searchValue === UserName.substring(0, searchValue.length));
     return true;
   }
   return false;
@@ -42,12 +42,15 @@ const Search = ({ navigation, userID }) => {
         return response.json();
       })
       .then((data) => {
+        console.log(data);
         setResponse(data);
         setLoading(false);
       });
   };
 
-  getUserName();
+  useEffect(() => {
+    getUserName();
+  }, []);
 
   return (
     <View style={styles.container}>

@@ -1,4 +1,4 @@
-import React, { useState, createRef } from "react";
+import React, { useState, createRef, useEffect } from "react";
 import {
   View,
   Text,
@@ -68,9 +68,9 @@ const Profile = ({ userName, userID, navigation, route }) => {
     }
   };
 
-  const getProfilePicture = () => {
+  const getProfilePicture = async () => {
     const url = `https://ampplex-backened.herokuapp.com/getProfilePicture/${userID}`;
-    fetch(url)
+    await fetch(url)
       .then((response) => {
         return response.json();
       })
@@ -82,8 +82,11 @@ const Profile = ({ userName, userID, navigation, route }) => {
       });
   };
 
-  getProfilePicture();
-  console.log(myProfilePic);
+  useEffect(() => {
+    getProfilePicture();
+  }, []);
+
+  // console.log(myProfilePic);
 
   const SetImage = async (URI) => {
     try {
@@ -132,13 +135,13 @@ const Profile = ({ userName, userID, navigation, route }) => {
         }
       );
     } catch (e) {
-      console.log("");
+      console.log(e);
     }
   };
 
-  const getPost = () => {
+  const getPost = async () => {
     const url = `https://ampplex-backened.herokuapp.com/Count_Posts/${userID}`;
-    fetch(url)
+    await fetch(url)
       .then((response) => {
         return response.json();
       })
@@ -153,7 +156,7 @@ const Profile = ({ userName, userID, navigation, route }) => {
   const getMyPosts = async () => {
     const url = `https://ampplex-backened.herokuapp.com/getMyPosts/${userID}`;
 
-    fetch(url)
+    await fetch(url)
       .then((response) => {
         return response.json();
       })
@@ -166,10 +169,10 @@ const Profile = ({ userName, userID, navigation, route }) => {
       });
   };
 
-  const getFollowers = () => {
+  const getFollowers = async () => {
     const url = `http://ampplex-backened.herokuapp.com/GetFollower/${userID}/`;
     console.log(url, "See me!");
-    fetch(url)
+    await fetch(url)
       .then((response) => {
         return response.json();
       })
@@ -290,9 +293,9 @@ const Profile = ({ userName, userID, navigation, route }) => {
             <ActivityIndicator size="large" color="skyblue" />
           </View>
         ) : (
-          response.map((element) => {
+          response.map((element, index) => {
             return (
-              <View style={styles.postView}>
+              <View style={styles.postView} key={index}>
                 <View>
                   {/*Profile Picture*/}
                   <Image
