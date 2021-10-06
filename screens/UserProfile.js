@@ -76,7 +76,9 @@ const Profile = ({ navigation, route }) => {
   };
 
   if (userID != myUserId) {
-    Check_Followed();
+    useEffect(() => {
+      Check_Followed();
+    }, []);
   }
 
   console.log(alreadyFollowed);
@@ -115,7 +117,6 @@ const Profile = ({ navigation, route }) => {
 
   useEffect(() => {
     getProfilePicture();
-    console.log(myProfilePic);
   }, []);
 
   const getPost = async () => {
