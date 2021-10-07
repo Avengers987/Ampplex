@@ -12,17 +12,10 @@ import {
 import LottieView from "lottie-react-native";
 
 const searchForUser = (searchValue, UserName) => {
-  // console.log(
-  //   searchValue === UserName.substring(0, searchValue.length),
-  //   " : ",
-  //   UserName.substring(0, searchValue.length)
-  // );
-
   if (
     searchValue != "" &&
     searchValue === UserName.substring(0, searchValue.length)
   ) {
-    // console.log(searchValue === UserName.substring(0, searchValue.length));
     return true;
   }
   return false;
@@ -31,13 +24,12 @@ const searchForUser = (searchValue, UserName) => {
 const Search = ({ navigation, userID }) => {
   const [searchValue, setSearchValue] = useState(null);
   const [response, setResponse] = useState(null);
-  const [showUsers, setShowUsers] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  const getUserName = () => {
+  const getUserName = async () => {
     const url = `http://ampplex-backened.herokuapp.com/GetUserNames/`;
 
-    fetch(url)
+    await fetch(url)
       .then((response) => {
         return response.json();
       })

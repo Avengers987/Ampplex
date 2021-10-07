@@ -49,8 +49,6 @@ const Profile = ({ userName, userID, navigation, route }) => {
     userID = route.params.userID;
   }
 
-  console.log(`MY Profile ID IS  THIS : ${userID}`);
-
   const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
@@ -85,8 +83,6 @@ const Profile = ({ userName, userID, navigation, route }) => {
   useEffect(() => {
     getProfilePicture();
   }, []);
-
-  // console.log(myProfilePic);
 
   const SetImage = async (URI) => {
     try {
@@ -182,14 +178,15 @@ const Profile = ({ userName, userID, navigation, route }) => {
         }
       })
       .catch((e) => {
-        console.log("");
+        console.log(e);
       });
   };
 
-  getFollowers();
-
-  getPost();
-  getMyPosts();
+  useEffect(() => {
+    getFollowers();
+    getPost();
+    getMyPosts();
+  }, []);
 
   return (
     <>

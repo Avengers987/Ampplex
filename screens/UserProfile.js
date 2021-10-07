@@ -27,9 +27,6 @@ const Profile = ({ navigation, route }) => {
   const userName = route.params.clickedUserName;
   const myUserId = route.params.myUserId;
 
-  console.log(`My personal USER ID is : ${myUserId}`);
-  console.log(`MY Profile ID IS  THIS : ${userID}`);
-
   const getFollowers = async () => {
     const url = `http://ampplex-backened.herokuapp.com/GetFollower/${userID}/`;
     console.log(url, "See me!");
@@ -46,10 +43,6 @@ const Profile = ({ navigation, route }) => {
         console.log(e);
       });
   };
-
-  useEffect(() => {
-    getFollowers();
-  }, []);
 
   const Check_Followed = async () => {
     const url = `http://ampplex-backened.herokuapp.com/Check_Followed/${userID}/MyID/${myUserId}`;
@@ -115,10 +108,6 @@ const Profile = ({ navigation, route }) => {
       });
   };
 
-  useEffect(() => {
-    getProfilePicture();
-  }, []);
-
   const getPost = async () => {
     const url = `https://ampplex-backened.herokuapp.com/Count_Posts/${userID}`;
 
@@ -151,8 +140,10 @@ const Profile = ({ navigation, route }) => {
   };
 
   useEffect(() => {
-    getPost();
+    getProfilePicture();
     getMyPosts();
+    getPost();
+    getFollowers();
   }, []);
 
   return (
