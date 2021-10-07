@@ -444,6 +444,7 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
     height: 300,
     borderRadius: 50,
+    elevation: 12,
   },
   Profile2: {
     display: "flex",

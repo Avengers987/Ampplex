@@ -12,6 +12,7 @@ import TakePic from "./screens/TakePic";
 import Category from "./screens/Category";
 import Profile from "./screens/Profile";
 import UserProfile from "./screens/UserProfile";
+import Comment from "./screens/Comment.js";
 
 import * as firebase from "firebase";
 
@@ -57,6 +58,17 @@ export default function App() {
           component={LoginScreen}
           options={{
             headerShown: false,
+          }}
+        />
+
+        <Stack.Screen
+          name="Comments"
+          component={Comment}
+          options={{
+            headerShown: true,
+            headerTitleStyle: {
+              fontWeight: "bold",
+            },
           }}
         />
 

@@ -81,7 +81,7 @@ const Search = ({ navigation, userID }) => {
       )}
 
       {response != null && searchValue != null ? (
-        response.map((value) => {
+        response.map((value, index) => {
           let clickedUserID = value.userID;
           let clickedUserName = value.UserName;
           let myUserId = userID;
@@ -94,6 +94,7 @@ const Search = ({ navigation, userID }) => {
           ) {
             return (
               <TouchableOpacity
+                key={index}
                 style={styles.UserView}
                 onPress={() =>
                   navigation.navigate("UserProfile", {

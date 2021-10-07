@@ -29,8 +29,6 @@ const HomeScreen = ({ navigation, userID }) => {
   const [status, setStatus] = useState({});
   const [refreshing, setRefreshing] = useState(false);
   const [loading, setLoading] = useState(true);
-  const [liked, setLiked] = useState(false);
-  const DOUBLE_PRESS_DELAY = 300;
 
   const ConnectedToInternet = () => {
     let connected = null;
@@ -183,7 +181,7 @@ const HomeScreen = ({ navigation, userID }) => {
                       marginLeft: 90,
                       marginTop: -47,
                     }}
-                    onPress={() => console.log("Comment button pressed!")}
+                    onPress={() => navigation.navigate("Comments")}
                   >
                     <Image
                       style={styles.comment}
@@ -235,6 +233,7 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     borderRadius: 30,
     marginTop: 30,
+    elevation: 12,
   },
   postImg: {
     width: Dimensions.get("window").width - 20,
