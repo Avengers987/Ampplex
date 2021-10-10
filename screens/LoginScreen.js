@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   StyleSheet,
   Text,
@@ -18,7 +18,9 @@ const ErrorFlasher = (msg) => {
 };
 
 export default function LoginScreen(props) {
-  getData();
+  useEffect(() => {
+    getData();
+  }, []);
 
   const storeData = async (value) => {
     // value take boolean type value
@@ -62,7 +64,8 @@ export default function LoginScreen(props) {
       }, 1000);
       setTimeout(() => {
         storeData("true");
-        props.navigation.replace("Category", { userId });
+        let user_id = userId;
+        props.navigation.replace("Category", { user_id });
         setEmail("");
         setPassword("");
       }, 1100);

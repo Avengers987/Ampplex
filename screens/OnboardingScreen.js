@@ -9,6 +9,7 @@ import {
 } from "react-native";
 import Onboarding from "react-native-onboarding-swiper";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import LoginScreen from "./LoginScreen";
 
 const Done = ({ ...props }) => {
   return (
@@ -72,7 +73,7 @@ export default function OnboardingScreen({ navigation }) {
   // Calling the getData() method to check if is user is logined or not
   getData();
   async function getData() {
-    const value = await AsyncStorage.getItem("onboarding");
+    const value = await AsyncStorage.removeItem("onboarding");
     storeData();
     if (value !== null) {
       // If user is already logined then navigating the user to the Home screen

@@ -13,6 +13,7 @@ import Category from "./screens/Category";
 import Profile from "./screens/Profile";
 import UserProfile from "./screens/UserProfile";
 import Comment from "./screens/Comment.js";
+import StartScreen from "./screens/StartScreen";
 
 import * as firebase from "firebase";
 
@@ -35,7 +36,6 @@ if (firebase.apps.length === 0) {
 }
 
 export default function App() {
-  console.ignoredYellowBox = ["Warning: Each", "Warning: Failed"];
   const Stack = createStackNavigator();
   return (
     <NavigationContainer>
@@ -45,6 +45,14 @@ export default function App() {
           headerTitleAlign: "center",
         }}
       >
+        <Stack.Screen
+          name="StartScreen"
+          component={StartScreen}
+          options={{
+            headerShown: false,
+          }}
+        />
+
         <Stack.Screen
           name="OnBoarding"
           component={OnboardingScreen}

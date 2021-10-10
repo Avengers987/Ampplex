@@ -1,4 +1,4 @@
-import React, { useState, createRef, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import {
   View,
   Text,
@@ -86,6 +86,23 @@ const Profile = ({ navigation, route }) => {
       .then((data) => {
         if (data.status === "success") {
           console.log("Followed Successfully!");
+        }
+      })
+      .catch((e) => {
+        console.log(e);
+      });
+  };
+
+  const Unfollow = async () => {
+    const url = `http://ampplex-backened.herokuapp.com/Unfollow/${userID}/MyID/${myUserId}`;
+    console.log(url, "See me!");
+    await fetch(url)
+      .then((response) => {
+        return response.json();
+      })
+      .then((data) => {
+        if (data.status === "success") {
+          console.log("Unfollowed Successfully!");
         }
       })
       .catch((e) => {
@@ -213,7 +230,9 @@ const Profile = ({ navigation, route }) => {
             style={styles.FollowBtn}
             onPress={() => {
               if (follower >= 0) {
+                Unfollow();
                 setFollower(follower - 1);
+                Check_Followed();
               }
             }}
           >
@@ -234,6 +253,7 @@ const Profile = ({ navigation, route }) => {
             onPress={() => {
               IncreaseFollower();
               setFollower(follower + 1);
+              Check_Followed();
             }}
           >
             <Text

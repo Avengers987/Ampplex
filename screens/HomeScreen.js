@@ -227,7 +227,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
   },
   postView: {
-    width: Dimensions.get("window").width - 20,
+    width: Dimensions.get("window").width,
     height: Dimensions.get("window").height / 1.1 + 20,
     backgroundColor: "#fafafa",
     alignSelf: "center",
@@ -240,6 +240,7 @@ const styles = StyleSheet.create({
     height: Dimensions.get("window").height / 1.5,
     borderRadius: 20,
     marginTop: 10,
+    marginLeft: 10,
   },
   UserName: {
     fontSize: 19,

@@ -200,16 +200,6 @@ const Profile = ({ userName, userID, navigation, route }) => {
             top: 20,
           }}
         >
-          <View
-            style={{
-              width: 100,
-              height: 90,
-              borderRadius: 100,
-              marginTop: 70,
-              opacity: 0,
-            }}
-          ></View>
-
           <Image
             style={styles.Profile_Picture}
             source={{
