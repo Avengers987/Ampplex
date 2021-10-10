@@ -24,5 +24,6 @@ const styles = StyleSheet.create({
     fontSize: 25,
     fontWeight: "bold",
     marginTop: 10,
+    fontFamily: "sans-serif-medium",
   },
 });

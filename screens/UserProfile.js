@@ -74,8 +74,6 @@ const Profile = ({ navigation, route }) => {
     }, []);
   }
 
-  console.log(alreadyFollowed);
-
   const IncreaseFollower = async () => {
     const url = `http://ampplex-backened.herokuapp.com/Increament_Followers/${userID}/MyID/${myUserId}`;
     console.log(url, "See me!");
@@ -86,6 +84,8 @@ const Profile = ({ navigation, route }) => {
       .then((data) => {
         if (data.status === "success") {
           console.log("Followed Successfully!");
+          getFollowers();
+          Check_Followed();
         }
       })
       .catch((e) => {
@@ -103,6 +103,8 @@ const Profile = ({ navigation, route }) => {
       .then((data) => {
         if (data.status === "success") {
           console.log("Unfollowed Successfully!");
+          getFollowers();
+          Check_Followed();
         }
       })
       .catch((e) => {
@@ -229,10 +231,10 @@ const Profile = ({ navigation, route }) => {
           <TouchableOpacity
             style={styles.FollowBtn}
             onPress={() => {
-              if (follower >= 0) {
+              if (follower >= 1) {
+                setAlreadyFollowed(false);
                 Unfollow();
                 setFollower(follower - 1);
-                Check_Followed();
               }
             }}
           >
@@ -251,9 +253,9 @@ const Profile = ({ navigation, route }) => {
           <TouchableOpacity
             style={styles.FollowBtn}
             onPress={() => {
+              setAlreadyFollowed(true);
               IncreaseFollower();
               setFollower(follower + 1);
-              Check_Followed();
             }}
           >
             <Text
@@ -332,7 +334,6 @@ const Profile = ({ navigation, route }) => {
                     useNativeControls
                     resizeMode="cover"
                     isLooping
-                    onMoveShouldSetResponder={() => console.log("Touched!")}
                     onLoadStart={() => console.log("Loading...")}
                     onPlaybackStatusUpdate={(status) => setStatus(() => status)}
                   />

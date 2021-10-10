@@ -35,9 +35,9 @@ export default function LoginScreen(props) {
 
   async function getData() {
     try {
-      const value = await AsyncStorage.getItem("isLogined_Boolean");
-      const userName = await AsyncStorage.getItem("user_name");
-      const user_id = await AsyncStorage.getItem("user_id");
+      const value = await AsyncStorage.removeItem("isLogined_Boolean");
+      const userName = await AsyncStorage.removeItem("user_name");
+      const user_id = await AsyncStorage.removeItem("user_id");
 
       if (value !== null && userName !== null && user_id !== null) {
         props.navigation.replace("Category", { user_id, userName });

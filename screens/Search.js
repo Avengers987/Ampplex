@@ -34,7 +34,6 @@ const Search = ({ navigation, userID }) => {
         return response.json();
       })
       .then((data) => {
-        console.log(data);
         setResponse(data);
         setLoading(false);
       });

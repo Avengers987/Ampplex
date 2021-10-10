@@ -1,6 +1,14 @@
 import React, { useState, useEffect } from "react";
-import { StyleSheet, Text, View, Animated } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  View,
+  Animated,
+  Dimensions,
+  ActivityIndicator,
+} from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { LinearGradient } from "expo-linear-gradient";
 
 const StartScreen = ({ navigation }) => {
   const canNavigateToHomeScreen = async () => {
@@ -26,13 +34,32 @@ const StartScreen = ({ navigation }) => {
     }
   };
 
-  useEffect(() => {
+  setTimeout(() => {
     canNavigateToHomeScreen();
-  }, []);
+  }, 3000);
 
   return (
     <View style={styles.container}>
-      <Text style={styles.AppName}>Ampplex</Text>
+      <LinearGradient
+        // Button Linear Gradient
+        colors={["#fafa", "skyblue"]}
+        start={{ x: 0.5, y: 0.6 }}
+        end={{ x: 0.1, y: 0.5 }}
+        style={styles.LinearGradient}
+      >
+        <Text
+          style={{
+            fontWeight: "bold",
+            fontSize: 35,
+            color: "#fff",
+            position: "absolute",
+            left: Dimensions.get("window").width / 3,
+            top: Dimensions.get("window").height / 3,
+          }}
+        >
+          Ampplex
+        </Text>
+      </LinearGradient>
     </View>
   );
 };
@@ -44,9 +71,16 @@ const styles = StyleSheet.create({
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
+    width: "100%",
+    height: "100%",
   },
-  AppName: {
-    fontWeight: "bold",
-    fontSize: 30,
+  LinearGradient: {
+    width: "100%",
+    height: "100%",
+  },
+  activityIndicator: {
+    position: "absolute",
+    bottom: 50,
+    left: Dimensions.get("window").width / 2.2,
   },
 });
