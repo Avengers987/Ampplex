@@ -315,7 +315,9 @@ const Profile = ({ navigation, route }) => {
                   />
                 </View>
                 <View style={styles.UserNameContainer}>
-                  <Text style={styles.UserName}>{element["UserName"]}</Text>
+                  <Text style={{ fontSize: 19, fontWeight: "bold" }}>
+                    {userName}
+                  </Text>
                 </View>
                 {element.Type == "Image" ? (
                   <Image
@@ -334,8 +336,6 @@ const Profile = ({ navigation, route }) => {
                     useNativeControls
                     resizeMode="cover"
                     isLooping
-                    onLoadStart={() => console.log("Loading...")}
-                    onPlaybackStatusUpdate={(status) => setStatus(() => status)}
                   />
                 )}
                 <View>
@@ -439,5 +439,17 @@ const styles = StyleSheet.create({
     width: 365,
     height: 490,
     borderRadius: 15,
+  },
+  profilePicture: {
+    width: 43,
+    height: 43,
+    borderRadius: 50,
+    marginTop: 10,
+    marginLeft: 15,
+  },
+  UserNameContainer: {
+    marginLeft: 80,
+    position: "absolute",
+    top: 20,
   },
 });

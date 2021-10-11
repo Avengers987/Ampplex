@@ -23,7 +23,7 @@ const wait = (timeout) => {
   return new Promise((resolve) => setTimeout(resolve, timeout));
 };
 
-const HomeScreen = ({ navigation, userID }) => {
+const HomeScreen = ({ navigation, userID, userName }) => {
   let [response, setResponse] = useState([]);
   const video = React.useRef(null);
   const [status, setStatus] = useState({});

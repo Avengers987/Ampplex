@@ -9,25 +9,54 @@ import {
   Platform,
   Image,
   Pressable,
+  TouchableOpacity,
 } from "react-native";
+import EmojiBoard from "react-native-emoji-board";
 
-const Comment = () => {
-  const [experience, setExperience] = useState(null);
+const Comment = ({}) => {
+  // Props - postID, pressedUserID, userName
+  const [experience, setExperience] = useState("");
+  const [showEmoji, setShowEmoji] = useState(false);
+
+  const onClick = (emoji) => {
+    console.log(emoji.code);
+    setExperience(experience + emoji.code);
+    setShowEmoji(false);
+  };
 
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === "ios" ? "padding" : "position"}
     >
       <View style={styles.container}>
-        <View style={styles.CommentBox}>
+        <View
+          style={{
+            backgroundColor: "#fafafa",
+            width: "90%",
+            height: 55,
+            borderRadius: 70,
+            position: "absolute",
+            bottom: showEmoji ? 300 : 100,
+            elevation: 10,
+          }}
+        >
           <TextInput
             placeholder={"Express your experience..."}
             style={styles.ExperienceInput}
             onChangeText={(e) => setExperience(e)}
+            value={experience}
           />
-          <Pressable
+          <TouchableOpacity
+            style={{
+              width: "15%",
+              height: "65%",
+              position: "absolute",
+              bottom: 10,
+              borderRadius: 100,
+            }}
             onPress={() => {
-              console.log("Pressed");
+              showEmoji ? setShowEmoji(false) : setShowEmoji(true);
+              console.log("Pressed emoji button!");
             }}
           >
             <View>
@@ -36,8 +65,23 @@ const Comment = () => {
                 style={styles.emoji}
               />
             </View>
-          </Pressable>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.postBTn}
+            onPress={() => console.log("Pressed Post button!")}
+          >
+            <Text
+              style={{
+                color: "skyblue",
+                fontSize: 15,
+                fontWeight: "bold",
+              }}
+            >
+              Post
+            </Text>
+          </TouchableOpacity>
         </View>
+        <EmojiBoard showBoard={showEmoji} onClick={onClick} />
       </View>
     </KeyboardAvoidingView>
   );
@@ -54,26 +98,24 @@ const styles = StyleSheet.create({
     width: Dimensions.get("window").width,
     height: Dimensions.get("window").height,
   },
-  CommentBox: {
-    backgroundColor: "#fafafa",
-    width: Dimensions.get("window").width / 1.2,
-    height: 55,
-    borderRadius: 70,
-    position: "absolute",
-    bottom: 100,
-    elevation: 10,
-  },
   ExperienceInput: {
     fontSize: 16,
     paddingTop: 12,
-    paddingLeft: 55,
-    paddingRight: 15,
+    paddingLeft: 50,
+    paddingRight: 65,
   },
   emoji: {
     position: "absolute",
-    bottom: -1,
-    left: 15,
+    bottom: -35,
+    left: 10,
     width: 30,
     height: 30,
+  },
+  postBTn: {
+    width: "20%",
+    height: "50%",
+    position: "absolute",
+    bottom: 10,
+    right: -15,
   },
 });

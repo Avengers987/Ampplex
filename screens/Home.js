@@ -34,7 +34,11 @@ const Home = ({ navigation, route }) => {
         <Tab.Screen
           name="Home"
           children={() => (
-            <HomeScreen userID={route.params.userID} navigation={navigation} />
+            <HomeScreen
+              userID={route.params.userID}
+              navigation={navigation}
+              userName={route.params.userName}
+            />
           )}
           options={{
             tabBarLabel: "Home",

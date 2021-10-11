@@ -359,10 +359,20 @@ const Profile = ({ userName, userID, navigation, route }) => {
       </ScrollView>
       <ActionSheet ref={actionSheetRef} bounceOnOpen={true}>
         <View style={styles.ActionSheetStyle}>
+          <View
+            style={{
+              backgroundColor: "lightgrey",
+              width: "15%",
+              height: "3.5%",
+              borderRadius: 20,
+              marginTop: 10,
+            }}
+          />
           <Text
             style={{
               fontSize: 18,
               fontWeight: "bold",
+              marginTop: 10,
             }}
           >
             Edit Profile Picture
