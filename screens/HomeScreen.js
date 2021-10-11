@@ -57,7 +57,7 @@ const HomeScreen = ({ navigation, userID }) => {
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
     wait(2000).then(() => setRefreshing(false));
-    navigation.replace("Home", { userID, navigation });
+    navigation.replace("Home", { userID, userName, navigation });
   }, []);
 
   useEffect(() => {

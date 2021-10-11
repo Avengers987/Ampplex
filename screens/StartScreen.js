@@ -34,34 +34,11 @@ const StartScreen = ({ navigation }) => {
     }
   };
 
-  setTimeout(() => {
+  useEffect(() => {
     canNavigateToHomeScreen();
-  }, 3000);
+  }, []);
 
-  return (
-    <View style={styles.container}>
-      <LinearGradient
-        // Button Linear Gradient
-        colors={["#fafa", "skyblue"]}
-        start={{ x: 0.5, y: 0.6 }}
-        end={{ x: 0.1, y: 0.5 }}
-        style={styles.LinearGradient}
-      >
-        <Text
-          style={{
-            fontWeight: "bold",
-            fontSize: 35,
-            color: "#fff",
-            position: "absolute",
-            left: Dimensions.get("window").width / 3,
-            top: Dimensions.get("window").height / 3,
-          }}
-        >
-          Ampplex
-        </Text>
-      </LinearGradient>
-    </View>
-  );
+  return <View />;
 };
 
 export default StartScreen;

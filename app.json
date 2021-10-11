@@ -5,6 +5,9 @@
     "name": "Ampplex",
     "slug": "Ampplex",
     "version": "1.0.0",
+    "splash": {
+      "image": "./assets/images/splash-screen.png"
+    },
     "assetBundlePatterns": [
       "**/*"
     ],
