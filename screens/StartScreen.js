@@ -6,6 +6,7 @@ import {
   Animated,
   Dimensions,
   ActivityIndicator,
+  Image,
 } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { LinearGradient } from "expo-linear-gradient";
@@ -33,12 +34,33 @@ const StartScreen = ({ navigation }) => {
       navigation.navigate("OnBoarding");
     }
   };
-
   useEffect(() => {
-    canNavigateToHomeScreen();
+    setTimeout(() => {
+      canNavigateToHomeScreen();
+    }, 2200);
   }, []);
 
-  return <View />;
+  return (
+    <View
+      style={{
+        backgroundColor: "white",
+        width: "100%",
+        height: "100%",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+      }}
+    >
+      <Image
+        fadeDuration={1000}
+        style={{
+          height: "40%",
+          width: "100%",
+        }}
+        source={require("../assets/images/final-logo.png")}
+      />
+    </View>
+  );
 };
 
 export default StartScreen;

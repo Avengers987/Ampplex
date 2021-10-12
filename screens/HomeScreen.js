@@ -29,13 +29,14 @@ const HomeScreen = ({ navigation, userID, userName }) => {
   const [status, setStatus] = useState({});
   const [refreshing, setRefreshing] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [connectedToInternet, setConnectedToInternet] = useState(null);
 
   const ConnectedToInternet = () => {
     let connected = null;
     NetInfo.addEventListener((networkState) => {
       connected = networkState.isConnected;
     });
-    return connected;
+    setConnectedToInternet(connected);
   };
 
   const getPostInfo = async () => {
@@ -64,6 +65,10 @@ const HomeScreen = ({ navigation, userID, userName }) => {
     getPostInfo(); // Calling the getPost API for retrieving user posts
   }, []);
 
+  setInterval(() => {
+    ConnectedToInternet();
+  }, 2000);
+
   return (
     <View style={styles.container}>
       <Header />
@@ -72,7 +77,7 @@ const HomeScreen = ({ navigation, userID, userName }) => {
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
         }
       >
-        {ConnectedToInternet() == false ? (
+        {connectedToInternet == false ? (
           <>
             <Text
               style={{
@@ -97,7 +102,7 @@ const HomeScreen = ({ navigation, userID, userName }) => {
               />
             </View>
           </>
-        ) : loading ? (
+        ) : loading && connectedToInternet ? (
           <View
             style={{
               alignSelf: "center",
