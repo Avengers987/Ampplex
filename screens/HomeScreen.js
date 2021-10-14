@@ -30,6 +30,7 @@ const HomeScreen = ({ navigation, userID, userName }) => {
   const [refreshing, setRefreshing] = useState(false);
   const [loading, setLoading] = useState(true);
   const [connectedToInternet, setConnectedToInternet] = useState(null);
+  const myUserID = userID;
 
   const ConnectedToInternet = () => {
     let connected = null;
@@ -186,7 +187,15 @@ const HomeScreen = ({ navigation, userID, userName }) => {
                       marginLeft: 90,
                       marginTop: -47,
                     }}
-                    onPress={() => navigation.navigate("Comments")}
+                    onPress={() => {
+                      let clickedUserID = element.UserID;
+                      let postID = element.Post_ID;
+                      navigation.navigate("Comments", {
+                        myUserID,
+                        clickedUserID,
+                        postID,
+                      });
+                    }}
                   >
                     <Image
                       style={styles.comment}
@@ -206,16 +215,16 @@ const HomeScreen = ({ navigation, userID, userName }) => {
                       {element["Caption"]}
                     </Text>
                   </View>
+                  <View
+                    style={{
+                      marginTop: 20,
+                    }}
+                  />
                 </View>
               </>
             );
           })
         )}
-        <View
-          style={{
-            height: 55,
-          }}
-        />
       </ScrollView>
     </View>
   );
@@ -230,10 +239,11 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     backgroundColor: "#fff",
+    width: "100%",
+    height: "100%",
   },
   postView: {
-    width: Dimensions.get("window").width,
-    height: Dimensions.get("window").height / 1.1 + 20,
+    width: "100%",
     backgroundColor: "#fafafa",
     alignSelf: "center",
     borderRadius: 30,

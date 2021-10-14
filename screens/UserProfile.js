@@ -234,7 +234,6 @@ const Profile = ({ navigation, route }) => {
               if (follower >= 1) {
                 setAlreadyFollowed(false);
                 Unfollow();
-                setFollower(follower - 1);
               }
             }}
           >
@@ -255,7 +254,6 @@ const Profile = ({ navigation, route }) => {
             onPress={() => {
               setAlreadyFollowed(true);
               IncreaseFollower();
-              setFollower(follower + 1);
             }}
           >
             <Text

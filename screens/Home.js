@@ -35,6 +35,7 @@ const Home = ({ navigation, route }) => {
           name="Home"
           children={() => (
             <HomeScreen
+              key={1}
               userID={route.params.userID}
               navigation={navigation}
               userName={route.params.userName}

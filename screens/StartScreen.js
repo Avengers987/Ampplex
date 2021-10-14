@@ -12,6 +12,16 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { LinearGradient } from "expo-linear-gradient";
 
 const StartScreen = ({ navigation }) => {
+  const logoOpacity = new Animated.Value(0);
+
+  useEffect(() => {
+    Animated.timing(logoOpacity, {
+      toValue: 1,
+      duration: 2000,
+      useNativeDriver: false,
+    }).start();
+  }, []);
+
   const canNavigateToHomeScreen = async () => {
     // This function Handles the navigation, if user is using this app for the first time then he/she will be navigated to the Onboarding screen else user will be navigated directly to the Home Screen.
     const isLogined = await AsyncStorage.getItem("isLogined_Boolean");
@@ -34,6 +44,7 @@ const StartScreen = ({ navigation }) => {
       navigation.navigate("OnBoarding");
     }
   };
+
   useEffect(() => {
     setTimeout(() => {
       canNavigateToHomeScreen();
@@ -41,7 +52,7 @@ const StartScreen = ({ navigation }) => {
   }, []);
 
   return (
-    <View
+    <Animated.View
       style={{
         backgroundColor: "white",
         width: "100%",
@@ -49,17 +60,29 @@ const StartScreen = ({ navigation }) => {
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
+        opacity: logoOpacity,
       }}
     >
-      <Image
-        fadeDuration={1000}
+      <Text
         style={{
-          height: "40%",
-          width: "100%",
+          fontWeight: "bold",
+          fontSize: 80,
+          transform: [{ rotate: "180deg" }],
+          elevation: 45,
+          borderRadius: 100,
         }}
-        source={require("../assets/images/final-logo.png")}
-      />
-    </View>
+      >
+        V
+      </Text>
+      <Text
+        style={{
+          fontSize: 30,
+          fontFamily: "sans-serif-medium",
+        }}
+      >
+        Ampplex
+      </Text>
+    </Animated.View>
   );
 };
 

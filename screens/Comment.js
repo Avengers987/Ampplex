@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   StyleSheet,
   Text,
@@ -13,16 +13,58 @@ import {
 } from "react-native";
 import EmojiBoard from "react-native-emoji-board";
 
-const Comment = ({}) => {
+const Comment = ({ route }) => {
   // Props - postID, pressedUserID, userName
   const [experience, setExperience] = useState("");
   const [showEmoji, setShowEmoji] = useState(false);
+  let [response, setResponse] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   const onClick = (emoji) => {
     console.log(emoji.code);
     setExperience(experience + emoji.code);
     setShowEmoji(false);
   };
+
+  const PostComment = async () => {
+    const url = `https://ampplex-backened.herokuapp.com/Comment/${route.params.myUserID}/${route.params.clickedUserID}/${route.params.postID}/${experience}`;
+
+    await fetch(url)
+      .then((response) => {
+        return response.json();
+      })
+      .then((data) => {
+        setExperience("");
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
+  const getComments = async () => {
+    const url = `https://ampplex-backened.herokuapp.com/getComments/${route.params.clickedUserID}/${route.params.postID}`;
+
+    await fetch(url)
+      .then((response) => {
+        return response.json();
+      })
+      .then((data) => {
+        setLoading(false);
+        // console.log(data);
+        setResponse(data);
+      })
+      .catch((error) => {
+        setResponse(null);
+      });
+  };
+
+  useEffect(() => {
+    getComments();
+  }, []);
+
+  useEffect(() => {
+    console.log(response);
+  }, [response]);
 
   return (
     <KeyboardAvoidingView
@@ -68,7 +110,12 @@ const Comment = ({}) => {
           </TouchableOpacity>
           <TouchableOpacity
             style={styles.postBTn}
-            onPress={() => console.log("Pressed Post button!")}
+            onPress={() => {
+              if (experience.length > 0) {
+                PostComment();
+                getComments();
+              }
+            }}
           >
             <Text
               style={{

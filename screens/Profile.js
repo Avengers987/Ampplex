@@ -446,6 +446,7 @@ const styles = StyleSheet.create({
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
+    width: "100%",
   },
   Profile: {
     display: "flex",
@@ -453,7 +454,8 @@ const styles = StyleSheet.create({
     alignItems: "center",
     backgroundColor: "white",
     height: 300,
-    borderRadius: 50,
+    borderBottomLeftRadius: 50,
+    borderBottomRightRadius: 50,
     elevation: 12,
   },
   Profile2: {
@@ -489,15 +491,15 @@ const styles = StyleSheet.create({
     top: 30,
   },
   postImg: {
-    width: 350,
-    height: 450,
+    width: 360,
+    height: 360,
     borderRadius: 20,
     marginTop: 10,
     marginLeft: 20,
   },
   postView: {
     width: 400,
-    height: 600,
+    height: "11%",
     backgroundColor: "white",
     alignSelf: "center",
     borderRadius: 30,
