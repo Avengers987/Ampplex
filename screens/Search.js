@@ -7,7 +7,7 @@ import {
   Dimensions,
   Image,
   TouchableOpacity,
-  ActivityIndicator,
+  ScrollView,
 } from "react-native";
 import LottieView from "lottie-react-native";
 
@@ -49,12 +49,37 @@ const Search = ({ navigation, userID }) => {
         <TextInput
           placeholder={"Search for users..."}
           onChangeText={(e) => setSearchValue(e.trim())}
+          value={searchValue}
           style={{
             fontSize: 16,
             marginTop: 12,
             marginLeft: 45,
+            paddingRight: 70,
           }}
         />
+        {searchValue.length > 0 ? (
+          <TouchableOpacity
+            onPress={() => setSearchValue("")}
+            style={{
+              position: "absolute",
+              right: 0,
+              top: 15,
+              width: "20%",
+              height: "50%",
+            }}
+          >
+            <Text
+              style={{
+                fontSize: 15,
+                color: "skyblue",
+              }}
+            >
+              clear
+            </Text>
+          </TouchableOpacity>
+        ) : (
+          <View />
+        )}
       </View>
       <Image
         source={require("../Images/search.png")}

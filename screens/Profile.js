@@ -347,15 +347,15 @@ const Profile = ({ userName, userID, navigation, route }) => {
                     {element["Caption"]}
                   </Text>
                 </View>
+                <View
+                  style={{
+                    marginTop: 70,
+                  }}
+                />
               </View>
             );
           })
         )}
-        <View
-          style={{
-            height: 55,
-          }}
-        />
       </ScrollView>
       <ActionSheet ref={actionSheetRef} bounceOnOpen={true}>
         <View style={styles.ActionSheetStyle}>
@@ -498,8 +498,7 @@ const styles = StyleSheet.create({
     marginLeft: 20,
   },
   postView: {
-    width: 400,
-    height: "11%",
+    width: "100%",
     backgroundColor: "white",
     alignSelf: "center",
     borderRadius: 30,

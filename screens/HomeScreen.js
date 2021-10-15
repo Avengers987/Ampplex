@@ -128,8 +128,8 @@ const HomeScreen = ({ navigation, userID, userName }) => {
                       style={styles.profilePicture}
                       source={{
                         uri:
-                          element["profilePicPath"] != "null"
-                            ? element["profilePicPath"]
+                          element.profilePicPath != "null"
+                            ? element.profilePicPath
                             : "https://images.unsplash.com/photo-1514923995763-768e52f5af87?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80",
                       }}
                     />
@@ -149,7 +149,7 @@ const HomeScreen = ({ navigation, userID, userName }) => {
                       });
                     }}
                   >
-                    <Text style={styles.UserName}>{element["UserName"]}</Text>
+                    <Text style={styles.UserName}>{element.UserName}</Text>
                   </TouchableOpacity>
                   {element.Type == "Image" ? (
                     <TouchableWithoutFeedback>
@@ -212,7 +212,7 @@ const HomeScreen = ({ navigation, userID, userName }) => {
                         marginTop: 35,
                       }}
                     >
-                      {element["Caption"]}
+                      {element.Caption}
                     </Text>
                   </View>
                   <View
