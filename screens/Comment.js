@@ -8,19 +8,27 @@ import {
   KeyboardAvoidingView,
   Platform,
   Image,
-  Pressable,
   TouchableOpacity,
   ScrollView,
+  RefreshControl,
 } from "react-native";
 import EmojiBoard from "react-native-emoji-board";
 import LottieView from "lottie-react-native";
 
-const Comment = ({ route }) => {
+const wait = (timeout) => {
+  return new Promise((resolve) => setTimeout(resolve, timeout));
+};
+
+const Comment = ({ route, navigation }) => {
   // Props - postID, pressedUserID, userName
   const [experience, setExperience] = useState("");
   const [showEmoji, setShowEmoji] = useState(false);
   const [response, setResponse] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [refreshing, setRefreshing] = useState(false);
+  const myUserID = route.params.myUserID;
+  const clickedUserID = route.params.clickedUserID;
+  const postID = route.params.postID;
 
   const onClick = (emoji) => {
     setExperience(experience + emoji.code);
@@ -57,6 +65,12 @@ const Comment = ({ route }) => {
       });
   };
 
+  const onRefresh = React.useCallback(() => {
+    setRefreshing(true);
+    wait(2000).then(() => setRefreshing(false));
+    navigation.replace("Comments", { myUserID, clickedUserID, postID });
+  }, []);
+
   useEffect(() => {
     getComments();
   }, []);
@@ -69,10 +83,11 @@ const Comment = ({ route }) => {
     <>
       <ScrollView
         contentContainerStyle={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
+          paddingBottom: "40%",
         }}
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        }
       >
         {response != null ? (
           response.map((element, index) => {
@@ -99,34 +114,46 @@ const Comment = ({ route }) => {
                   >
                     <Text>{element.Comment}</Text>
                   </View>
-                  <View
-                    style={{
-                      position: "absolute",
-                      top: 10,
-                    }}
-                  />
                 </View>
               </>
             );
           })
         ) : (
-          <View style={styles.container}>
+          <>
             <LottieView
               source={require("../assets/lottie/not-found.json")}
               autoPlay
+              style={{
+                width: "80%",
+                height: "100%",
+                marginTop: 20,
+                alignSelf: "center",
+              }}
               loop={true}
             />
             <Text
               style={{
-                position: "absolute",
-                top: 10,
-                fontSize: 20,
+                fontSize: 22,
                 fontWeight: "bold",
+                alignSelf: "center",
+                position: "absolute",
+                bottom: 50,
               }}
             >
               No comments found!
             </Text>
-          </View>
+            <Text
+              style={{
+                fontSize: 22,
+                fontWeight: "bold",
+                alignSelf: "center",
+                position: "absolute",
+                bottom: 40,
+              }}
+            >
+              Be the first to comment
+            </Text>
+          </>
         )}
       </ScrollView>
 
@@ -234,7 +261,9 @@ const styles = StyleSheet.create({
     backgroundColor: "#fafafa",
     alignItems: "center",
     borderRadius: 20,
-    marginBottom: 100,
+    marginTop: 20,
+    marginLeft: 20,
+    elevation: 10,
   },
   profilePicture: {
     width: 50,
@@ -242,7 +271,7 @@ const styles = StyleSheet.create({
     borderRadius: 50,
     position: "absolute",
     left: -150,
-    top: 5,
+    top: 10,
   },
   UserName: {
     fontSize: 15,

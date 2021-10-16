@@ -57,7 +57,7 @@ const Search = ({ navigation, userID }) => {
             paddingRight: 70,
           }}
         />
-        {searchValue.length > 0 ? (
+        {searchValue !== null && searchValue.length > 0 ? (
           <TouchableOpacity
             onPress={() => setSearchValue("")}
             style={{
@@ -80,11 +80,11 @@ const Search = ({ navigation, userID }) => {
         ) : (
           <View />
         )}
+        <Image
+          source={require("../Images/search.png")}
+          style={styles.SearchIcon}
+        />
       </View>
-      <Image
-        source={require("../Images/search.png")}
-        style={styles.SearchIcon}
-      />
 
       {loading ? (
         <View
@@ -104,55 +104,71 @@ const Search = ({ navigation, userID }) => {
         <View />
       )}
 
-      {response != null && searchValue != null ? (
-        response.map((value, index) => {
-          let clickedUserID = value.userID;
-          let clickedUserName = value.UserName;
-          let myUserId = userID;
+      <ScrollView
+        style={{
+          flex: 1,
+          display: "flex",
+          width: "100%",
+          height: "100%",
+          marginTop: 110,
+        }}
+        contentContainerStyle={{
+          flex: 1,
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
+        {response != null && searchValue != null ? (
+          response.map((value, index) => {
+            let clickedUserID = value.userID;
+            let clickedUserName = value.UserName;
+            let myUserId = userID;
 
-          if (
-            searchForUser(
-              searchValue.toLowerCase(),
-              value.UserName.toLowerCase()
-            )
-          ) {
-            return (
-              <TouchableOpacity
-                key={index}
-                style={styles.UserView}
-                onPress={() =>
-                  navigation.navigate("UserProfile", {
-                    clickedUserID,
-                    clickedUserName, // Check if follow feature is working or not
-                    myUserId,
-                  })
-                }
-              >
-                <Text
-                  style={{
-                    fontSize: 15,
-                    fontWeight: "700",
-                    alignSelf: "center",
-                  }}
+            if (
+              searchForUser(
+                searchValue.toLowerCase(),
+                value.UserName.toLowerCase()
+              )
+            ) {
+              return (
+                <TouchableOpacity
+                  key={index}
+                  style={styles.UserView}
+                  onPress={() =>
+                    navigation.navigate("UserProfile", {
+                      clickedUserID,
+                      clickedUserName, // Check if follow feature is working or not
+                      myUserId,
+                    })
+                  }
                 >
-                  {value.UserName}
-                </Text>
-                <Image
-                  source={{
-                    uri:
-                      value.ProfilePicPath === null
-                        ? "https://images.unsplash.com/photo-1514923995763-768e52f5af87?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80"
-                        : value.ProfilePicPath,
-                  }}
-                  style={styles.ProfilePicture}
-                />
-              </TouchableOpacity>
-            );
-          }
-        })
-      ) : (
-        <View />
-      )}
+                  <Text
+                    style={{
+                      fontSize: 15,
+                      fontWeight: "700",
+                      alignSelf: "center",
+                    }}
+                  >
+                    {value.UserName}
+                  </Text>
+                  <Image
+                    source={{
+                      uri:
+                        value.ProfilePicPath === null
+                          ? "https://images.unsplash.com/photo-1514923995763-768e52f5af87?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80"
+                          : value.ProfilePicPath,
+                    }}
+                    style={styles.ProfilePicture}
+                  />
+                </TouchableOpacity>
+              );
+            }
+          })
+        ) : (
+          <View />
+        )}
+      </ScrollView>
     </View>
   );
 };
@@ -179,13 +195,14 @@ const styles = StyleSheet.create({
     borderRadius: 70,
     position: "absolute",
     top: 40,
+    elevation: 20,
   },
   SearchIcon: {
     width: 25,
     height: 25,
     position: "absolute",
-    top: 54,
-    left: 43,
+    top: 15,
+    left: 12,
   },
   UserView: {
     width: 300,
@@ -194,7 +211,6 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     position: "absolute",
     alignSelf: "center",
-    position: "absolute",
     top: 150,
   },
   ProfilePicture: {
@@ -208,7 +224,7 @@ const styles = StyleSheet.create({
   LoadingIndicator: {
     width: 120,
     height: 120,
-    marginTop: -10,
+    marginTop: 150,
     alignItems: "center",
   },
 });

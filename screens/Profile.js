@@ -503,6 +503,7 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     borderRadius: 30,
     marginTop: 30,
+    elevation: 12,
   },
   ActionSheetStyle: {
     display: "flex",

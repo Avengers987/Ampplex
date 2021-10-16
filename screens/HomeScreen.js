@@ -7,14 +7,11 @@ import {
   ScrollView,
   Image,
   TouchableWithoutFeedback,
-  ActivityIndicator,
   TouchableOpacity,
   RefreshControl,
 } from "react-native";
-import Profile from "./Profile";
 import Header from "./Header";
-import { Video, AVPlaybackStatus } from "expo-av";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { Video } from "expo-av";
 import LottieView from "lottie-react-native";
 import Like from "../components/Like";
 import NetInfo from "@react-native-community/netinfo";
