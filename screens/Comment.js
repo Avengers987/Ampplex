@@ -43,6 +43,7 @@ const Comment = ({ route, navigation }) => {
       })
       .then((data) => {
         setExperience("");
+        getComments();
       })
       .catch((error) => {
         console.log(error);
@@ -89,7 +90,14 @@ const Comment = ({ route, navigation }) => {
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
         }
       >
-        {response != null ? (
+        {response != null && loading ? (
+          <LottieView
+            style={styles.LoadingIndicator}
+            source={require("../assets/lottie/comment-loading.json")}
+            autoPlay
+            loop={true}
+          />
+        ) : response != null ? (
           response.map((element, index) => {
             return (
               <>
@@ -148,10 +156,10 @@ const Comment = ({ route, navigation }) => {
                 fontWeight: "bold",
                 alignSelf: "center",
                 position: "absolute",
-                bottom: 40,
+                bottom: 20,
               }}
             >
-              Be the first to comment
+              Be the first to comment!
             </Text>
           </>
         )}
@@ -203,7 +211,6 @@ const Comment = ({ route, navigation }) => {
           onPress={() => {
             if (experience.length > 0) {
               PostComment();
-              getComments();
             }
           }}
         >
@@ -276,5 +283,10 @@ const styles = StyleSheet.create({
   UserName: {
     fontSize: 15,
     fontWeight: "bold",
+  },
+  LoadingIndicator: {
+    alignSelf: "center",
+    width: 350,
+    height: 350,
   },
 });

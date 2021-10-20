@@ -14,6 +14,7 @@ import Profile from "./screens/Profile";
 import UserProfile from "./screens/UserProfile";
 import Comment from "./screens/Comment.js";
 import StartScreen from "./screens/StartScreen";
+import EditProfile from "./screens/EditProfile";
 
 import * as firebase from "firebase";
 
@@ -139,6 +140,18 @@ export default function App() {
           component={UserProfile}
           options={{
             headerShown: false,
+          }}
+        />
+
+        <Stack.Screen
+          name="EditProfile"
+          component={EditProfile}
+          options={{
+            headerShown: true,
+            headerTitle: "Edit Profile",
+            headerTitleStyle: {
+              fontWeight: "bold",
+            },
           }}
         />
       </Stack.Navigator>

@@ -11,6 +11,7 @@ import {
   ActivityIndicator,
 } from "react-native";
 import { Video } from "expo-av";
+import EditProfile from "../components/EditProfile";
 
 const Profile = ({ navigation, route }) => {
   const [posts, SetPosts] = useState(0);
@@ -22,6 +23,7 @@ const Profile = ({ navigation, route }) => {
   const [status, setStatus] = React.useState({});
   const [alreadyFollowed, setAlreadyFollowed] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [showEditProfile, setShowEditProfile] = useState(null);
 
   const userID = route.params.clickedUserID;
   const userName = route.params.clickedUserName;
@@ -71,6 +73,10 @@ const Profile = ({ navigation, route }) => {
   if (userID != myUserId) {
     useEffect(() => {
       Check_Followed();
+    }, []);
+  } else {
+    useEffect(() => {
+      setShowEditProfile(true);
     }, []);
   }
 
@@ -267,6 +273,8 @@ const Profile = ({ navigation, route }) => {
               Follow
             </Text>
           </TouchableOpacity>
+        ) : showEditProfile ? (
+          <EditProfile navigation={navigation} />
         ) : (
           <View />
         )}
@@ -373,7 +381,8 @@ const styles = StyleSheet.create({
     alignItems: "center",
     backgroundColor: "white",
     height: 300,
-    borderRadius: 50,
+    borderBottomLeftRadius: 50,
+    borderBottomRightRadius: 50,
     elevation: 12,
   },
   Profile2: {
@@ -431,6 +440,7 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     borderRadius: 30,
     marginTop: 30,
+    elevation: 12,
   },
   video: {
     alignSelf: "center",

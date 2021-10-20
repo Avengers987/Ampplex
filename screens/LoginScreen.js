@@ -86,7 +86,7 @@ export default function LoginScreen(props) {
   const Login = (email, password) => {
     // Login method sends the email and password to flask Rest API and get response like "success" or "error"
 
-    const url = `https://ampplex-backened.herokuapp.com/Login/${email}/${password}`;
+    const url = `https://ampplex-backened.herokuapp.com/Login/${email.trim()}/${password.trim()}`;
     fetch(url)
       .then((response) => {
         return response.json();

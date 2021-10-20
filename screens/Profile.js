@@ -15,6 +15,7 @@ import ActionSheet from "react-native-actions-sheet";
 import * as ImagePicker from "expo-image-picker";
 import firebase from "firebase";
 import { Video, AVPlaybackStatus } from "expo-av";
+import EditProfile from "../components/EditProfile";
 
 const actionSheetRef = createRef();
 
@@ -274,6 +275,7 @@ const Profile = ({ userName, userID, navigation, route }) => {
             My Posts
           </Text>
         </View>
+        <EditProfile navigation={navigation} />
       </View>
       <ScrollView
         style={{
