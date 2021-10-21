@@ -56,7 +56,7 @@ const HomeScreen = ({ navigation, userID, userName }) => {
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
     wait(2000).then(() => setRefreshing(false));
-    navigation.replace("Home", { userID, userName, navigation });
+    getPostInfo();
   }, []);
 
   useEffect(() => {

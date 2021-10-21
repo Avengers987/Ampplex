@@ -9,7 +9,6 @@ import {
   Image,
 } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { LinearGradient } from "expo-linear-gradient";
 
 const StartScreen = ({ navigation }) => {
   const logoOpacity = new Animated.Value(0);

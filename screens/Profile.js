@@ -16,6 +16,7 @@ import * as ImagePicker from "expo-image-picker";
 import firebase from "firebase";
 import { Video, AVPlaybackStatus } from "expo-av";
 import EditProfile from "../components/EditProfile";
+import Likes from "../components/Like";
 
 const actionSheetRef = createRef();
 
@@ -336,6 +337,33 @@ const Profile = ({ userName, userID, navigation, route }) => {
                     onPlaybackStatusUpdate={(status) => setStatus(() => status)}
                   />
                 )}
+                <Likes
+                  postID={element.Post_ID}
+                  myUserId={userID}
+                  pressedUserID={userID}
+                />
+                <TouchableOpacity
+                  style={{
+                    marginLeft: 90,
+                    marginTop: -47,
+                  }}
+                  onPress={() => {
+                    let postID = element.Post_ID;
+                    let myUserID = userID;
+                    let clickedUserID = userID;
+
+                    navigation.navigate("Comments", {
+                      myUserID,
+                      clickedUserID,
+                      postID,
+                    });
+                  }}
+                >
+                  <Image
+                    style={styles.comment}
+                    source={require("../Images/comment-icon.png")}
+                  />
+                </TouchableOpacity>
                 <View>
                   <Text
                     style={{
@@ -343,10 +371,10 @@ const Profile = ({ userName, userID, navigation, route }) => {
                       fontWeight: "600",
                       alignSelf: "flex-start",
                       marginLeft: 20,
-                      marginTop: 10,
+                      marginTop: 30,
                     }}
                   >
-                    {element["Caption"]}
+                    {element.Caption}
                   </Text>
                 </View>
                 <View
@@ -449,6 +477,10 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     width: "100%",
+  },
+  comment: {
+    width: 27,
+    height: 27,
   },
   Profile: {
     display: "flex",

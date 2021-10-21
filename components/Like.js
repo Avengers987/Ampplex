@@ -6,11 +6,9 @@ import LottieView from "lottie-react-native";
 const Like = (props) => {
   const [liked, setLiked] = useState(null);
   const animation = useRef(null);
-  const DoubleTapanimation = useRef(null);
   const isFirstRun = useRef(true);
   const [lastTap, setLastTap] = useState(null);
   const DOUBLE_PRESS_DELAY = 300;
-  const [doubleTapLike, setDoubleTapLike] = useState(false);
   const [likesCount, setLikesCount] = useState(null);
 
   const handledDoubleTap = () => {
@@ -45,16 +43,6 @@ const Like = (props) => {
       animation.current.play(0, 20);
     }
   }, [liked]);
-
-  // React.useEffect(() => {
-  //   if (liked) {
-  //     setDoubleTapLike(true);
-  //     animation.current.play(20, 50);
-  //   } else {
-  //     setDoubleTapLike(false);
-  //     animation.current.play(0, 20);
-  //   }
-  // }, [liked]);
 
   const CheckLiked = () => {
     const url = `https://ampplex-backened.herokuapp.com/isLiked/${props.myUserId}/${props.postID}`;

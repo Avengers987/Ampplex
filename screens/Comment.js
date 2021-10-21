@@ -20,15 +20,13 @@ const wait = (timeout) => {
 };
 
 const Comment = ({ route, navigation }) => {
-  // Props - postID, pressedUserID, userName
+  // Props - postID, clickedUserID, myUserID
+
   const [experience, setExperience] = useState("");
   const [showEmoji, setShowEmoji] = useState(false);
   const [response, setResponse] = useState([]);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
-  const myUserID = route.params.myUserID;
-  const clickedUserID = route.params.clickedUserID;
-  const postID = route.params.postID;
 
   const onClick = (emoji) => {
     setExperience(experience + emoji.code);
@@ -69,7 +67,7 @@ const Comment = ({ route, navigation }) => {
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
     wait(2000).then(() => setRefreshing(false));
-    navigation.replace("Comments", { myUserID, clickedUserID, postID });
+    getComments();
   }, []);
 
   useEffect(() => {

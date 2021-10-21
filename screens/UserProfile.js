@@ -4,14 +4,13 @@ import {
   Text,
   StyleSheet,
   Image,
-  Dimensions,
   ScrollView,
   TouchableOpacity,
-  Alert,
   ActivityIndicator,
 } from "react-native";
 import { Video } from "expo-av";
 import EditProfile from "../components/EditProfile";
+import Likes from "../components/Like";
 
 const Profile = ({ navigation, route }) => {
   const [posts, SetPosts] = useState(0);
@@ -213,6 +212,7 @@ const Profile = ({ navigation, route }) => {
               position: "absolute",
               top: 70,
               fontSize: 15,
+              fontFamily: "sans-serif-medium",
               left: -36,
             }}
           >
@@ -226,6 +226,7 @@ const Profile = ({ navigation, route }) => {
               position: "absolute",
               top: 70,
               fontSize: 15,
+              fontFamily: "sans-serif-medium",
               alignSelf: "center",
               left: 50,
             }}
@@ -266,6 +267,7 @@ const Profile = ({ navigation, route }) => {
               style={{
                 fontSize: 17,
                 fontWeight: "bold",
+                fontFamily: "sans-serif-medium",
                 color: "white",
                 alignSelf: "center",
               }}
@@ -328,7 +330,7 @@ const Profile = ({ navigation, route }) => {
                 {element.Type == "Image" ? (
                   <Image
                     source={{
-                      uri: element["ImgPath"],
+                      uri: element.ImgPath,
                     }}
                     style={styles.postImg}
                   />
@@ -344,6 +346,33 @@ const Profile = ({ navigation, route }) => {
                     isLooping
                   />
                 )}
+                <Likes
+                  postID={element.Post_ID}
+                  myUserId={myUserId}
+                  pressedUserID={userID}
+                />
+                <TouchableOpacity
+                  style={{
+                    marginLeft: 90,
+                    marginTop: -47,
+                  }}
+                  onPress={() => {
+                    let postID = element.Post_ID;
+                    let myUserID = myUserId;
+                    let clickedUserID = userID;
+
+                    navigation.navigate("Comments", {
+                      myUserID,
+                      clickedUserID,
+                      postID,
+                    });
+                  }}
+                >
+                  <Image
+                    style={styles.comment}
+                    source={require("../Images/comment-icon.png")}
+                  />
+                </TouchableOpacity>
                 <View>
                   <Text
                     style={{
@@ -351,10 +380,10 @@ const Profile = ({ navigation, route }) => {
                       fontWeight: "600",
                       alignSelf: "flex-start",
                       marginLeft: 20,
-                      marginTop: 10,
+                      marginTop: 40,
                     }}
                   >
-                    {element["Caption"]}
+                    {element.Caption}
                   </Text>
                 </View>
               </View>
@@ -393,6 +422,7 @@ const styles = StyleSheet.create({
   UserName: {
     fontSize: 25,
     fontWeight: "bold",
+    fontFamily: "sans-serif-medium",
     marginTop: -225,
   },
   Profile_Picture: {
@@ -406,6 +436,7 @@ const styles = StyleSheet.create({
   PostsNumber: {
     fontSize: 25,
     fontWeight: "bold",
+    fontFamily: "sans-serif-medium",
     position: "absolute",
     top: 30,
     left: -25,
@@ -422,6 +453,7 @@ const styles = StyleSheet.create({
   Followers: {
     fontSize: 25,
     fontWeight: "bold",
+    fontFamily: "sans-serif-medium",
     position: "absolute",
     left: 70,
     top: 30,
@@ -435,7 +467,7 @@ const styles = StyleSheet.create({
   },
   postView: {
     width: 400,
-    height: 600,
+    paddingBottom: 20,
     backgroundColor: "white",
     alignSelf: "center",
     borderRadius: 30,
@@ -459,5 +491,9 @@ const styles = StyleSheet.create({
     marginLeft: 80,
     position: "absolute",
     top: 20,
+  },
+  comment: {
+    width: 27,
+    height: 27,
   },
 });
