@@ -183,6 +183,7 @@ const Comment = ({ route, navigation }) => {
             style={styles.ExperienceInput}
             onChangeText={(e) => setExperience(e)}
             value={experience}
+            spellCheck={true}
           />
         </KeyboardAvoidingView>
         <TouchableOpacity
@@ -275,7 +276,7 @@ const styles = StyleSheet.create({
     height: 50,
     borderRadius: 50,
     position: "absolute",
-    left: -150,
+    left: -140,
     top: 10,
   },
   UserName: {

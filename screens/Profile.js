@@ -9,6 +9,7 @@ import {
   TouchableOpacity,
   TouchableHighlight,
   Alert,
+  Animated,
   ActivityIndicator,
 } from "react-native";
 import ActionSheet from "react-native-actions-sheet";
@@ -128,12 +129,12 @@ const Profile = ({ userName, userID, navigation, route }) => {
             console.log("File available at", downloadURL);
             Push_User_Data_To_RealTime_DB(downloadURL, userID);
           });
-          Alert.alert("Post status", "Profile picture successfully updated!");
+          Alert.alert("Status", "Profile picture successfully updated!");
           setProfilePicLoading(false);
         }
       );
     } catch (e) {
-      console.log(e);
+      console.log("UPLOADER ", e);
     }
   };
 
@@ -168,7 +169,7 @@ const Profile = ({ userName, userID, navigation, route }) => {
   };
 
   const getFollowers = async () => {
-    const url = `http://ampplex-backened.herokuapp.com/GetFollower/${userID}/`;
+    const url = `https://ampplex-backened.herokuapp.com/GetFollower/${userID}/`;
     console.log(url, "See me!");
     await fetch(url)
       .then((response) => {
@@ -211,16 +212,33 @@ const Profile = ({ userName, userID, navigation, route }) => {
               opacity: 0,
             }}
           ></View>
-
-          <Image
-            style={styles.Profile_Picture}
-            source={{
-              uri:
-                myProfilePic != null
-                  ? myProfilePic
-                  : "https://images.unsplash.com/photo-1514923995763-768e52f5af87?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80",
-            }}
-          />
+          {myProfilePic !== null ? (
+            <Animated.Image
+              style={{
+                width: 90,
+                height: 90,
+                borderRadius: 90,
+                position: "absolute",
+                left: 20,
+                top: 70,
+              }}
+              source={{
+                uri: myProfilePic,
+              }}
+            />
+          ) : (
+            <Animated.Image
+              style={{
+                width: 90,
+                height: 90,
+                borderRadius: 90,
+                position: "absolute",
+                left: 20,
+                top: 70,
+              }}
+              source={require("../assets/images/default_profile_picture.png")}
+            />
+          )}
           {profilePicLoading === true ? (
             <View
               style={{
@@ -276,7 +294,7 @@ const Profile = ({ userName, userID, navigation, route }) => {
             My Posts
           </Text>
         </View>
-        <EditProfile navigation={navigation} />
+        <EditProfile navigation={navigation} userID={userID} />
       </View>
       <ScrollView
         style={{
@@ -501,14 +519,6 @@ const styles = StyleSheet.create({
     fontSize: 25,
     fontWeight: "bold",
     marginTop: -225,
-  },
-  Profile_Picture: {
-    width: 90,
-    height: 90,
-    borderRadius: 100,
-    position: "absolute",
-    left: 20,
-    top: 70,
   },
   PostsNumber: {
     fontSize: 25,

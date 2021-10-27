@@ -1,12 +1,14 @@
 import React from "react";
 import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
 
-const EditProfile = ({ navigation }) => {
+const EditProfile = ({ navigation, userID }) => {
   return (
     <View style={styles.container}>
       <TouchableOpacity
         style={styles.EditProfileBtn}
-        onPress={() => navigation.navigate("EditProfile")}
+        onPress={() =>
+          navigation.navigate("EditProfile", { userID, navigation })
+        }
       >
         <Text
           style={{
