@@ -20,7 +20,7 @@ import * as ImagePicker from "expo-image-picker";
 const EditProfile = ({ route }) => {
   const userID = route.params.userID;
   const navigation = route.params.navigation;
-  const PROFILE_PIC_RADIUS_ANIMATION = new Animated.Value(20);
+  const PROFILE_PIC_RADIUS_ANIMATION = 90;
   const [profilePicLoading, setProfilePicLoading] = useState(false);
   const [myProfilePic, setMyProfilePic] = useState(null);
   const [profilePic, setProfilePicGallery] = useState(null);
@@ -29,16 +29,7 @@ const EditProfile = ({ route }) => {
   const [bio, setBio] = useState("");
   const actionSheetRef = createRef();
 
-  useEffect(() => {
-    Animated.timing(PROFILE_PIC_RADIUS_ANIMATION, {
-      toValue: 120,
-      duration: 1000,
-      useNativeDriver: true,
-    }).start();
-  }, [myProfilePic]);
-
   const Push_User_Data_To_RealTime_DB = (profilePicPath, userID) => {
-    console.warn("User ID is : ", userID);
     firebase
       .database()
       .ref(`User/${userID}/ProfilePicture`)
@@ -53,6 +44,21 @@ const EditProfile = ({ route }) => {
       });
   };
 
+  const onSubmitHandler_EditProfile = async () => {
+    const url = `https://ampplex-backened.herokuapp.com/EditProfile/${userID}/${firstName}/${lastName}/${bio}/`;
+
+    await fetch(url)
+      .then((response) => {
+        return response.text();
+      })
+      .then((data) => {
+        Alert.alert("Success!", "Edited successfully!");
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
   const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
@@ -62,12 +68,26 @@ const EditProfile = ({ route }) => {
       quality: 1,
     });
 
-    console.log(result);
-
     if (!result.cancelled) {
       setProfilePicGallery(result.uri);
       await SetImage(profilePic);
     }
+  };
+
+  const getUserInfo = async () => {
+    const url = `https://ampplex-backened.herokuapp.com/getUserData/${userID}`;
+    await fetch(url)
+      .then((response) => {
+        return response.json();
+      })
+      .then((data) => {
+        setFirstName(data.FirstName);
+        setLastName(data.LastName);
+        setBio(data.Bio);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   };
 
   const getProfilePicture = async () => {
@@ -140,6 +160,10 @@ const EditProfile = ({ route }) => {
   }, []);
 
   useEffect(() => {
+    getUserInfo();
+  }, []);
+
+  useEffect(() => {
     console.log(firstName, lastName);
   }, [firstName, lastName]);
 
@@ -166,7 +190,7 @@ const EditProfile = ({ route }) => {
           }}
         ></View>
         {myProfilePic === null ? (
-          <Animated.Image
+          <Image
             style={{
               width: 90,
               height: 90,
@@ -178,7 +202,7 @@ const EditProfile = ({ route }) => {
             source={require("../assets/images/default_profile_picture.png")}
           />
         ) : (
-          <Animated.Image
+          <Image
             style={{
               width: 90,
               height: 90,
@@ -247,6 +271,7 @@ const EditProfile = ({ route }) => {
         <TextInput
           spellCheck={true}
           placeholder={"David"}
+          value={firstName}
           maxLength={20}
           onChangeText={(e) => setFirstName(e)}
           style={{
@@ -302,6 +327,7 @@ const EditProfile = ({ route }) => {
           spellCheck={true}
           placeholder={"Ford"}
           maxLength={20}
+          value={lastName}
           onChangeText={(e) => setLastName(e)}
           style={{
             width: "100%",
@@ -354,8 +380,8 @@ const EditProfile = ({ route }) => {
         <TextInput
           spellCheck={true}
           placeholder={"Type your bio"}
-          maxLength={20}
-          onChangeText={(e) => setLastName(e)}
+          value={bio}
+          onChangeText={(e) => setBio(e)}
           style={{
             width: "100%",
             height: "100%",
@@ -366,7 +392,10 @@ const EditProfile = ({ route }) => {
         />
       </View>
 
-      <TouchableOpacity style={styles.submitBtn}>
+      <TouchableOpacity
+        style={styles.submitBtn}
+        onPress={() => onSubmitHandler_EditProfile()}
+      >
         <Text
           style={{
             fontSize: 18,
