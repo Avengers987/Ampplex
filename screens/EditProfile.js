@@ -16,6 +16,7 @@ import {
 import ActionSheet from "react-native-actions-sheet";
 import firebase from "firebase";
 import * as ImagePicker from "expo-image-picker";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const EditProfile = ({ route }) => {
   const userID = route.params.userID;
@@ -45,6 +46,8 @@ const EditProfile = ({ route }) => {
   };
 
   const onSubmitHandler_EditProfile = async () => {
+    await AsyncStorage.setItem("user_name", firstName + " " + lastName);
+
     const url = `https://ampplex-backened.herokuapp.com/EditProfile/${userID}/${firstName}/${lastName}/${bio}/`;
 
     await fetch(url)

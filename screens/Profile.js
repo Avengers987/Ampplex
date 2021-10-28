@@ -37,7 +37,7 @@ const Push_User_Data_To_RealTime_DB = (profilePicPath, userID) => {
     });
 };
 
-const Profile = ({ userName, userID, navigation, route }) => {
+const Profile = ({ userID, navigation, route }) => {
   const [posts, SetPosts] = useState(0);
   const [response, setResponse] = useState([]);
   const [profilePic, setProfilePicGallery] = useState(null);
@@ -47,6 +47,22 @@ const Profile = ({ userName, userID, navigation, route }) => {
   const [status, setStatus] = React.useState({});
   const [follower, setFollower] = useState(0);
   const [loading, setLoading] = useState(true);
+  const [userName, setUserName] = useState(userName);
+
+  const getUserName = async () => {
+    const url = `https://ampplex-backened.herokuapp.com/getUserNameFromUserID/${userID}/`;
+
+    await fetch(url)
+      .then((response) => {
+        return response.json();
+      })
+      .then((data) => {
+        setUserName(data.UserName);
+      })
+      .catch((err) => {
+        console.log("");
+      });
+  };
 
   if (userID == undefined) {
     userID = route.params.userID;
@@ -84,6 +100,7 @@ const Profile = ({ userName, userID, navigation, route }) => {
   };
 
   useEffect(() => {
+    getUserName();
     getProfilePicture();
   }, []);
 
