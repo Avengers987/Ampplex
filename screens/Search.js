@@ -152,15 +152,20 @@ const Search = ({ navigation, userID }) => {
                   >
                     {value.UserName}
                   </Text>
-                  <Image
-                    source={{
-                      uri:
-                        value.ProfilePicPath === null
-                          ? "https://images.unsplash.com/photo-1514923995763-768e52f5af87?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80"
-                          : value.ProfilePicPath,
-                    }}
-                    style={styles.ProfilePicture}
-                  />
+                  {/* ProfilePicture */}
+                  {value.ProfilePicPath !== null ? (
+                    <Image
+                      source={{
+                        uri: value.ProfilePicPath,
+                      }}
+                      style={styles.ProfilePicture}
+                    />
+                  ) : (
+                    <Image
+                      source={require("../assets/images/default_profile_picture.png")}
+                      style={styles.ProfilePicture}
+                    />
+                  )}
                 </TouchableOpacity>
               );
             }

@@ -1,25 +1,32 @@
 import React from "react";
-import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  View,
+  TouchableOpacity,
+  Dimensions,
+  Image,
+} from "react-native";
 
 const EditProfile = ({ navigation, userID }) => {
   return (
     <View style={styles.container}>
       <TouchableOpacity
-        style={styles.EditProfileBtn}
+        style={{
+          position: "absolute",
+          top: -15,
+          right: -160,
+        }}
         onPress={() =>
           navigation.navigate("EditProfile", { userID, navigation })
         }
       >
-        <Text
-          style={{
-            fontWeight: "bold",
-            fontSize: 17,
-            alignSelf: "center",
-            color: "white",
-          }}
-        >
-          Edit Profile
-        </Text>
+        <View>
+          <Image
+            style={styles.EditProfileBtn}
+            source={require("../assets/images/settings.png")}
+          />
+        </View>
       </TouchableOpacity>
     </View>
   );
@@ -34,14 +41,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   EditProfileBtn: {
-    width: 130,
-    height: 30,
-    position: "absolute",
-    top: 120,
-    backgroundColor: "skyblue",
-    paddingLeft: 20,
-    paddingRight: 20,
-    borderRadius: 20,
-    left: -30,
+    width: 40,
+    height: 40,
   },
 });

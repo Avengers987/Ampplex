@@ -188,8 +188,6 @@ export default function AddPost({ navigation, route, userID }) {
         quality: 1,
       });
 
-      console.log(result);
-
       if (!result.cancelled) {
         setImage(result.uri);
         setMediaType("Image");

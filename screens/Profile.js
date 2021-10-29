@@ -48,6 +48,7 @@ const Profile = ({ userID, navigation, route }) => {
   const [follower, setFollower] = useState(0);
   const [loading, setLoading] = useState(true);
   const [userName, setUserName] = useState(userName);
+  const [bio, setBio] = useState("");
 
   const getUserName = async () => {
     const url = `https://ampplex-backened.herokuapp.com/getUserNameFromUserID/${userID}/`;
@@ -67,6 +68,20 @@ const Profile = ({ userID, navigation, route }) => {
   if (userID == undefined) {
     userID = route.params.userID;
   }
+
+  const getUserInfo = async () => {
+    const url = `https://ampplex-backened.herokuapp.com/getUserData/${userID}`;
+    await fetch(url)
+      .then((response) => {
+        return response.json();
+      })
+      .then((data) => {
+        setBio(data.Bio);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
 
   const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
@@ -94,14 +109,15 @@ const Profile = ({ userID, navigation, route }) => {
       .then((data) => {
         setMyProfilePic(data.profilePic);
       })
-      .catch((err) => {
-        console.log("");
+      .catch((error) => {
+        console.log(error);
       });
   };
 
   useEffect(() => {
     getUserName();
     getProfilePicture();
+    getUserInfo();
   }, []);
 
   const SetImage = async (URI) => {
@@ -202,6 +218,8 @@ const Profile = ({ userID, navigation, route }) => {
       });
   };
 
+  // "Hello World this is Ampplex CO-FOUNDER pseaking in this appc";
+
   useEffect(() => {
     getFollowers();
     getPost();
@@ -278,6 +296,7 @@ const Profile = ({ userID, navigation, route }) => {
               position: "absolute",
               top: 70,
               fontSize: 15,
+              fontFamily: "sans-serif-medium",
               left: -36,
             }}
           >
@@ -291,11 +310,17 @@ const Profile = ({ userID, navigation, route }) => {
               position: "absolute",
               top: 70,
               fontSize: 15,
+              fontFamily: "sans-serif-medium",
               alignSelf: "center",
               left: 50,
             }}
           >
             Followers
+          </Text>
+        </View>
+        <View style={styles.container}>
+          <Text numberOfLines={10} style={styles.bio}>
+            {bio}
           </Text>
         </View>
         <View>
@@ -353,7 +378,7 @@ const Profile = ({ userID, navigation, route }) => {
                 {element.Type == "Image" ? (
                   <Image
                     source={{
-                      uri: element["ImgPath"],
+                      uri: element.ImgPath,
                     }}
                     style={styles.postImg}
                   />
@@ -403,6 +428,7 @@ const Profile = ({ userID, navigation, route }) => {
                   <Text
                     style={{
                       fontSize: 15,
+                      fontFamily: "sans-serif-medium",
                       fontWeight: "600",
                       alignSelf: "flex-start",
                       marginLeft: 20,
@@ -507,11 +533,9 @@ export default Profile;
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
-    width: "100%",
   },
   comment: {
     width: 27,
@@ -534,6 +558,7 @@ const styles = StyleSheet.create({
   },
   UserName: {
     fontSize: 25,
+    fontFamily: "sans-serif-medium",
     fontWeight: "bold",
     marginTop: -225,
   },
@@ -552,14 +577,15 @@ const styles = StyleSheet.create({
     top: 30,
   },
   postImg: {
-    width: 360,
-    height: 360,
-    borderRadius: 20,
+    width: Dimensions.get("window").width - 20,
+    height: Dimensions.get("window").height / 2,
+    borderRadius: 8,
     marginTop: 10,
-    marginLeft: 20,
+    marginLeft: 10,
+    alignSelf: "center",
   },
   postView: {
-    width: "100%",
+    width: Dimensions.get("window").width,
     backgroundColor: "white",
     alignSelf: "center",
     borderRadius: 30,
@@ -589,5 +615,15 @@ const styles = StyleSheet.create({
     marginLeft: 80,
     position: "absolute",
     top: 20,
+  },
+  bio: {
+    fontFamily: "sans-serif-medium",
+    fontSize: 14.5,
+    fontWeight: "bold",
+    textAlign: "left",
+    marginLeft: 80,
+    position: "absolute",
+    top: 150,
+    alignSelf: "center",
   },
 });

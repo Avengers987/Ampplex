@@ -139,7 +139,6 @@ const HomeScreen = ({ navigation, userID, userName }) => {
                       const clickedUserID = element.UserID;
                       const clickedUserName = element.UserName;
                       const myUserId = userID;
-                      console.log(userID);
                       navigation.navigate("UserProfile", {
                         clickedUserID,
                         clickedUserName,

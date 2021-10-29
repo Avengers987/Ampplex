@@ -101,12 +101,21 @@ const Comment = ({ route, navigation }) => {
               <>
                 <View style={styles.commentView} key={index}>
                   {/* Profile_Picture */}
-                  <View>
-                    <Image
-                      source={{ uri: element.ImgPath }}
-                      style={styles.profilePicture}
-                    />
-                  </View>
+                  {element.ImgPath != null ? (
+                    <View>
+                      <Image
+                        source={{ uri: element.ImgPath }}
+                        style={styles.profilePicture}
+                      />
+                    </View>
+                  ) : (
+                    <View>
+                      <Image
+                        style={styles.profilePicture}
+                        source={require("../assets/images/default_profile_picture.png")}
+                      />
+                    </View>
+                  )}
                   <View>
                     <Text style={styles.UserName}>{element.UserName}</Text>
                   </View>
@@ -118,7 +127,13 @@ const Comment = ({ route, navigation }) => {
                       left: 80,
                     }}
                   >
-                    <Text>{element.Comment}</Text>
+                    <Text
+                      style={{
+                        textAlign: "left",
+                      }}
+                    >
+                      {element.Comment}
+                    </Text>
                   </View>
                 </View>
               </>
@@ -184,6 +199,8 @@ const Comment = ({ route, navigation }) => {
             onChangeText={(e) => setExperience(e)}
             value={experience}
             spellCheck={true}
+            autoCorrect={true}
+            maxLength={100}
           />
         </KeyboardAvoidingView>
         <TouchableOpacity
@@ -276,7 +293,8 @@ const styles = StyleSheet.create({
     height: 50,
     borderRadius: 50,
     position: "absolute",
-    left: -140,
+    left: -160,
+    alignSelf: "flex-start",
     top: 10,
   },
   UserName: {

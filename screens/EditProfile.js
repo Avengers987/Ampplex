@@ -166,10 +166,6 @@ const EditProfile = ({ route }) => {
     getUserInfo();
   }, []);
 
-  useEffect(() => {
-    console.log(firstName, lastName);
-  }, [firstName, lastName]);
-
   return (
     <View style={styles.container}>
       <TouchableOpacity
@@ -188,8 +184,9 @@ const EditProfile = ({ route }) => {
             height: 110,
             borderRadius: 100,
             marginTop: 0,
-            marginLeft: 130,
+            marginLeft: 145,
             opacity: 0,
+            backgroundColor: "black",
           }}
         ></View>
         {myProfilePic === null ? (
@@ -199,7 +196,7 @@ const EditProfile = ({ route }) => {
               height: 90,
               borderRadius: PROFILE_PIC_RADIUS_ANIMATION,
               position: "absolute",
-              left: 135,
+              left: 150,
               top: 0,
             }}
             source={require("../assets/images/default_profile_picture.png")}
@@ -211,8 +208,9 @@ const EditProfile = ({ route }) => {
               height: 90,
               borderRadius: PROFILE_PIC_RADIUS_ANIMATION,
               position: "absolute",
-              left: 135,
+              left: 150,
               top: 0,
+              alignSelf: "center",
             }}
             source={{
               uri: myProfilePic,
@@ -271,6 +269,7 @@ const EditProfile = ({ route }) => {
             First name
           </Text>
         </View>
+
         <TextInput
           spellCheck={true}
           placeholder={"David"}
@@ -380,19 +379,24 @@ const EditProfile = ({ route }) => {
             Bio
           </Text>
         </View>
-        <TextInput
-          spellCheck={true}
-          placeholder={"Type your bio"}
-          value={bio}
-          onChangeText={(e) => setBio(e)}
-          style={{
-            width: "100%",
-            height: "100%",
-            color: "black",
-            fontSize: 15,
-            fontWeight: "bold",
-          }}
-        />
+        <KeyboardAvoidingView
+          behavior={Platform.OS === "ios" ? "padding" : "position"}
+        >
+          <TextInput
+            spellCheck={true}
+            placeholder={"Type your bio"}
+            value={bio}
+            maxLength={60}
+            onChangeText={(e) => setBio(e)}
+            style={{
+              width: "100%",
+              height: "100%",
+              color: "black",
+              fontSize: 15,
+              fontWeight: "bold",
+            }}
+          />
+        </KeyboardAvoidingView>
       </View>
 
       <TouchableOpacity
@@ -518,7 +522,7 @@ const styles = StyleSheet.create({
     borderRadius: 15,
     paddingTop: 5,
     position: "absolute",
-    bottom: 40,
+    top: 500,
     elevation: 12,
   },
 });

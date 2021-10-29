@@ -23,14 +23,28 @@ const Profile = ({ navigation, route }) => {
   const [alreadyFollowed, setAlreadyFollowed] = useState(null);
   const [loading, setLoading] = useState(true);
   const [showEditProfile, setShowEditProfile] = useState(null);
+  const [bio, setBio] = useState("");
 
   const userID = route.params.clickedUserID;
   const userName = route.params.clickedUserName;
   const myUserId = route.params.myUserId;
 
+  const getUserInfo = async () => {
+    const url = `https://ampplex-backened.herokuapp.com/getUserData/${userID}`;
+    await fetch(url)
+      .then((response) => {
+        return response.json();
+      })
+      .then((data) => {
+        setBio(data.Bio);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
   const getFollowers = async () => {
     const url = `http://ampplex-backened.herokuapp.com/GetFollower/${userID}/`;
-    console.log(url, "See me!");
     await fetch(url)
       .then((response) => {
         return response.json();
@@ -47,21 +61,19 @@ const Profile = ({ navigation, route }) => {
 
   const Check_Followed = async () => {
     const url = `http://ampplex-backened.herokuapp.com/Check_Followed/${userID}/MyID/${myUserId}`;
-    console.log(url, "See me!");
+
     await fetch(url)
       .then((response) => {
         return response.json();
       })
       .then((data) => {
         if (data.status === "success" && data.Already_Followed == "true") {
-          console.log("Already followed!");
           setAlreadyFollowed(true);
         } else if (
           data.status === "success" &&
           data.Already_Followed == "false"
         ) {
           setAlreadyFollowed(false);
-          console.log("Following for the first time!");
         }
       })
       .catch((e) => {
@@ -81,14 +93,13 @@ const Profile = ({ navigation, route }) => {
 
   const IncreaseFollower = async () => {
     const url = `http://ampplex-backened.herokuapp.com/Increament_Followers/${userID}/MyID/${myUserId}`;
-    console.log(url, "See me!");
+
     await fetch(url)
       .then((response) => {
         return response.json();
       })
       .then((data) => {
         if (data.status === "success") {
-          console.log("Followed Successfully!");
           getFollowers();
           Check_Followed();
         }
@@ -100,14 +111,13 @@ const Profile = ({ navigation, route }) => {
 
   const Unfollow = async () => {
     const url = `http://ampplex-backened.herokuapp.com/Unfollow/${userID}/MyID/${myUserId}`;
-    console.log(url, "See me!");
+
     await fetch(url)
       .then((response) => {
         return response.json();
       })
       .then((data) => {
         if (data.status === "success") {
-          console.log("Unfollowed Successfully!");
           getFollowers();
           Check_Followed();
         }
@@ -142,8 +152,8 @@ const Profile = ({ navigation, route }) => {
       .then((data) => {
         SetPosts(data.Posts);
       })
-      .catch((err) => {
-        console.log(e);
+      .catch((error) => {
+        console.log(error);
       });
   };
 
@@ -168,6 +178,7 @@ const Profile = ({ navigation, route }) => {
     getMyPosts();
     getPost();
     getFollowers();
+    getUserInfo();
   }, []);
 
   return (
@@ -276,10 +287,13 @@ const Profile = ({ navigation, route }) => {
             </Text>
           </TouchableOpacity>
         ) : showEditProfile ? (
-          <EditProfile navigation={navigation} />
+          <EditProfile navigation={navigation} userID={userID} />
         ) : (
           <View />
         )}
+        <View>
+          <Text style={styles.bio}>{bio}</Text>
+        </View>
 
         <View>
           <Text
@@ -287,7 +301,7 @@ const Profile = ({ navigation, route }) => {
               fontSize: 25,
               fontWeight: "bold",
               position: "absolute",
-              top: 200,
+              top: 250,
               alignSelf: "center",
             }}
           >
@@ -409,7 +423,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     backgroundColor: "white",
-    height: 300,
+    height: 350,
     borderBottomLeftRadius: 50,
     borderBottomRightRadius: 50,
     elevation: 12,
@@ -423,7 +437,8 @@ const styles = StyleSheet.create({
     fontSize: 25,
     fontWeight: "bold",
     fontFamily: "sans-serif-medium",
-    marginTop: -225,
+    marginTop: -280,
+    alignSelf: "center",
   },
   Profile_Picture: {
     width: 90,
@@ -431,7 +446,7 @@ const styles = StyleSheet.create({
     borderRadius: 100,
     position: "absolute",
     left: 20,
-    top: 70,
+    top: 50,
   },
   PostsNumber: {
     fontSize: 25,
@@ -447,7 +462,7 @@ const styles = StyleSheet.create({
     height: 30,
     borderRadius: 5,
     position: "absolute",
-    bottom: 100,
+    bottom: 150,
     left: 170,
   },
   Followers: {
@@ -495,5 +510,15 @@ const styles = StyleSheet.create({
   comment: {
     width: 27,
     height: 27,
+  },
+  bio: {
+    fontFamily: "sans-serif-medium",
+    fontSize: 14.5,
+    fontWeight: "bold",
+    textAlign: "left",
+    marginLeft: 80,
+    position: "absolute",
+    top: 160,
+    alignSelf: "center",
   },
 });
