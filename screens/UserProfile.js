@@ -7,6 +7,7 @@ import {
   ScrollView,
   TouchableOpacity,
   ActivityIndicator,
+  Dimensions,
 } from "react-native";
 import { Video } from "expo-av";
 import EditProfile from "../components/EditProfile";
@@ -391,7 +392,7 @@ const Profile = ({ navigation, route }) => {
                   <Text
                     style={{
                       fontSize: 15,
-                      fontWeight: "600",
+                      fontWeight: "bold",
                       alignSelf: "flex-start",
                       marginLeft: 20,
                       marginTop: 40,
@@ -400,6 +401,11 @@ const Profile = ({ navigation, route }) => {
                     {element.Caption}
                   </Text>
                 </View>
+                <View
+                  style={{
+                    marginTop: 70,
+                  }}
+                />
               </View>
             );
           })
@@ -474,15 +480,15 @@ const styles = StyleSheet.create({
     top: 30,
   },
   postImg: {
-    width: 350,
-    height: 450,
-    borderRadius: 20,
+    width: Dimensions.get("window").width - 20,
+    height: Dimensions.get("window").height / 2,
+    borderRadius: 8,
     marginTop: 10,
-    marginLeft: 20,
+    marginLeft: 10,
+    alignSelf: "center",
   },
   postView: {
-    width: 400,
-    paddingBottom: 20,
+    width: Dimensions.get("window").width,
     backgroundColor: "white",
     alignSelf: "center",
     borderRadius: 30,

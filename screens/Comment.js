@@ -201,6 +201,7 @@ const Comment = ({ route, navigation }) => {
             spellCheck={true}
             autoCorrect={true}
             maxLength={100}
+            autoFocus={true}
           />
         </KeyboardAvoidingView>
         <TouchableOpacity
@@ -293,7 +294,7 @@ const styles = StyleSheet.create({
     height: 50,
     borderRadius: 50,
     position: "absolute",
-    left: -160,
+    left: -150,
     alignSelf: "flex-start",
     top: 10,
   },

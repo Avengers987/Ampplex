@@ -107,10 +107,6 @@ export default function Register(props) {
         <TouchableOpacity
           style={styles.RegisterBtn}
           onPress={() => {
-            showMessage({
-              message: "JDEF",
-              type: "danger",
-            });
             verifyUserInfo();
           }}
         >

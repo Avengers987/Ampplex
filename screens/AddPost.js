@@ -223,6 +223,7 @@ export default function AddPost({ navigation, route, userID }) {
             placeholder="What's on your mind?"
             value={postTxt}
             autoFocus={autoFocus}
+            maxLength={100}
             onChangeText={(e) => {
               setPostTxt(e);
             }}
