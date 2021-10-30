@@ -12,8 +12,6 @@ import {
 const OTP = ({ route }) => {
   const [enteredOTP, setEnteredOTP] = useState(0);
 
-  console.log(route.params.otp);
-
   const VerifyOTP = () => {
     if (enteredOTP == route.params.otp) {
       console.log("OTP Matched");

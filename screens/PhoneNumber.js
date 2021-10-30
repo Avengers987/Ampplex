@@ -14,7 +14,6 @@ const PhoneNumber = ({ navigation }) => {
 
   const generateOTP = () => {
     let OTP = Math.round(Math.random() * 10 * new Date().getMilliseconds());
-
     setOtp(OTP);
   };
 
