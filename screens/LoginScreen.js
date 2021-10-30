@@ -4,7 +4,10 @@ import {
   Text,
   View,
   TextInput,
+  Image,
   TouchableOpacity,
+  ScrollView,
+  Dimensions,
 } from "react-native";
 import FlashMessage from "react-native-flash-message";
 import { showMessage } from "react-native-flash-message";
@@ -110,9 +113,14 @@ export default function LoginScreen(props) {
   const [userId, setUserId] = useState("");
 
   return (
-    <View style={styles.container}>
+    <ScrollView contentContainerStyle={styles.container}>
       <View style={styles.Circle} />
-      <Text style={styles.AppName}>Ampplex</Text>
+      <View>
+        <Image
+          style={styles.AppName}
+          source={require("../assets/images/Ampplex-Logo.png")}
+        />
+      </View>
       <Text style={styles.Email}>Email</Text>
       <TextInput
         style={styles.EmailInput}
@@ -137,6 +145,7 @@ export default function LoginScreen(props) {
         }}
       />
       <FlashMessage position="bottom" />
+      <View style={styles.Circle2} />
       <TouchableOpacity style={styles.LoginBtn} onPress={LoginBtnHandler}>
         <Text style={styles.LoginBtnText}>Login</Text>
       </TouchableOpacity>
@@ -148,7 +157,33 @@ export default function LoginScreen(props) {
       >
         <Text style={styles.RegisterBtnText}>Register</Text>
       </TouchableOpacity>
-    </View>
+      <View
+        style={{
+          backgroundColor: "lightgrey",
+          width: 70,
+          height: 4,
+          borderRadius: 20,
+          alignSelf: "center",
+          position: "absolute",
+          bottom: 90,
+        }}
+      />
+      <Text style={styles.forgotPassword}>Forgot password? </Text>
+      <Text
+        onPress={() => props.navigation.navigate("PhoneNumber")}
+        style={{
+          fontSize: 15,
+          fontFamily: "sans-serif-medium",
+          fontWeight: "bold",
+          position: "absolute",
+          bottom: 50,
+          alignSelf: "center",
+          right: Dimensions.get("window").width * 0.3 - 10,
+        }}
+      >
+        reset
+      </Text>
+    </ScrollView>
   );
 }
 
@@ -160,43 +195,42 @@ const styles = StyleSheet.create({
     height: "100%",
   },
   AppName: {
-    fontWeight: "bold",
-    fontSize: 30,
-    color: "black",
+    position: "absolute",
+    width: 170,
+    height: 170,
     alignSelf: "center",
-    marginTop: 60,
+    borderRadius: 200,
   },
   EmailInput: {
     height: 60,
-    width: 260,
+    width: 280,
     borderRadius: 100,
     alignSelf: "center",
-    borderWidth: StyleSheet.hairlineWidth,
-    marginTop: 100,
-    borderColor: "#BAB7C3",
+    marginTop: 190,
     paddingHorizontal: 16,
-    backgroundColor: "#87cefa",
+    backgroundColor: "#fafafa",
     paddingTop: 10,
     paddingBottom: 10,
-    paddingLeft: 60,
+    paddingLeft: 40,
+    elevation: 5,
   },
   PasswordInput: {
-    height: 60,
-    width: 260,
+    height: "8%",
+    width: 280,
     borderRadius: 30,
     alignSelf: "center",
-    borderWidth: StyleSheet.hairlineWidth,
     marginTop: 90,
-    borderColor: "#BAB7C3",
     paddingHorizontal: 16,
-    backgroundColor: "#87cefa",
+    backgroundColor: "#fafafa",
     paddingTop: 10,
     paddingBottom: 10,
-    paddingLeft: 60,
+    paddingLeft: 40,
+    elevation: 5,
   },
   Email: {
     fontWeight: "bold",
     fontSize: 30,
+    fontFamily: "sans-serif-medium",
     marginLeft: 20,
     marginTop: 65,
     position: "absolute",
@@ -205,6 +239,7 @@ const styles = StyleSheet.create({
   Password: {
     fontWeight: "bold",
     fontSize: 30,
+    fontFamily: "sans-serif-medium",
     marginLeft: 20,
     marginTop: 220,
     position: "absolute",
@@ -216,7 +251,7 @@ const styles = StyleSheet.create({
     position: "absolute",
     width: 520,
     height: 500,
-    left: -230,
+    left: -170,
     top: 15,
   },
   NavigateNextIcon: {
@@ -237,36 +272,57 @@ const styles = StyleSheet.create({
   },
   LoginBtn: {
     width: 280,
-    height: 45,
-    backgroundColor: "#87cefa",
+    height: 40,
+    backgroundColor: "#A519F0",
     alignSelf: "center",
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
-    marginTop: 60,
+    marginTop: 40,
     borderRadius: 50,
+    elevation: 12,
   },
   LoginBtnText: {
     fontWeight: "bold",
     color: "white",
     alignSelf: "center",
     fontSize: 18,
+    fontFamily: "sans-serif-medium",
   },
   RegisterBtn: {
     width: 280,
-    height: 45,
-    backgroundColor: "#87cefa",
+    height: 40,
+    backgroundColor: "#A519F0",
     alignSelf: "center",
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
-    marginTop: 50,
+    marginTop: 25,
     borderRadius: 50,
+    elevation: 12,
   },
   RegisterBtnText: {
     fontWeight: "bold",
     color: "white",
     alignSelf: "center",
     fontSize: 18,
+    fontFamily: "sans-serif-medium",
+  },
+  Circle2: {
+    backgroundColor: "#fff",
+    borderRadius: 500,
+    position: "absolute",
+    width: 280,
+    height: 280,
+    left: 200,
+    bottom: -80,
+  },
+  forgotPassword: {
+    fontSize: 15,
+    fontFamily: "sans-serif-medium",
+    position: "absolute",
+    bottom: 50,
+    left: 100,
+    alignSelf: "center",
   },
 });

@@ -7,10 +7,10 @@ import {
   Dimensions,
   ScrollView,
   TouchableOpacity,
-  TouchableHighlight,
   Alert,
   Animated,
   ActivityIndicator,
+  RefreshControl,
 } from "react-native";
 import ActionSheet from "react-native-actions-sheet";
 import * as ImagePicker from "expo-image-picker";
@@ -18,6 +18,10 @@ import firebase from "firebase";
 import { Video, AVPlaybackStatus } from "expo-av";
 import EditProfile from "../components/EditProfile";
 import Likes from "../components/Like";
+
+const wait = (timeout) => {
+  return new Promise((resolve) => setTimeout(resolve, timeout));
+};
 
 const actionSheetRef = createRef();
 
@@ -49,6 +53,18 @@ const Profile = ({ userID, navigation, route }) => {
   const [loading, setLoading] = useState(true);
   const [userName, setUserName] = useState(userName);
   const [bio, setBio] = useState("");
+  const [refreshing, setRefreshing] = useState(false);
+
+  const onRefresh = React.useCallback(() => {
+    setRefreshing(true);
+    wait(2000).then(() => setRefreshing(false));
+    getUserName();
+    getProfilePicture();
+    getUserInfo();
+    getFollowers();
+    getPost();
+    getMyPosts();
+  }, []);
 
   const getUserName = async () => {
     const url = `https://ampplex-backened.herokuapp.com/getUserNameFromUserID/${userID}/`;
@@ -60,8 +76,8 @@ const Profile = ({ userID, navigation, route }) => {
       .then((data) => {
         setUserName(data.UserName);
       })
-      .catch((err) => {
-        console.log("");
+      .catch((error) => {
+        console.log(error);
       });
   };
 
@@ -197,7 +213,7 @@ const Profile = ({ userID, navigation, route }) => {
         setLoading(false);
       })
       .catch((e) => {
-        console.log("");
+        console.log(e);
       });
   };
 
@@ -342,6 +358,9 @@ const Profile = ({ userID, navigation, route }) => {
         style={{
           marginTop: 10,
         }}
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        }
       >
         {loading ? (
           <View

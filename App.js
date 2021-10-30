@@ -15,8 +15,9 @@ import UserProfile from "./screens/UserProfile";
 import Comment from "./screens/Comment.js";
 import StartScreen from "./screens/StartScreen";
 import EditProfile from "./screens/EditProfile";
-
+import PhoneNumber from "./screens/PhoneNumber";
 import * as firebase from "firebase";
+import OTP from "./screens/OTP";
 
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 
@@ -138,6 +139,22 @@ export default function App() {
         <Stack.Screen
           name="UserProfile"
           component={UserProfile}
+          options={{
+            headerShown: false,
+          }}
+        />
+
+        <Stack.Screen
+          name="PhoneNumber"
+          component={PhoneNumber}
+          options={{
+            headerShown: false,
+          }}
+        />
+
+        <Stack.Screen
+          name="OTP"
+          component={OTP}
           options={{
             headerShown: false,
           }}

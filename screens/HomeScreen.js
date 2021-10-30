@@ -65,7 +65,7 @@ const HomeScreen = ({ navigation, userID, userName }) => {
 
   setInterval(() => {
     ConnectedToInternet();
-  }, 2000);
+  }, 7000);
 
   return (
     <View style={styles.container}>

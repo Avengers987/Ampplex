@@ -1,13 +1,5 @@
 import React, { useState, useEffect } from "react";
-import {
-  StyleSheet,
-  Text,
-  View,
-  Animated,
-  Dimensions,
-  ActivityIndicator,
-  Image,
-} from "react-native";
+import { StyleSheet, Text, View, Animated, Dimensions } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const StartScreen = ({ navigation }) => {

@@ -5,10 +5,8 @@ import {
   View,
   TextInput,
   Image,
-  Animated,
   TouchableOpacity,
   ActivityIndicator,
-  TouchableHighlight,
   Alert,
   KeyboardAvoidingView,
   Platform,
@@ -31,6 +29,7 @@ const EditProfile = ({ route }) => {
   const actionSheetRef = createRef();
 
   const Push_User_Data_To_RealTime_DB = (profilePicPath, userID) => {
+    console.warn("User ID is : ", userID);
     firebase
       .database()
       .ref(`User/${userID}/ProfilePicture`)
@@ -73,6 +72,7 @@ const EditProfile = ({ route }) => {
 
     if (!result.cancelled) {
       setProfilePicGallery(result.uri);
+      console.log("CACHED FILE REAL LOCATION", result.uri);
       await SetImage(profilePic);
     }
   };

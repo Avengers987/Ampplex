@@ -8,6 +8,7 @@ import {
   TouchableOpacity,
   ActivityIndicator,
   Dimensions,
+  RefreshControl,
 } from "react-native";
 import { Video } from "expo-av";
 import EditProfile from "../components/EditProfile";
@@ -25,10 +26,40 @@ const Profile = ({ navigation, route }) => {
   const [loading, setLoading] = useState(true);
   const [showEditProfile, setShowEditProfile] = useState(null);
   const [bio, setBio] = useState("");
-
+  const [refreshing, setRefreshing] = useState(false);
+  const [userName, setUserName] = useState(userName);
   const userID = route.params.clickedUserID;
-  const userName = route.params.clickedUserName;
   const myUserId = route.params.myUserId;
+
+  const wait = (timeout) => {
+    return new Promise((resolve) => setTimeout(resolve, timeout));
+  };
+
+  const onRefresh = React.useCallback(() => {
+    setRefreshing(true);
+    wait(2000).then(() => setRefreshing(false));
+    getProfilePicture();
+    getUserInfo();
+    getUserName();
+    getFollowers();
+    getPost();
+    getMyPosts();
+  }, []);
+
+  const getUserName = async () => {
+    const url = `https://ampplex-backened.herokuapp.com/getUserNameFromUserID/${userID}/`;
+
+    await fetch(url)
+      .then((response) => {
+        return response.json();
+      })
+      .then((data) => {
+        setUserName(data.UserName);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
 
   const getUserInfo = async () => {
     const url = `https://ampplex-backened.herokuapp.com/getUserData/${userID}`;
@@ -180,6 +211,7 @@ const Profile = ({ navigation, route }) => {
     getPost();
     getFollowers();
     getUserInfo();
+    getUserName();
   }, []);
 
   return (
@@ -314,6 +346,9 @@ const Profile = ({ navigation, route }) => {
         style={{
           marginTop: 10,
         }}
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        }
       >
         {loading ? (
           <View
