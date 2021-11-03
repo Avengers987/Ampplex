@@ -9,20 +9,54 @@ import {
   Alert,
 } from "react-native";
 
-const OTP = ({ route }) => {
+const OTP = ({ route, navigation }) => {
   const [enteredOTP, setEnteredOTP] = useState(0);
+  const [time, setTime] = useState(120);
+  const email = route.params.email;
+  const [otp, setOTP] = useState(route.params.otp);
 
   const VerifyOTP = () => {
-    if (enteredOTP == route.params.otp) {
+    if (enteredOTP == otp) {
+      console.log(otp);
       console.log("OTP Matched");
       Alert.alert("Success!", "OTP verified!");
+      navigation.navigate("CreateNewPassword", { email });
     }
   };
 
+  const timer = (sec) => {
+    if (sec == -1) {
+      let OTP = Math.floor(1000 + Math.random() * 9000);
+      setOTP(OTP);
+      console.log(OTP, otp, OTP == otp);
+      const url = `https://ampplex-backened.herokuapp.com/SendOTP/${email}/Ampplex : Your OTP is ${OTP}. Please do not share it with anyone/`;
+
+      fetch(url)
+        .then((res) => res.text())
+        .then((data) => {
+          if (data == "success") {
+            console.log("OTP sent successfully!");
+          }
+        })
+        .catch((error) => console.log(error));
+      return;
+    }
+
+    setTimeout(() => {
+      timer(sec - 1);
+    }, 1000);
+
+    setTime(sec);
+  };
+
+  useEffect(() => {
+    timer(120);
+  }, []);
+
   return (
     <View style={styles.container}>
-      <Text style={styles.Title}>Verify OTP sent to you mobile number</Text>
-      <View style={styles.InputPhoneNumber}>
+      <Text style={styles.Title}>Verify OTP sent to your email address</Text>
+      <View style={styles.InputOTP}>
         <TextInput
           placeholder={"Enter OTP"}
           keyboardType={"number-pad"}
@@ -30,6 +64,19 @@ const OTP = ({ route }) => {
           maxLength={10}
           onChangeText={(text) => setEnteredOTP(text)}
         />
+      </View>
+
+      <View>
+        <Text
+          style={{
+            alignSelf: "center",
+            fontSize: 15,
+            fontWeight: "bold",
+            fontFamily: "sans-serif-medium",
+          }}
+        >
+          Resending in {time}
+        </Text>
       </View>
 
       <TouchableOpacity style={styles.Button} onPress={() => VerifyOTP()}>
@@ -48,7 +95,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     backgroundColor: "#fff",
   },
-  InputPhoneNumber: {
+  InputOTP: {
     width: "85%",
     height: 60,
     alignSelf: "center",

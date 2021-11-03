@@ -74,10 +74,6 @@ const Comment = ({ route, navigation }) => {
     getComments();
   }, []);
 
-  useEffect(() => {
-    console.log(response);
-  }, [response]);
-
   return (
     <>
       <ScrollView

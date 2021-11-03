@@ -4,7 +4,7 @@
   "expo": {
     "name": "Ampplex",
     "slug": "Ampplex",
-    "icon": "./assets/images/Ampplex-Logo.png",
+    "icon": "./assets/images/ic_launcher.png",
     "version": "1.0.0",
     "splash": {
       "image": "./assets/images/splash-screen.png"

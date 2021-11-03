@@ -26,4 +26,6 @@ target 'Ampplex' do
 
   pod 'react-native-video', :path => '../node_modules/react-native-video'
 
+  pod 'RNSmtpMailer', :path => '../node_modules/react-native-smtp-mailer'
+
 end

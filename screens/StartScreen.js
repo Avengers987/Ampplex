@@ -32,7 +32,7 @@ const StartScreen = ({ navigation }) => {
       navigation.replace("Home", { userID, userName });
     } else {
       // User is running this app for the first time
-      navigation.navigate("OnBoarding");
+      navigation.replace("OnBoarding");
     }
   };
 

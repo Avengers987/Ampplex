@@ -11,6 +11,13 @@ import {
 import FlashMessage from "react-native-flash-message";
 import { showMessage } from "react-native-flash-message";
 
+const ErrorFlasher = (msg) => {
+  showMessage({
+    message: msg,
+    type: "danger",
+  });
+};
+
 export default function Register(props) {
   const SignUp = (username, email, password) => {
     const url = `https://ampplex-backened.herokuapp.com/SignUp/${username}/${email}/${password}`;
@@ -21,13 +28,6 @@ export default function Register(props) {
       .then((data) => {
         setLoginResponse(data);
       });
-  };
-
-  const ErrorFlasher = (msg) => {
-    showMessage({
-      message: msg,
-      type: "danger",
-    });
   };
 
   const verifyUserInfo = () => {
@@ -112,6 +112,7 @@ export default function Register(props) {
         >
           <Text style={styles.RegisterBtnText}>Register</Text>
         </TouchableOpacity>
+        <FlashMessage position="bottom" />
       </View>
     </KeyboardAvoidingView>
   );

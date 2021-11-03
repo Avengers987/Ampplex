@@ -165,7 +165,7 @@ export default function LoginScreen(props) {
           borderRadius: 20,
           alignSelf: "center",
           position: "absolute",
-          bottom: 90,
+          top: Dimensions.get("window").height * 0.9,
         }}
       />
       <Text style={styles.forgotPassword}>Forgot password? </Text>
@@ -176,9 +176,9 @@ export default function LoginScreen(props) {
           fontFamily: "sans-serif-medium",
           fontWeight: "bold",
           position: "absolute",
-          bottom: 50,
+          top: Dimensions.get("window").height - 45,
           alignSelf: "center",
-          right: Dimensions.get("window").width * 0.3 - 10,
+          right: Dimensions.get("window").width * 0.3 - 15,
         }}
       >
         reset
@@ -215,7 +215,7 @@ const styles = StyleSheet.create({
     elevation: 5,
   },
   PasswordInput: {
-    height: "8%",
+    height: 60,
     width: 280,
     borderRadius: 30,
     alignSelf: "center",
@@ -321,7 +321,7 @@ const styles = StyleSheet.create({
     fontSize: 15,
     fontFamily: "sans-serif-medium",
     position: "absolute",
-    bottom: 50,
+    top: Dimensions.get("window").height - 45,
     left: 100,
     alignSelf: "center",
   },

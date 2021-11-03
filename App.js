@@ -18,6 +18,7 @@ import EditProfile from "./screens/EditProfile";
 import PhoneNumber from "./screens/PhoneNumber";
 import * as firebase from "firebase";
 import OTP from "./screens/OTP";
+import CreateNewPassword from "./screens/CreateNewPassword";
 
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 
@@ -155,6 +156,14 @@ export default function App() {
         <Stack.Screen
           name="OTP"
           component={OTP}
+          options={{
+            headerShown: false,
+          }}
+        />
+
+        <Stack.Screen
+          name="CreateNewPassword"
+          component={CreateNewPassword}
           options={{
             headerShown: false,
           }}

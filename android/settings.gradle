@@ -1,4 +1,6 @@
 rootProject.name = 'Ampplex'
+include ':react-native-smtp-mailer'
+project(':react-native-smtp-mailer').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-smtp-mailer/android')
 include ':react-native-video'
 project(':react-native-video').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-video/android')
 include ':@react-native-masked-view_masked-view'
@@ -9,6 +11,8 @@ include ':react-native-image-crop-picker'
 project(':react-native-image-crop-picker').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-image-crop-picker/android')
 include ':react-native-image-crop-picker'
 project(':react-native-image-crop-picker').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-image-crop-picker/android')
+include ':react-native-smtp'
+project(':react-native-smtp').projectDir = new File(rootProject.projectDir, 	'../node_modules/react-native-smtp/android')
 
 apply from: '../node_modules/react-native-unimodules/gradle.groovy'
 includeUnimodulesProjects()

@@ -7,60 +7,66 @@ import {
   Dimensions,
   TouchableOpacity,
 } from "react-native";
+// import auth from "@react-native-firebase/auth";
+import firebase from "firebase";
 
-const PhoneNumber = ({ navigation }) => {
-  const [phoneNumber, setPhoneNumber] = useState(0);
-  const [otp, setOtp] = useState(0);
-
-  const generateOTP = () => {
-    let OTP = Math.round(Math.random() * 10 * new Date().getMilliseconds());
-    setOtp(OTP);
-  };
+const email = ({ navigation }) => {
+  const [email, setEmail] = useState("");
+  let otp = Math.floor(1000 + Math.random() * 9000);
+  const [error, setError] = useState("");
 
   const sendOTP = async () => {
-    generateOTP();
+    const url = `https://ampplex-backened.herokuapp.com/SendOTP/${email.trim()}/Ampplex : Your OTP is ${otp}. Please do not share it with anyone/`;
 
-    const url = `https://ampplex-backened.herokuapp.com/SendOTP/${phoneNumber}/Ampplex : Your OTP is ${otp}. Please do not share it with anyone/`;
-
-    console.log("Length is ", toString(phoneNumber).length, phoneNumber);
-
-    if (phoneNumber != null && toString(phoneNumber).length == 10) {
-      navigation.navigate("OTP", { otp });
+    if (email.length >= 3) {
+      setError("");
     }
 
-    await fetch(url)
-      .then((response) => {
-        return response.text();
-      })
-      .then((data) => {
-        console.log("sent");
-      })
-      .catch((err) => {
-        console.log(err);
+    if (email != null && email.trim().length >= 3) {
+      navigation.navigate("OTP", {
+        email: email.trim(),
+        otp: otp,
       });
+      await fetch(url)
+        .then((res) => res.text())
+        .then((data) => {
+          if (data == "success") {
+            console.log("OTP sent successfully!");
+          } else {
+            setError(data);
+          }
+        })
+        .catch((error) => console.log(error));
+    } else if (email == null || email.length < 3) {
+      setError("Invalid email address");
+    }
   };
 
   return (
     <View style={styles.container}>
-      <Text style={styles.Title}>Phone Number</Text>
-      <View style={styles.InputPhoneNumber}>
+      <Text style={styles.Title}>Verify email</Text>
+      <View style={styles.InputEmail}>
         <TextInput
-          placeholder={"Enter your phone number"}
-          keyboardType={"number-pad"}
+          placeholder={"Enter your email address"}
           autoFocus={true}
-          maxLength={10}
-          onChangeText={(text) => setPhoneNumber(text)}
+          maxLength={100}
+          onChangeText={(text) => setEmail(text)}
         />
       </View>
-
-      <TouchableOpacity style={styles.Button} onPress={() => sendOTP()}>
+      <Text style={styles.Error}>{error}</Text>
+      <TouchableOpacity
+        style={styles.Button}
+        onPress={() => {
+          sendOTP();
+        }}
+      >
         <Text style={styles.ButtonText}>Send OTP</Text>
       </TouchableOpacity>
     </View>
   );
 };
 
-export default PhoneNumber;
+export default email;
 
 const styles = StyleSheet.create({
   container: {
@@ -69,7 +75,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     backgroundColor: "#fff",
   },
-  InputPhoneNumber: {
+  InputEmail: {
     width: "85%",
     height: 60,
     alignSelf: "center",
@@ -105,5 +111,12 @@ const styles = StyleSheet.create({
     color: "white",
     fontWeight: "bold",
     padding: 5,
+  },
+  Error: {
+    color: "red",
+    fontSize: 12,
+    fontFamily: "sans-serif-medium",
+    position: "absolute",
+    top: Dimensions.get("window").height * 0.4,
   },
 });
