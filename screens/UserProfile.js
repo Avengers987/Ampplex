@@ -225,15 +225,33 @@ const Profile = ({ navigation, route }) => {
             top: 20,
           }}
         >
-          <Image
-            style={styles.Profile_Picture}
-            source={{
-              uri:
-                myProfilePic != null
-                  ? myProfilePic
-                  : "https://images.unsplash.com/photo-1514923995763-768e52f5af87?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80",
-            }}
-          />
+          {myProfilePic !== null ? (
+            <Image
+              style={{
+                width: 90,
+                height: 90,
+                borderRadius: 90,
+                position: "absolute",
+                left: 20,
+                top: 70,
+              }}
+              source={{
+                uri: myProfilePic,
+              }}
+            />
+          ) : (
+            <Image
+              style={{
+                width: 90,
+                height: 90,
+                borderRadius: 90,
+                position: "absolute",
+                left: 20,
+                top: 70,
+              }}
+              source={require("../assets/images/default_profile_picture.png")}
+            />
+          )}
           {profilePicLoading === true ? (
             <View
               style={{

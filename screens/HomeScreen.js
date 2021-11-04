@@ -69,7 +69,7 @@ const HomeScreen = ({ navigation, userID, userName }) => {
 
   return (
     <View style={styles.container}>
-      <Header />
+      <Header navigation={navigation} />
 
       <ScrollView
         refreshControl={

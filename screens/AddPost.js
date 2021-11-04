@@ -61,7 +61,7 @@ require("firebase/firebase-storage");
 export default function AddPost({ navigation, route, userID }) {
   const [image, setImage] = useState(null);
   const [userId, setUserId] = useState(null);
-  const [postTxt, setPostTxt] = useState(null);
+  const [postTxt, setPostTxt] = useState("");
   const [posted, setPosted] = useState(null);
   const [uploadStatus, setUploadStatus] = useState("");
   const [error, setError] = useState(false); // if true then user have not attached picture or video or not written caption
@@ -221,15 +221,19 @@ export default function AddPost({ navigation, route, userID }) {
           <TextInput
             style={styles.PostInputStyle}
             placeholder="What's on your mind?"
-            value={postTxt}
-            autoFocus={autoFocus}
             maxLength={100}
+            autoFocus={autoFocus}
             onChangeText={(e) => {
               setPostTxt(e);
             }}
           />
         </View>
-
+        {/* Add post button */}
+        {/* Includes 
+        1. Upload picture from camera
+        2. Upload Picture from gallery
+        3. Upload video from camera
+         */}
         <ActionButton buttonColor="#7b68ee">
           <ActionButton.Item
             buttonColor="#9b59b6"
