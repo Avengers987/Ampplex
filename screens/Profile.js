@@ -17,7 +17,8 @@ import * as ImagePicker from "expo-image-picker";
 import firebase from "firebase";
 import { Video, AVPlaybackStatus } from "expo-av";
 import EditProfile from "../components/EditProfile";
-import Likes from "../components/Like";
+import Like2 from "../components/Like2";
+import More from "../components/More";
 
 const wait = (timeout) => {
   return new Promise((resolve) => setTimeout(resolve, timeout));
@@ -375,6 +376,7 @@ const Profile = ({ userID, navigation, route }) => {
           response.map((element, index) => {
             return (
               <View style={styles.postView} key={index}>
+                <More userID={userID} postID={element.Post_ID} />
                 <View>
                   {/*Profile Picture*/}
                   <Image
@@ -416,7 +418,7 @@ const Profile = ({ userID, navigation, route }) => {
                     onPlaybackStatusUpdate={(status) => setStatus(() => status)}
                   />
                 )}
-                <Likes
+                <Like2
                   postID={element.Post_ID}
                   myUserId={userID}
                   pressedUserID={userID}

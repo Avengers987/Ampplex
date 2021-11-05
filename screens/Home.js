@@ -14,6 +14,8 @@ import Profile from "./Profile";
 import HomeScreen from "./HomeScreen";
 import { StatusBar } from "expo-status-bar";
 import AddPost from "./AddPost";
+import ShortVideo from "./ShortVideo";
+import Icon from "react-native-vector-icons/Ionicons";
 
 const getWindowDimensions = () => {
   const dimensions = Dimensions.get("window").width;
@@ -75,6 +77,23 @@ const Home = ({ navigation, route }) => {
                 }}
               >
                 +
+              </Text>
+            ),
+          }}
+        />
+        <Tab.Screen
+          name="Short video"
+          children={() => <ShortVideo />}
+          options={{
+            tabBarLabel: "Short video",
+            tabBarIcon: ({ color, size }) => (
+              <Text
+                style={{
+                  color: color,
+                  fontSize: size,
+                }}
+              >
+                <Icon name="md-images-outline" size={20} />
               </Text>
             ),
           }}
