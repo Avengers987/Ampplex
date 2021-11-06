@@ -62,7 +62,7 @@
     "react-native-svg": "12.1.0",
     "react-native-swiper-flatlist": "^3.0.15",
     "react-native-unimodules": "~0.13.3",
-    "react-native-video": "^5.1.1",
+    "react-native-video": "^5.2.0",
     "react-native-web": "^0.17.1",
     "react-native-webview": "^11.13.0",
     "react-navigation-animated-switch": "^0.6.4",

@@ -140,12 +140,13 @@ const Like = (props) => {
         }}
         style={{
           width: Dimensions.get("window").width - 22,
-          height: Dimensions.get("window").height / 2,
+          height: Dimensions.get("window").height / 2.2,
           position: "absolute",
-          top: -380,
           borderRadius: 20,
           opacity: 0,
           left: 15.9,
+          backgroundColor: "#fafa",
+          bottom: 67,
         }}
       />
 

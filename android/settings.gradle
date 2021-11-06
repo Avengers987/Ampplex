@@ -1,4 +1,8 @@
 rootProject.name = 'Ampplex'
+include ':react-native-video'
+project(':react-native-video').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-video/android')
+include ':react-native-video'
+project(':react-native-video').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-video/android')
 include ':react-native-smtp-mailer'
 project(':react-native-smtp-mailer').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-smtp-mailer/android')
 include ':react-native-video'

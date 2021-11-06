@@ -14,6 +14,7 @@ import {
 } from "react-native";
 import EmojiBoard from "react-native-emoji-board";
 import LottieView from "lottie-react-native";
+import More_comment from "../components/More_comment";
 
 const wait = (timeout) => {
   return new Promise((resolve) => setTimeout(resolve, timeout));

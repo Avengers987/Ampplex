@@ -1,12 +1,24 @@
 import React, { useState, useEffect } from "react";
-import { StyleSheet, Text, View, TouchableOpacity, Image } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  View,
+  TouchableOpacity,
+  Image,
+  Dimensions,
+} from "react-native";
 import Modal from "react-native-modal";
 
 const More = ({ userID, postID }) => {
   const [isModalVisible, setModalVisible] = useState(false);
+  const [isModal2Visible, setisModal2Visible] = useState(false);
 
   const handleModalClick = () => {
     setModalVisible(!isModalVisible);
+  };
+
+  const handleModal2Click = () => {
+    setisModal2Visible(!isModal2Visible);
   };
 
   const DeletePost = async () => {
@@ -37,7 +49,6 @@ const More = ({ userID, postID }) => {
           top: 20,
         }}
         onPress={() => {
-          console.log("Some ID's ", userID, postID);
           handleModalClick();
         }}
       >
@@ -62,8 +73,8 @@ const More = ({ userID, postID }) => {
           >
             <TouchableOpacity
               onPress={() => {
-                DeletePost();
                 handleModalClick();
+                handleModal2Click();
               }}
             >
               <Text
@@ -79,6 +90,14 @@ const More = ({ userID, postID }) => {
                 Delete
               </Text>
             </TouchableOpacity>
+            <View
+              style={{
+                backgroundColor: "lightgrey",
+                height: 1,
+                width: "100%",
+                marginTop: "6%",
+              }}
+            />
             <TouchableOpacity
               style={{
                 position: "absolute",
@@ -91,13 +110,92 @@ const More = ({ userID, postID }) => {
             >
               <Text
                 style={{
+                  color: "skyblue",
+                  textAlign: "center",
+                  marginTop: "2%",
+                  fontSize: 16,
+                  fontWeight: "bold",
+                  fontFamily: "sans-serif",
+                  left: "18%",
+                }}
+              >
+                Cancel
+              </Text>
+            </TouchableOpacity>
+          </View>
+        </Modal>
+
+        {/* Modal 2 starts from here, which will prompt to the user "Are you sure you want to delete?" */}
+        <Modal isVisible={isModal2Visible}>
+          <View
+            style={{
+              alignSelf: "center",
+              backgroundColor: "white",
+              width: "90%",
+              height: "23%",
+              borderRadius: 20,
+              paddingTop: "3%",
+            }}
+          >
+            <Text
+              style={{
+                fontSize: 16,
+                fontFamily: "sans-serif-medium",
+                textAlign: "center",
+                marginTop: 5,
+              }}
+            >
+              Are you sure you want to delete?
+            </Text>
+            <TouchableOpacity
+              onPress={() => {
+                DeletePost();
+                handleModal2Click();
+              }}
+            >
+              <Text
+                style={{
+                  color: "red",
+                  textAlign: "center",
+                  marginTop: "10%",
+                  fontSize: 16,
+                  fontWeight: "bold",
+                  fontFamily: "sans-serif",
+                }}
+              >
+                Yes
+              </Text>
+            </TouchableOpacity>
+            <View
+              style={{
+                backgroundColor: "lightgrey",
+                height: 1,
+                width: "100%",
+                marginTop: "6%",
+              }}
+            />
+            <TouchableOpacity
+              style={{
+                color: "skyblue",
+                textAlign: "center",
+                marginTop: "5%",
+                fontSize: 16,
+                fontWeight: "bold",
+                fontFamily: "sans-serif",
+              }}
+              onPress={() => {
+                handleModal2Click();
+              }}
+            >
+              <Text
+                style={{
                   textAlign: "center",
                   color: "skyblue",
                   fontWeight: "bold",
                   fontFamily: "sans-serif-medium",
                 }}
               >
-                Cancel
+                No
               </Text>
             </TouchableOpacity>
           </View>

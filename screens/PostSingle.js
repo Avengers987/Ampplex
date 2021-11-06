@@ -5,85 +5,83 @@ import React, {
   forwardRef,
   useImperativeHandle,
 } from "react";
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, Text, View, TouchableWithoutFeedback } from "react-native";
 import { Video, AVPlaybackStatus } from "expo-av";
 
-const PostSingle = forwardRef((props, parentRef) => {
-  const ref = useRef(null);
+const PostSingle = (props) => {
+  const [play, setPlay] = useState(true);
 
-  useImperativeHandle(parentRef, () => ({
-    play,
-    stop,
-    unload,
-  }));
-
-  useEffect(() => {
-    return () => unload();
-  }, []);
-
-  const play = async () => {
-    if (ref.current == null) {
-      return;
-    }
-    const status = await ref.current.getStatusAsync();
-    if (status?.isPlaying) {
-      return;
-    } else {
-      try {
-        ref.current.playAsync();
-      } catch (e) {
-        console.log(e);
-      }
-    }
+  const HandlePlay = () => {
+    setPlay(!play);
   };
 
-  const stop = async () => {
-    if (ref.current == null) {
-      return;
-    }
-    const status = await ref.current.getStatusAsync();
-    if (!status?.isPlaying) {
-      return;
-    } else {
-      try {
-        await ref.current.stopAsync();
-      } catch (e) {
-        console.log(e);
-      }
-    }
-  };
+  // const ref = useRef(null);
 
-  const unload = async () => {
-    console.log("unload");
-    if (ref.current == null) {
-      return;
-    }
+  // const play = async () => {
+  //   if (ref.current == null) {
+  //     return;
+  //   }
+  //   const status = await ref.current.getStatusAsync();
+  //   if (status?.isPlaying) {
+  //     return;
+  //   } else {
+  //     try {
+  //       ref.current.playAsync();
+  //     } catch (e) {
+  //       console.log(e);
+  //     }
+  //   }
+  // };
 
-    try {
-      await ref.current.unloadAsync();
-    } catch (e) {
-      console.log(e);
-    }
-  };
+  // const stop = async () => {
+  //   if (ref.current == null) {
+  //     return;
+  //   }
+  //   const status = await ref.current.getStatusAsync();
+  //   if (!status?.isPlaying) {
+  //     return;
+  //   } else {
+  //     try {
+  //       await ref.current.stopAsync();
+  //     } catch (e) {
+  //       console.log(e);
+  //     }
+  //   }
+  // };
+
+  // const unload = async () => {
+  //   console.log("unload");
+  //   if (ref.current == null) {
+  //     return;
+  //   }
+
+  //   try {
+  //     await ref.current.unloadAsync();
+  //   } catch (e) {
+  //     console.log(e);
+  //   }
+  // };
 
   return (
-    <View style={styles.container}>
+    <TouchableWithoutFeedback
+      style={styles.container}
+      onPress={() => HandlePlay()}
+    >
       <Video
         style={{ flex: 1 }}
-        ref={ref}
         source={{
           uri: "http://d23dyxeqlo5psv.cloudfront.net/big_buck_bunny.mp4",
         }}
-        resizeMode={Video.RESIZE_MODE_COVER}
-        shouldPlay={true}
+        resizeMode={"cover"}
+        shouldPlay={play}
         onLoad={() => console.log("Loading...")}
         onError={(e) => console.log(e)}
-        paginEnabled
-        decelerationRate={"normal"}
+        paginEnabled={true}
+        isLooping={true}
       />
-    </View>
+    </TouchableWithoutFeedback>
   );
-});
+};
 
 export default PostSingle;
 

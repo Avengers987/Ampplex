@@ -180,6 +180,7 @@ const HomeScreen = ({ navigation, userID, userName }) => {
                     pressedUserID={element.UserID}
                   />
                   <TouchableOpacity
+                    key={index}
                     style={{
                       marginLeft: 90,
                       marginTop: -47,
@@ -201,6 +202,7 @@ const HomeScreen = ({ navigation, userID, userName }) => {
                   </TouchableOpacity>
                   <View>
                     <Text
+                      key={index}
                       style={{
                         fontSize: 15,
                         fontWeight: "600",
