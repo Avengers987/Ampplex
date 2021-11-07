@@ -2,28 +2,23 @@ import React, { useState, useEffect } from "react";
 import { StyleSheet, Text, View, TouchableOpacity, Image } from "react-native";
 import Modal from "react-native-modal";
 
-const More_comment = ({ clickedUserID, postID, commentID }) => {
+const Block_report = ({ userID, myUserID }) => {
   const [isModalVisible, setModalVisible] = useState(false);
-  const [isModal2Visible, setisModal2Visible] = useState(false);
 
   const handleModalClick = () => {
     setModalVisible(!isModalVisible);
   };
 
-  const handleModal2Click = () => {
-    setisModal2Visible(!isModal2Visible);
-  };
+  const handleBlock = () => {
+    const url = `https://ampplex-backened.herokuapp.com/BlockUser/${userID}/${myUserID}`;
 
-  const DeleteComment = async () => {
-    const url = `https://ampplex-backened.herokuapp.com/DeleteComment/${clickedUserID}/${postID}/${commentID}`;
-
-    await fetch(url)
+    fetch(url)
       .then((response) => {
         return response.text();
       })
       .then((data) => {
         if (data === "success") {
-          alert("Comment Deleted!. Please refresh once to see changes");
+          alert("User Blocked");
         }
       });
   };
@@ -55,14 +50,14 @@ const More_comment = ({ clickedUserID, postID, commentID }) => {
               alignSelf: "center",
               backgroundColor: "white",
               width: "80%",
-              height: "20%",
+              height: "27%",
               borderRadius: 20,
             }}
           >
             <TouchableOpacity
               onPress={() => {
+                handleBlock();
                 handleModalClick();
-                handleModal2Click();
               }}
             >
               <Text
@@ -75,7 +70,7 @@ const More_comment = ({ clickedUserID, postID, commentID }) => {
                   fontFamily: "sans-serif",
                 }}
               >
-                Delete
+                Block
               </Text>
             </TouchableOpacity>
             <View
@@ -84,6 +79,38 @@ const More_comment = ({ clickedUserID, postID, commentID }) => {
                 height: 1,
                 width: "100%",
                 marginTop: "6%",
+              }}
+            />
+            <TouchableOpacity
+              style={{
+                position: "absolute",
+                bottom: 35,
+                right: 120,
+              }}
+              onPress={() => {
+                handleModalClick();
+              }}
+            >
+              <Text
+                style={{
+                  color: "red",
+                  textAlign: "center",
+                  marginTop: "20%",
+                  fontSize: 16,
+                  fontWeight: "bold",
+                  fontFamily: "sans-serif",
+                  left: "18%",
+                }}
+              >
+                Report
+              </Text>
+            </TouchableOpacity>
+            <View
+              style={{
+                backgroundColor: "lightgrey",
+                height: 1,
+                width: "100%",
+                marginTop: 55,
               }}
             />
             <TouchableOpacity
@@ -100,7 +127,7 @@ const More_comment = ({ clickedUserID, postID, commentID }) => {
                 style={{
                   color: "skyblue",
                   textAlign: "center",
-                  marginTop: "2%",
+                  marginTop: "2.5%",
                   fontSize: 16,
                   fontWeight: "bold",
                   fontFamily: "sans-serif",
@@ -112,97 +139,14 @@ const More_comment = ({ clickedUserID, postID, commentID }) => {
             </TouchableOpacity>
           </View>
         </Modal>
-
-        {/* Modal 2 starts from here, which will prompt to the user "Are you sure you want to delete?" */}
-        <Modal isVisible={isModal2Visible}>
-          <View
-            style={{
-              alignSelf: "center",
-              backgroundColor: "white",
-              width: "90%",
-              height: "23%",
-              borderRadius: 20,
-              paddingTop: "3%",
-            }}
-          >
-            <Text
-              style={{
-                fontSize: 16,
-                fontFamily: "sans-serif-medium",
-                textAlign: "center",
-                marginTop: 5,
-              }}
-            >
-              Are you sure you want to delete?
-            </Text>
-            <TouchableOpacity
-              onPress={() => {
-                handleModal2Click();
-                DeleteComment();
-              }}
-            >
-              <Text
-                style={{
-                  color: "red",
-                  textAlign: "center",
-                  marginTop: "10%",
-                  fontSize: 16,
-                  fontWeight: "bold",
-                  fontFamily: "sans-serif",
-                }}
-              >
-                Yes
-              </Text>
-            </TouchableOpacity>
-            <View
-              style={{
-                backgroundColor: "lightgrey",
-                height: 1,
-                width: "100%",
-                marginTop: "6%",
-              }}
-            />
-            <TouchableOpacity
-              style={{
-                color: "skyblue",
-                textAlign: "center",
-                marginTop: "5%",
-                fontSize: 16,
-                fontWeight: "bold",
-                fontFamily: "sans-serif",
-              }}
-              onPress={() => {
-                handleModal2Click();
-              }}
-            >
-              <Text
-                style={{
-                  textAlign: "center",
-                  color: "skyblue",
-                  fontWeight: "bold",
-                  fontFamily: "sans-serif-medium",
-                }}
-              >
-                No
-              </Text>
-            </TouchableOpacity>
-          </View>
-        </Modal>
       </View>
     </>
   );
 };
 
-export default More_comment;
+export default Block_report;
 
 const styles = StyleSheet.create({
-  modal: {
-    alignSelf: "center",
-    backgroundColor: "white",
-    width: "80%",
-    height: "20%",
-    borderRadius: 20,
-  },
   container: {
     display: "flex",
     justifyContent: "center",

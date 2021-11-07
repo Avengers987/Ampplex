@@ -15,6 +15,7 @@ import {
 import EmojiBoard from "react-native-emoji-board";
 import LottieView from "lottie-react-native";
 import More_comment from "../components/More_comment";
+import Block_report from "../components/Block_report";
 
 const wait = (timeout) => {
   return new Promise((resolve) => setTimeout(resolve, timeout));
@@ -28,6 +29,9 @@ const Comment = ({ route, navigation }) => {
   const [response, setResponse] = useState([]);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
+  const clickedUserID = route.params.clickedUserID;
+  const postID = route.params.postID;
+  const myUserID = route.params.myUserID;
 
   const onClick = (emoji) => {
     setExperience(experience + emoji.code);
@@ -98,6 +102,18 @@ const Comment = ({ route, navigation }) => {
               <>
                 <View style={styles.commentView} key={index}>
                   {/* Profile_Picture */}
+                  {route.params.myUserID == element.myUserID ? (
+                    <More_comment
+                      clickedUserID={clickedUserID}
+                      postID={postID}
+                      commentID={element.Comment_ID}
+                    />
+                  ) : (
+                    <Block_report
+                      userID={element.myUserID}
+                      myUserID={myUserID}
+                    />
+                  )}
                   {element.ImgPath != null ? (
                     <View>
                       <Image
@@ -124,13 +140,7 @@ const Comment = ({ route, navigation }) => {
                       left: 80,
                     }}
                   >
-                    <Text
-                      style={{
-                        textAlign: "left",
-                      }}
-                    >
-                      {element.Comment}
-                    </Text>
+                    <Text style={{}}>{element.Comment}</Text>
                   </View>
                 </View>
               </>
@@ -277,13 +287,13 @@ const styles = StyleSheet.create({
     right: -15,
   },
   commentView: {
-    width: "85%",
+    width: "90%",
     height: 90,
     backgroundColor: "#fafafa",
     alignItems: "center",
     borderRadius: 20,
     marginTop: 20,
-    marginLeft: 20,
+    marginLeft: 12,
     elevation: 10,
   },
   profilePicture: {
@@ -291,7 +301,7 @@ const styles = StyleSheet.create({
     height: 50,
     borderRadius: 50,
     position: "absolute",
-    left: -150,
+    left: -160,
     alignSelf: "flex-start",
     top: 10,
   },
