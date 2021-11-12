@@ -46,8 +46,11 @@ const EditProfile = ({ route }) => {
 
   const onSubmitHandler_EditProfile = async () => {
     await AsyncStorage.setItem("user_name", firstName + " " + lastName);
+    let url = `https://ampplex-backened.herokuapp.com/EditProfile/${userID}/${firstName}/${lastName}/${bio}/`;
 
-    const url = `https://ampplex-backened.herokuapp.com/EditProfile/${userID}/${firstName}/${lastName}/${bio}/`;
+    if (lastName == "") {
+      url = `https://ampplex-backened.herokuapp.com/EditProfile/${userID}/${firstName}/null/${bio}/`;
+    }
 
     await fetch(url)
       .then((response) => {
