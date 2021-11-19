@@ -235,8 +235,6 @@ const Profile = ({ userID, navigation, route }) => {
       });
   };
 
-  // "Hello World this is Ampplex CO-FOUNDER pseaking in this appc";
-
   useEffect(() => {
     getFollowers();
     getPost();

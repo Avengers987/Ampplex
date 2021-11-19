@@ -135,7 +135,6 @@ const HomeScreen = ({ navigation, userID, userName }) => {
                   <TouchableOpacity
                     style={styles.UserNameContainer}
                     onPress={() => {
-                      console.log(`User Id of the user is : ${element.UserID}`);
                       const clickedUserID = element.UserID;
                       const clickedUserName = element.UserName;
                       const myUserId = userID;
@@ -259,11 +258,14 @@ const styles = StyleSheet.create({
   UserName: {
     fontSize: 19,
     fontWeight: "bold",
+    marginLeft: 80,
   },
   UserNameContainer: {
-    marginLeft: 80,
+    marginLeft: 5,
     position: "absolute",
-    top: 20,
+    top: 17,
+    width: "60%",
+    height: "5%",
   },
   profilePicture: {
     width: 43,

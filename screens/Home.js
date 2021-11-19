@@ -83,7 +83,9 @@ const Home = ({ navigation, route }) => {
         />
         <Tab.Screen
           name="Short video"
-          children={() => <ShortVideo />}
+          children={() => (
+            <ShortVideo userID={route.params.userID} navigation={navigation} />
+          )}
           options={{
             tabBarLabel: "Short video",
             tabBarIcon: ({ color, size }) => (

@@ -10,6 +10,7 @@ import {
   TouchableOpacity,
   ActivityIndicator,
   Alert,
+  Animated,
 } from "react-native";
 import ActionButton from "react-native-action-button";
 import Icon from "react-native-vector-icons/Ionicons";
@@ -67,11 +68,51 @@ export default function AddPost({ navigation, route, userID }) {
   const [error, setError] = useState(false); // if true then user have not attached picture or video or not written caption
   const [clickedPost, setClickedPost] = useState(false);
   const [mediaType, setMediaType] = useState(null);
-  const [autoFocus, setAutoFocus] = useState(true);
+  const [autoFocus, setAutoFocus] = useState(true); // Change default focus to true
+
+  let animatedImgContainer = new Animated.Value(-20);
 
   if (userID === undefined) {
     userID = route.params.userID;
   }
+
+  const startImgAnimation = async () => {
+    setTimeout(() => {
+      Animated.timing(animatedImgContainer, {
+        toValue: 1,
+        duration: 600,
+        useNativeDriver: false,
+      }).start();
+    }, 400);
+
+    setTimeout(() => {
+      Animated.timing(animatedImgContainer, {
+        toValue: -20,
+        duration: 600,
+        useNativeDriver: false,
+      }).start();
+    }, 1100);
+
+    setTimeout(() => {
+      Animated.timing(animatedImgContainer, {
+        toValue: 1,
+        duration: 600,
+        useNativeDriver: false,
+      }).start();
+    }, 2200);
+
+    setTimeout(() => {
+      Animated.timing(animatedImgContainer, {
+        toValue: -20,
+        duration: 600,
+        useNativeDriver: false,
+      }).start();
+    }, 3300);
+  };
+
+  setInterval(() => {
+    startImgAnimation();
+  }, 3500);
 
   const SetImage = () => {
     try {
@@ -274,25 +315,27 @@ export default function AddPost({ navigation, route, userID }) {
       <PostBtn />
       <View style={styles.container}>
         {image && (
-          <Image
-            source={{ uri: image }}
+          // Selected Image container
+          <Animated.View
             style={{
-              width: getWindowDimensionsWidth(),
-              height: getWindowDimensionsWidth(),
-              alignSelf: "center",
-
-              marginTop: 20,
+              position: "absolute",
+              top: animatedImgContainer,
             }}
-          />
-        )}
-        <View>
-          <TouchableOpacity
-            style={styles.postBtnStyle}
-            onPress={sendPostToCloudServer}
           >
-            <Text style={styles.postBtnTextStyle}>Post</Text>
-          </TouchableOpacity>
-        </View>
+            <View style={styles.Imgcontainer} />
+            <Image
+              source={{ uri: image }}
+              style={{
+                width: getWindowDimensionsWidth() - 50,
+                height: getWindowDimensionsWidth(),
+                alignSelf: "center",
+                marginTop: 45,
+                borderRadius: 10,
+              }}
+            />
+          </Animated.View>
+        )}
+
         {posted === false && error === false ? (
           <View
             style={{
@@ -325,6 +368,14 @@ export default function AddPost({ navigation, route, userID }) {
           <View />
         )}
       </View>
+      <View>
+        <TouchableOpacity
+          style={styles.postBtnStyle}
+          onPress={sendPostToCloudServer}
+        >
+          <Text style={styles.postBtnTextStyle}>Post</Text>
+        </TouchableOpacity>
+      </View>
     </>
   );
 }
@@ -344,13 +395,26 @@ const styles = StyleSheet.create({
     backgroundColor: "skyblue",
     width: 100,
     height: 30,
-    marginTop: 20,
+    marginTop: 500,
     borderRadius: 50,
+    alignSelf: "center",
+    position: "absolute",
+    marginTop: getWindowDimensionsHeight() - 210,
   },
   postBtnTextStyle: {
     alignSelf: "center",
     fontWeight: "bold",
     color: "white",
     fontSize: 16.5,
+  },
+  Imgcontainer: {
+    elevation: 12,
+    width: getWindowDimensionsWidth() - 20,
+    height: getWindowDimensionsWidth() + 32,
+    marginTop: 45,
+    borderRadius: 21,
+    position: "absolute",
+    alignSelf: "center",
+    top: -22,
   },
 });
