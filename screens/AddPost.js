@@ -278,7 +278,7 @@ export default function AddPost({ navigation, route, userID }) {
          */}
         <ActionButton buttonColor="#7b68ee">
           <ActionButton.Item
-            buttonColor="#9b59b6"
+            buttonColor="#fafafa"
             title="Camera"
             onPress={() => {
               navigation.navigate("TakePic", { navParent: "AddPost", userID });
@@ -287,7 +287,7 @@ export default function AddPost({ navigation, route, userID }) {
             <Icon name="camera-outline" style={styles.actionButtonIcon} />
           </ActionButton.Item>
           <ActionButton.Item
-            buttonColor="#3498db"
+            buttonColor="#fafafa"
             title="Choose pictures"
             onPress={() => {
               pickImage();
@@ -296,7 +296,7 @@ export default function AddPost({ navigation, route, userID }) {
             <Icon name="md-images-outline" style={styles.actionButtonIcon} />
           </ActionButton.Item>
           <ActionButton.Item
-            buttonColor="#3498db"
+            buttonColor="#fafafa"
             title="Choose Video"
             onPress={() => {
               pickVideo();
@@ -359,6 +359,8 @@ export default function AddPost({ navigation, route, userID }) {
             <Text
               style={{
                 fontSize: 17,
+                fontWeight: "bold",
+                fontFamily: "sans-serif-medium",
               }}
             >
               Uploaded : {uploadStatus}
@@ -392,18 +394,20 @@ const styles = StyleSheet.create({
     fontWeight: "800",
   },
   postBtnStyle: {
-    backgroundColor: "skyblue",
+    backgroundColor: "#7B49F6",
     width: 100,
     height: 30,
     marginTop: 500,
-    borderRadius: 50,
+    borderRadius: 10,
     alignSelf: "center",
     position: "absolute",
     marginTop: getWindowDimensionsHeight() - 210,
+    elevation: 12,
   },
   postBtnTextStyle: {
     alignSelf: "center",
     fontWeight: "bold",
+    fontFamily: "sans-serif-medium",
     color: "white",
     fontSize: 16.5,
   },

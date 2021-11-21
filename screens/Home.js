@@ -121,6 +121,7 @@ const Home = ({ navigation, route }) => {
                   color: "white",
                   fontSize: size,
                   marginTop: 10,
+                  fontFamily: "sans-serif-medium",
                 }}
               >
                 <Icon name="md-images-outline" size={20} color={color} />

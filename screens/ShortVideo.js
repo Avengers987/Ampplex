@@ -30,6 +30,7 @@ const ShortVideo = ({ userID, navigation }) => {
     try {
       const play = viewableItems["viewableItems"][0].index;
       setCurrentIndex(play);
+      console.log(play);
     } catch (e) {
       // console.log(e);
     }
@@ -62,18 +63,19 @@ const ShortVideo = ({ userID, navigation }) => {
   };
 
   return (
-    <View style={styles.container}>
+    <View>
       <FlatList
         data={response}
         renderItem={renderItem}
         decelerationRate={"normal"}
         showsVerticalScrollIndicator={false}
+        initialNumToRender={1}
         snapToInterval={Dimensions.get("window").height}
         snapToAlignment={"start"}
         keyExtractor={(item, index) => index.toString()}
         onViewableItemsChanged={onViewRef.current}
         viewabilityConfig={{
-          itemVisiblePercentThreshold: 60,
+          itemVisiblePercentThreshold: 50,
         }}
       />
       <Text style={styles.Title}>Shorts</Text>
@@ -86,7 +88,7 @@ export default ShortVideo;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#000",
+    backgroundColor: "#fff",
     alignItems: "center",
     justifyContent: "center",
   },

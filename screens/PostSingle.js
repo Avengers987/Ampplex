@@ -13,6 +13,8 @@ import {
   Dimensions,
   Image,
   TouchableOpacity,
+  Pressable,
+  ActivityIndicator,
 } from "react-native";
 import { Video, AVPlaybackStatus } from "expo-av";
 import { StatusBar } from "expo-status-bar";
@@ -20,6 +22,7 @@ import Like from "../components/Like3";
 
 const PostSingle = (props) => {
   const [play, setPlay] = useState(false);
+  const [loading, setLoading] = useState(true);
   const clickedUserID = props.userId;
   const clickedUserName = props.UserName;
   const navigation = props.navigation;
@@ -29,6 +32,8 @@ const PostSingle = (props) => {
     console.log("Audio controller triggered!");
     setPlay(!play);
   };
+
+  console.log(props.index, props.currentIndex);
 
   const userNamePressHandler = () => {
     navigation.navigate("UserProfile", {
@@ -108,28 +113,33 @@ const PostSingle = (props) => {
   return (
     <>
       <StatusBar style="light" />
-
-      <TouchableWithoutFeedback
-        style={styles.container}
-        onPress={() => HandleAudio()}
-      >
+      <Pressable style={styles.container} onPress={() => HandleAudio()}>
         <Video
           style={{ flex: 1 }}
           source={{
-            uri: "https://firebasestorage.googleapis.com/v0/b/ampplex-75da7.appspot.com/o/post%2F-McUOXU-14cnk8o7hjeE%2Ffff18059-2e90-4c24-9bce-62d9f3a45fc6.mp4?alt=media&token=ee357b47-b985-427a-9efe-0fdcf6fbbea4",
+            uri: props.url,
           }}
           resizeMode={"cover"}
-          onLoad={() => console.log("Loading completed")}
-          onLoadStart={() => console.log("Load start...")}
+          onLoad={() => setLoading(false)}
+          onLoadStart={() => console.log("Loading started...")}
           onError={(e) => console.log(e)}
           paginEnabled={true}
           shouldPlay={props.play}
           isLooping={true}
           shouldCorrectPitch={true}
-          isMuted={play}
         />
-      </TouchableWithoutFeedback>
-
+      </Pressable>
+      {loading ? (
+        <View
+          style={{
+            marginLeft: Dimensions.get("window").width / 2.0,
+            position: "absolute",
+            top: Dimensions.get("window").height / 2.0 - 70,
+          }}
+        >
+          <ActivityIndicator size="large" color="white" />
+        </View>
+      ) : null}
       <View style={styles.like}>
         <Like
           postID={props.postID}
@@ -209,6 +219,7 @@ const styles = StyleSheet.create({
     fontSize: 15,
     color: "#fafafa",
     fontFamily: "sans-serif-medium",
+    fontWeight: "900",
     position: "absolute",
     marginTop: Dimensions.get("window").height - 100,
     left: 10,
