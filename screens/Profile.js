@@ -243,116 +243,6 @@ const Profile = ({ userID, navigation, route }) => {
 
   return (
     <>
-      <View style={styles.Profile}>
-        <Text style={styles.UserName}>{userName}</Text>
-        <TouchableOpacity
-          onPress={() => actionSheetRef.current?.setModalVisible()}
-          style={{
-            position: "absolute",
-            left: 0,
-            top: 20,
-          }}
-        >
-          <View
-            style={{
-              width: 100,
-              height: 90,
-              borderRadius: 100,
-              marginTop: 70,
-              opacity: 0,
-            }}
-          ></View>
-          {myProfilePic !== null ? (
-            <Animated.Image
-              style={{
-                width: 90,
-                height: 90,
-                borderRadius: 90,
-                position: "absolute",
-                left: 20,
-                top: 70,
-              }}
-              source={{
-                uri: myProfilePic,
-              }}
-            />
-          ) : (
-            <Animated.Image
-              style={{
-                width: 90,
-                height: 90,
-                borderRadius: 90,
-                position: "absolute",
-                left: 20,
-                top: 70,
-              }}
-              source={require("../assets/images/default_profile_picture.png")}
-            />
-          )}
-          {profilePicLoading === true ? (
-            <View
-              style={{
-                marginLeft: 50,
-                position: "absolute",
-                top: 100,
-              }}
-            >
-              <ActivityIndicator size="large" color="black" />
-            </View>
-          ) : (
-            <View />
-          )}
-        </TouchableOpacity>
-
-        <View>
-          <Text style={styles.PostsNumber}>{posts}</Text>
-          <Text
-            style={{
-              position: "absolute",
-              top: 70,
-              fontSize: 15,
-              fontFamily: "sans-serif-medium",
-              left: -36,
-            }}
-          >
-            Posts
-          </Text>
-        </View>
-        <View>
-          <Text style={styles.Followers}>{follower}</Text>
-          <Text
-            style={{
-              position: "absolute",
-              top: 70,
-              fontSize: 15,
-              fontFamily: "sans-serif-medium",
-              alignSelf: "center",
-              left: 50,
-            }}
-          >
-            Followers
-          </Text>
-        </View>
-        <View style={styles.container}>
-          <Text numberOfLines={10} style={styles.bio}>
-            {bio}
-          </Text>
-        </View>
-        <View>
-          <Text
-            style={{
-              fontSize: 25,
-              fontWeight: "bold",
-              position: "absolute",
-              top: 200,
-              alignSelf: "center",
-            }}
-          >
-            My Posts
-          </Text>
-        </View>
-        <EditProfile navigation={navigation} userID={userID} />
-      </View>
       <ScrollView
         style={{
           marginTop: 10,
@@ -361,6 +251,116 @@ const Profile = ({ userID, navigation, route }) => {
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
         }
       >
+        <View style={styles.Profile}>
+          <Text style={styles.UserName}>{userName}</Text>
+          <TouchableOpacity
+            onPress={() => actionSheetRef.current?.setModalVisible()}
+            style={{
+              position: "absolute",
+              left: 0,
+              top: 20,
+            }}
+          >
+            <View
+              style={{
+                width: 100,
+                height: 90,
+                borderRadius: 100,
+                marginTop: 70,
+                opacity: 0,
+              }}
+            ></View>
+            {myProfilePic !== null ? (
+              <Animated.Image
+                style={{
+                  width: 90,
+                  height: 90,
+                  borderRadius: 90,
+                  position: "absolute",
+                  left: 20,
+                  top: 70,
+                }}
+                source={{
+                  uri: myProfilePic,
+                }}
+              />
+            ) : (
+              <Animated.Image
+                style={{
+                  width: 90,
+                  height: 90,
+                  borderRadius: 90,
+                  position: "absolute",
+                  left: 20,
+                  top: 70,
+                }}
+                source={require("../assets/images/default_profile_picture.png")}
+              />
+            )}
+            {profilePicLoading === true ? (
+              <View
+                style={{
+                  marginLeft: 50,
+                  position: "absolute",
+                  top: 100,
+                }}
+              >
+                <ActivityIndicator size="large" color="black" />
+              </View>
+            ) : (
+              <View />
+            )}
+          </TouchableOpacity>
+
+          <View>
+            <Text style={styles.PostsNumber}>{posts}</Text>
+            <Text
+              style={{
+                position: "absolute",
+                top: 70,
+                fontSize: 15,
+                fontFamily: "sans-serif-medium",
+                left: -36,
+              }}
+            >
+              Posts
+            </Text>
+          </View>
+          <View>
+            <Text style={styles.Followers}>{follower}</Text>
+            <Text
+              style={{
+                position: "absolute",
+                top: 70,
+                fontSize: 15,
+                fontFamily: "sans-serif-medium",
+                alignSelf: "center",
+                left: 50,
+              }}
+            >
+              Followers
+            </Text>
+          </View>
+          <View style={styles.container}>
+            <Text numberOfLines={10} style={styles.bio}>
+              {bio}
+            </Text>
+          </View>
+          <View>
+            <Text
+              style={{
+                fontSize: 25,
+                fontWeight: "bold",
+                position: "absolute",
+                top: 200,
+                alignSelf: "center",
+              }}
+            >
+              My Posts
+            </Text>
+          </View>
+          <EditProfile navigation={navigation} userID={userID} />
+        </View>
         {loading ? (
           <View
             style={{

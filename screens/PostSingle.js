@@ -15,29 +15,32 @@ import {
   TouchableOpacity,
 } from "react-native";
 import { Video, AVPlaybackStatus } from "expo-av";
-// import Video from "react-native-video";
+import { StatusBar } from "expo-status-bar";
+import Like from "../components/Like3";
 
-const PostSingle = (props, { navigation, myUserId }) => {
-  const [play, setPlay] = useState(props.play);
-  const userId = props.userId;
+const PostSingle = (props) => {
+  const [play, setPlay] = useState(false);
+  const clickedUserID = props.userId;
   const clickedUserName = props.UserName;
+  const navigation = props.navigation;
+  const myUserId = props.myUserId;
 
-  // console.log("Play or not?", props.play, props.currentIndex, props.index);
-
-  const HandlePlay = () => {
-    if (props.play) {
-      setPlay(!play);
-    }
+  const HandleAudio = () => {
+    console.log("Audio controller triggered!");
+    setPlay(!play);
   };
 
   const userNamePressHandler = () => {
-    // console.log(navigation);
-    // navigation.navigate("UserProfile", {
-    //   userId,
-    //   clickedUserName,
-    //   myUserId,
-    // });
+    navigation.navigate("UserProfile", {
+      clickedUserID,
+      clickedUserName,
+      myUserId,
+    });
   };
+
+  // useEffect(() => {
+  //   console.log(props.url);
+  // }, []);
 
   // const ref = useRef(null);
 
@@ -74,7 +77,7 @@ const PostSingle = (props, { navigation, myUserId }) => {
   // };
 
   // const unload = async () => {
-  //   console.log("unload");
+  //   // console.log("unload");
   //   if (ref.current == null) {
   //     return;
   //   }
@@ -86,43 +89,92 @@ const PostSingle = (props, { navigation, myUserId }) => {
   //   }
   // };
 
+  // const loadAsync = async () => {
+  //   try {
+  //     await ref.current.loadAsync();
+  //   } catch (e) {
+  //     console.log(e);
+  //   }
+  // };
+
   // useEffect(() => {
   //   if (props.play) {
-  //     playVideo();
+  //     loadAsync();
   //   } else {
-  //     // stop();
-  //     // unload();
+  //     unload();
   //   }
   // }, [props.play]);
 
   return (
     <>
+      <StatusBar style="light" />
+
       <TouchableWithoutFeedback
         style={styles.container}
-        onPress={() => HandlePlay()}
+        onPress={() => HandleAudio()}
       >
         <Video
           style={{ flex: 1 }}
           source={{
-            uri: props.url,
+            uri: "https://firebasestorage.googleapis.com/v0/b/ampplex-75da7.appspot.com/o/post%2F-McUOXU-14cnk8o7hjeE%2Ffff18059-2e90-4c24-9bce-62d9f3a45fc6.mp4?alt=media&token=ee357b47-b985-427a-9efe-0fdcf6fbbea4",
           }}
           resizeMode={"cover"}
-          shouldPlay={props.play}
-          onLoad={() => console.log("Loading...")}
+          onLoad={() => console.log("Loading completed")}
           onLoadStart={() => console.log("Load start...")}
           onError={(e) => console.log(e)}
           paginEnabled={true}
+          shouldPlay={props.play}
           isLooping={true}
           shouldCorrectPitch={true}
-          isMuted={false}
+          isMuted={play}
         />
       </TouchableWithoutFeedback>
-      <Image
-        style={styles.profilePic}
-        source={{
-          uri: props.profilePicPath,
+
+      <View style={styles.like}>
+        <Like
+          postID={props.postID}
+          myUserId={myUserId}
+          pressedUserID={clickedUserID}
+        />
+      </View>
+      <TouchableOpacity
+        key={props.index}
+        style={{
+          position: "absolute",
+          alignSelf: "center",
+          bottom: Dimensions.get("window").height * 0.34,
+          right: 25,
         }}
-      />
+        onPress={() => {
+          let postID = props.postID;
+          let myUserID = myUserId;
+          navigation.navigate("Comments", {
+            myUserID,
+            clickedUserID,
+            postID,
+          });
+        }}
+      >
+        <Image
+          style={styles.comment}
+          source={require("../Images/comment-icon-short-videos.png")}
+        />
+      </TouchableOpacity>
+      <TouchableOpacity
+        style={{
+          position: "absolute",
+          top: Dimensions.get("window").height - 150,
+          left: Dimensions.get("window").width * 0.04,
+        }}
+        onPress={() => userNamePressHandler()}
+      >
+        <Image
+          style={styles.profilePic}
+          source={{
+            uri: props.profilePicPath,
+          }}
+        />
+      </TouchableOpacity>
       <TouchableOpacity
         style={styles.userNamePosition}
         onPress={() => userNamePressHandler()}
@@ -149,24 +201,39 @@ const styles = StyleSheet.create({
     fontFamily: "sans-serif-medium",
   },
   profilePic: {
-    width: Dimensions.get("window").width * 0.12,
-    height: Dimensions.get("window").width * 0.12,
+    width: Dimensions.get("window").width * 0.1,
+    height: Dimensions.get("window").width * 0.1,
     borderRadius: Dimensions.get("window").width * 0.075,
-    position: "absolute",
-    top: Dimensions.get("window").height * 0.735,
-    left: Dimensions.get("window").width * 0.02,
   },
   Caption: {
     fontSize: 15,
     color: "#fafafa",
     fontFamily: "sans-serif-medium",
     position: "absolute",
-    marginTop: Dimensions.get("window").height * 0.82,
+    marginTop: Dimensions.get("window").height - 100,
     left: 10,
   },
   userNamePosition: {
     position: "absolute",
-    top: Dimensions.get("window").height * 0.75,
-    left: Dimensions.get("window").width * 0.2,
+    top: Dimensions.get("window").height - 140,
+    left: Dimensions.get("window").width * 0.18,
+  },
+  Title: {
+    fontSize: 25,
+    color: "#fafafa",
+    fontWeight: "bold",
+    fontFamily: "sans-serif-medium",
+    position: "absolute",
+    top: 20,
+    left: 20,
+  },
+  like: {
+    position: "absolute",
+    top: Dimensions.get("window").height / 2.2,
+    right: 10,
+  },
+  comment: {
+    width: 37,
+    height: 37,
   },
 });

@@ -62,21 +62,21 @@ const ShortVideo = ({ userID, navigation }) => {
   };
 
   return (
-    <View>
+    <View style={styles.container}>
       <FlatList
         data={response}
         renderItem={renderItem}
-        decelerationRate={"fast"}
+        decelerationRate={"normal"}
         showsVerticalScrollIndicator={false}
-        initialNumToRender={1}
         snapToInterval={Dimensions.get("window").height}
         snapToAlignment={"start"}
         keyExtractor={(item, index) => index.toString()}
         onViewableItemsChanged={onViewRef.current}
         viewabilityConfig={{
-          itemVisiblePercentThreshold: 50,
+          itemVisiblePercentThreshold: 60,
         }}
       />
+      <Text style={styles.Title}>Shorts</Text>
     </View>
   );
 };
@@ -86,11 +86,20 @@ export default ShortVideo;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fff",
+    backgroundColor: "#000",
     alignItems: "center",
     justifyContent: "center",
   },
   video: {
     flex: 1,
+  },
+  Title: {
+    fontSize: 25,
+    color: "#fafafa",
+    fontWeight: "bold",
+    fontFamily: "sans-serif-medium",
+    position: "absolute",
+    top: 30,
+    left: 20,
   },
 });

@@ -19,6 +19,7 @@ import PhoneNumber from "./screens/PhoneNumber";
 import * as firebase from "firebase";
 import OTP from "./screens/OTP";
 import CreateNewPassword from "./screens/CreateNewPassword";
+import PostSingle from "./screens/PostSingle";
 
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 
@@ -175,6 +176,18 @@ export default function App() {
           options={{
             headerShown: true,
             headerTitle: "Edit Profile",
+            headerTitleStyle: {
+              fontWeight: "bold",
+            },
+          }}
+        />
+
+        <Stack.Screen
+          name="PostSingle"
+          component={PostSingle}
+          options={{
+            headerShown: false,
+            headerTitle: "PostSingle",
             headerTitleStyle: {
               fontWeight: "bold",
             },

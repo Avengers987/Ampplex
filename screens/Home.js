@@ -29,10 +29,22 @@ const getWindowDimensionsHeight = () => {
 const Tab = createBottomTabNavigator();
 
 const Home = ({ navigation, route }) => {
+  const [backgroundColor, setBackgroundColor] = useState("white");
+
   return (
     <>
       <StatusBar style="auto" />
-      <Tab.Navigator>
+      <Tab.Navigator
+        tabBarOptions={{
+          style: {
+            borderRadius: 100,
+            width: getWindowDimensions() - 20,
+            elevation: 12,
+            left: 10,
+            backgroundColor: backgroundColor,
+          },
+        }}
+      >
         <Tab.Screen
           name="Home"
           children={() => (
@@ -46,7 +58,14 @@ const Home = ({ navigation, route }) => {
           options={{
             tabBarLabel: "Home",
             tabBarIcon: ({ color, size }) => (
-              <Ionicons name="home" color={color} size={size} />
+              <Ionicons
+                name="home"
+                color={color}
+                size={size}
+                style={{
+                  marginTop: 10,
+                }}
+              />
             ),
           }}
         />
@@ -58,7 +77,14 @@ const Home = ({ navigation, route }) => {
           options={{
             tabBarLabel: "Search",
             tabBarIcon: ({ color, size }) => (
-              <Ionicons name="md-search" color={color} size={size} />
+              <Ionicons
+                name="md-search"
+                color={color}
+                size={size}
+                style={{
+                  marginTop: 10,
+                }}
+              />
             ),
           }}
         />
@@ -74,6 +100,7 @@ const Home = ({ navigation, route }) => {
                 style={{
                   color: color,
                   fontSize: size,
+                  marginTop: 10,
                 }}
               >
                 +
@@ -87,15 +114,16 @@ const Home = ({ navigation, route }) => {
             <ShortVideo userID={route.params.userID} navigation={navigation} />
           )}
           options={{
-            tabBarLabel: "Short video",
+            tabBarLabel: "Short videos",
             tabBarIcon: ({ color, size }) => (
               <Text
                 style={{
-                  color: color,
+                  color: "white",
                   fontSize: size,
+                  marginTop: 10,
                 }}
               >
-                <Icon name="md-images-outline" size={20} />
+                <Icon name="md-images-outline" size={20} color={color} />
               </Text>
             ),
           }}
@@ -116,6 +144,9 @@ const Home = ({ navigation, route }) => {
                 name="account"
                 color={color}
                 size={size}
+                style={{
+                  marginTop: 10,
+                }}
               />
             ),
           }}

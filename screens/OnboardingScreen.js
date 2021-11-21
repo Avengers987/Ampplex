@@ -125,7 +125,7 @@ export default function OnboardingScreen({ navigation }) {
           ),
           subtitle: (
             <Text style={styles.Descript_Screen2}>
-              Because when the world come on social media to study it get
+              Because when the world come on social media to study it gets
               distracted and to avoid that please help us to make this world a
               better place
             </Text>
@@ -141,6 +141,7 @@ const styles = StyleSheet.create({
     fontSize: 30,
     fontWeight: "bold",
     alignSelf: "center",
+    fontFamily: "sans-serif-medium",
   },
   Descript_Screen1: {
     fontSize: 18,
@@ -148,12 +149,14 @@ const styles = StyleSheet.create({
     color: "grey",
     marginTop: 16,
     alignSelf: "center",
+    fontFamily: "sans-serif-medium",
   },
   Title_Screen2: {
     fontSize: 20,
     fontWeight: "bold",
     alignSelf: "center",
     marginLeft: 4,
+    fontFamily: "sans-serif-medium",
   },
   Descript_Screen2: {
     fontSize: 15,
@@ -162,5 +165,6 @@ const styles = StyleSheet.create({
     marginTop: 16,
     alignSelf: "center",
     marginLeft: 4,
+    fontFamily: "sans-serif-medium",
   },
 });

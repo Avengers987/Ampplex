@@ -216,150 +216,6 @@ const Profile = ({ navigation, route }) => {
 
   return (
     <>
-      <View style={styles.Profile}>
-        <Text style={styles.UserName}>{userName}</Text>
-        <View
-          style={{
-            position: "absolute",
-            left: 0,
-            top: 20,
-          }}
-        >
-          {myProfilePic !== null ? (
-            <Image
-              style={{
-                width: 90,
-                height: 90,
-                borderRadius: 90,
-                position: "absolute",
-                left: 20,
-                top: 70,
-              }}
-              source={{
-                uri: myProfilePic,
-              }}
-            />
-          ) : (
-            <Image
-              style={{
-                width: 90,
-                height: 90,
-                borderRadius: 90,
-                position: "absolute",
-                left: 20,
-                top: 70,
-              }}
-              source={require("../assets/images/default_profile_picture.png")}
-            />
-          )}
-          {profilePicLoading === true ? (
-            <View
-              style={{
-                marginLeft: 50,
-                position: "absolute",
-                top: 100,
-              }}
-            >
-              <ActivityIndicator size="large" color="black" />
-            </View>
-          ) : (
-            <View />
-          )}
-        </View>
-
-        <View>
-          <Text style={styles.PostsNumber}>{posts}</Text>
-          <Text
-            style={{
-              position: "absolute",
-              top: 70,
-              fontSize: 15,
-              fontFamily: "sans-serif-medium",
-              left: -36,
-            }}
-          >
-            Posts
-          </Text>
-        </View>
-        <View>
-          <Text style={styles.Followers}>{follower}</Text>
-          <Text
-            style={{
-              position: "absolute",
-              top: 70,
-              fontSize: 15,
-              fontFamily: "sans-serif-medium",
-              alignSelf: "center",
-              left: 50,
-            }}
-          >
-            Followers
-          </Text>
-        </View>
-        {alreadyFollowed == true ? (
-          <TouchableOpacity
-            style={styles.FollowBtn}
-            onPress={() => {
-              if (follower >= 1) {
-                setAlreadyFollowed(false);
-                Unfollow();
-              }
-            }}
-          >
-            <Text
-              style={{
-                fontSize: 17,
-                fontWeight: "bold",
-                color: "white",
-                alignSelf: "center",
-              }}
-            >
-              Unfollow
-            </Text>
-          </TouchableOpacity>
-        ) : alreadyFollowed == false ? (
-          <TouchableOpacity
-            style={styles.FollowBtn}
-            onPress={() => {
-              setAlreadyFollowed(true);
-              IncreaseFollower();
-            }}
-          >
-            <Text
-              style={{
-                fontSize: 17,
-                fontWeight: "bold",
-                fontFamily: "sans-serif-medium",
-                color: "white",
-                alignSelf: "center",
-              }}
-            >
-              Follow
-            </Text>
-          </TouchableOpacity>
-        ) : showEditProfile ? (
-          <EditProfile navigation={navigation} userID={userID} />
-        ) : (
-          <View />
-        )}
-        <View>
-          <Text style={styles.bio}>{bio}</Text>
-        </View>
-
-        <View>
-          <Text
-            style={{
-              fontSize: 25,
-              fontWeight: "bold",
-              position: "absolute",
-              top: 250,
-              alignSelf: "center",
-            }}
-          >
-            My Posts
-          </Text>
-        </View>
-      </View>
       <ScrollView
         style={{
           marginTop: 10,
@@ -368,6 +224,150 @@ const Profile = ({ navigation, route }) => {
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
         }
       >
+        <View style={styles.Profile}>
+          <Text style={styles.UserName}>{userName}</Text>
+          <View
+            style={{
+              position: "absolute",
+              left: 0,
+              top: 20,
+            }}
+          >
+            {myProfilePic !== null ? (
+              <Image
+                style={{
+                  width: 90,
+                  height: 90,
+                  borderRadius: 90,
+                  position: "absolute",
+                  left: 20,
+                  top: 70,
+                }}
+                source={{
+                  uri: myProfilePic,
+                }}
+              />
+            ) : (
+              <Image
+                style={{
+                  width: 90,
+                  height: 90,
+                  borderRadius: 90,
+                  position: "absolute",
+                  left: 20,
+                  top: 70,
+                }}
+                source={require("../assets/images/default_profile_picture.png")}
+              />
+            )}
+            {profilePicLoading === true ? (
+              <View
+                style={{
+                  marginLeft: 50,
+                  position: "absolute",
+                  top: 100,
+                }}
+              >
+                <ActivityIndicator size="large" color="black" />
+              </View>
+            ) : (
+              <View />
+            )}
+          </View>
+
+          <View>
+            <Text style={styles.PostsNumber}>{posts}</Text>
+            <Text
+              style={{
+                position: "absolute",
+                top: 70,
+                fontSize: 15,
+                fontFamily: "sans-serif-medium",
+                left: -36,
+              }}
+            >
+              Posts
+            </Text>
+          </View>
+          <View>
+            <Text style={styles.Followers}>{follower}</Text>
+            <Text
+              style={{
+                position: "absolute",
+                top: 70,
+                fontSize: 15,
+                fontFamily: "sans-serif-medium",
+                alignSelf: "center",
+                left: 50,
+              }}
+            >
+              Followers
+            </Text>
+          </View>
+          {alreadyFollowed == true ? (
+            <TouchableOpacity
+              style={styles.FollowBtn}
+              onPress={() => {
+                if (follower >= 1) {
+                  setAlreadyFollowed(false);
+                  Unfollow();
+                }
+              }}
+            >
+              <Text
+                style={{
+                  fontSize: 17,
+                  fontWeight: "bold",
+                  color: "white",
+                  alignSelf: "center",
+                }}
+              >
+                Unfollow
+              </Text>
+            </TouchableOpacity>
+          ) : alreadyFollowed == false ? (
+            <TouchableOpacity
+              style={styles.FollowBtn}
+              onPress={() => {
+                setAlreadyFollowed(true);
+                IncreaseFollower();
+              }}
+            >
+              <Text
+                style={{
+                  fontSize: 17,
+                  fontWeight: "bold",
+                  fontFamily: "sans-serif-medium",
+                  color: "white",
+                  alignSelf: "center",
+                }}
+              >
+                Follow
+              </Text>
+            </TouchableOpacity>
+          ) : showEditProfile ? (
+            <EditProfile navigation={navigation} userID={userID} />
+          ) : (
+            <View />
+          )}
+          <View>
+            <Text style={styles.bio}>{bio}</Text>
+          </View>
+
+          <View>
+            <Text
+              style={{
+                fontSize: 25,
+                fontWeight: "bold",
+                position: "absolute",
+                top: 250,
+                alignSelf: "center",
+              }}
+            >
+              My Posts
+            </Text>
+          </View>
+        </View>
         {loading ? (
           <View
             style={{
