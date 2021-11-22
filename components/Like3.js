@@ -14,9 +14,8 @@ const Like = (props) => {
   const handledDoubleTap = () => {
     if (lastTap && Date.now() - lastTap < DOUBLE_PRESS_DELAY) {
       if (liked) {
-        setLiked(false);
-        setLikesCount(likesCount - 1);
-        Decreament_Likes();
+        setLiked(true);
+        animation.current.play(25, 50);
       } else {
         setLiked(true);
         setLikesCount(likesCount + 1);
@@ -70,6 +69,7 @@ const Like = (props) => {
       })
       .then((data) => {
         setLiked(true);
+        GetLikes();
       })
       .catch((error) => {
         console.log(error);
@@ -85,6 +85,7 @@ const Like = (props) => {
       })
       .then((data) => {
         setLiked(false);
+        GetLikes();
       })
       .catch((error) => {
         console.log(error);
@@ -148,12 +149,13 @@ const Like = (props) => {
           if (liked) {
             setLiked(false);
             console.log(liked);
-            setLikesCount(likesCount - 1);
+            if (likesCount - 1 > -1) {
+              setLikesCount(likesCount - 1);
+            }
             Decreament_Likes();
           } else {
             setLiked(true);
             console.log(liked);
-            setLikesCount(likesCount + 1);
             Increament_Likes();
           }
         }}

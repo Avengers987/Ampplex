@@ -24,6 +24,7 @@ const OTP = ({ route, navigation }) => {
     }
   };
 
+  // Implementing a timer using recursion algorithm
   const timer = (sec) => {
     if (sec == -1) {
       let OTP = Math.floor(1000 + Math.random() * 9000);
