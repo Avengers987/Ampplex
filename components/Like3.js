@@ -8,23 +8,94 @@ const Like = (props) => {
   const animation = useRef(null);
   const isFirstRun = useRef(true);
   const [lastTap, setLastTap] = useState(null);
-  const DOUBLE_PRESS_DELAY = 300;
   const [likesCount, setLikesCount] = useState(null);
 
-  const handledDoubleTap = () => {
-    if (lastTap && Date.now() - lastTap < DOUBLE_PRESS_DELAY) {
-      if (liked) {
-        setLiked(true);
-        animation.current.play(25, 50);
-      } else {
-        setLiked(true);
-        setLikesCount(likesCount + 1);
-        Increament_Likes();
-      }
-    } else {
-      setLastTap(Date.now());
+  class LikeController {
+    constructor() {
+      this.checkLiked_Url = `https://ampplex-backened.herokuapp.com/isLiked/${props.myUserId}/${props.postID}`;
+
+      this.Increament_Likes_URL = `https://ampplex-backened.herokuapp.com/UpdateLikes/${props.myUserId}/${props.postID}/${props.pressedUserID}/Like`;
+
+      this.Decreament_Likes_URL = `https://ampplex-backened.herokuapp.com/UpdateLikes/${props.myUserId}/${props.postID}/${props.pressedUserID}/Dislike`;
+
+      this.GetLikes_URL = `https://ampplex-backened.herokuapp.com/GetLikes/${props.pressedUserID}/${props.postID}`;
+
+      this.DOUBLE_PRESS_DELAY = 300;
     }
-  };
+
+    CheckLiked() {
+      fetch(this.checkLiked_Url)
+        .then((response) => {
+          return response.json();
+        })
+        .then((data) => {
+          if (data.likedPosts === true) {
+            setLiked(true);
+          } else {
+            setLiked(false);
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }
+
+    Increament_Likes() {
+      fetch(this.Increament_Likes_URL)
+        .then((response) => {
+          return response.json();
+        })
+        .then((data) => {
+          setLiked(true);
+          this.GetLikes();
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }
+
+    Decreament_Likes() {
+      fetch(this.Decreament_Likes_URL)
+        .then((response) => {
+          return response.json();
+        })
+        .then((data) => {
+          setLiked(false);
+          this.GetLikes();
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }
+
+    GetLikes() {
+      fetch(this.GetLikes_URL)
+        .then((response) => {
+          return response.json();
+        })
+        .then((data) => {
+          setLikesCount(data.Likes);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }
+
+    handledDoubleTap() {
+      if (lastTap && Date.now() - lastTap < this.DOUBLE_PRESS_DELAY) {
+        if (liked) {
+          setLiked(true);
+          animation.current.play(25, 50);
+        } else {
+          setLiked(true);
+          setLikesCount(likesCount + 1);
+          this.Increament_Likes();
+        }
+      } else {
+        setLastTap(Date.now());
+      }
+    }
+  }
 
   React.useEffect(() => {
     if (isFirstRun.current) {
@@ -41,77 +112,6 @@ const Like = (props) => {
     }
   }, [liked]);
 
-  const CheckLiked = () => {
-    const url = `https://ampplex-backened.herokuapp.com/isLiked/${props.myUserId}/${props.postID}`;
-
-    fetch(url)
-      .then((response) => {
-        return response.json();
-      })
-      .then((data) => {
-        if (data.likedPosts === true) {
-          setLiked(true);
-        } else {
-          setLiked(false);
-        }
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  };
-
-  const Increament_Likes = () => {
-    const url = `https://ampplex-backened.herokuapp.com/UpdateLikes/${props.myUserId}/${props.postID}/${props.pressedUserID}/Like`;
-
-    fetch(url)
-      .then((response) => {
-        return response.json();
-      })
-      .then((data) => {
-        setLiked(true);
-        GetLikes();
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  };
-
-  const Decreament_Likes = () => {
-    const url = `https://ampplex-backened.herokuapp.com/UpdateLikes/${props.myUserId}/${props.postID}/${props.pressedUserID}/Dislike`;
-
-    fetch(url)
-      .then((response) => {
-        return response.json();
-      })
-      .then((data) => {
-        setLiked(false);
-        GetLikes();
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  };
-
-  const GetLikes = () => {
-    const url = `https://ampplex-backened.herokuapp.com/GetLikes/${props.pressedUserID}/${props.postID}`;
-
-    fetch(url)
-      .then((response) => {
-        return response.json();
-      })
-      .then((data) => {
-        setLikesCount(data.Likes);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  };
-
-  useEffect(() => {
-    GetLikes();
-    CheckLiked();
-  }, []);
-
   const likePost = () => {
     return (
       <View>
@@ -125,11 +125,18 @@ const Like = (props) => {
     );
   };
 
+  const controller = new LikeController();
+
+  useEffect(() => {
+    controller.GetLikes();
+    controller.CheckLiked();
+  }, []);
+
   return (
     <View>
       <Pressable
         onPress={() => {
-          handledDoubleTap();
+          controller.handledDoubleTap();
         }}
         style={{
           width: Dimensions.get("window").width,
@@ -152,11 +159,11 @@ const Like = (props) => {
             if (likesCount - 1 > -1) {
               setLikesCount(likesCount - 1);
             }
-            Decreament_Likes();
+            controller.Decreament_Likes();
           } else {
             setLiked(true);
             console.log(liked);
-            Increament_Likes();
+            controller.Increament_Likes();
           }
         }}
       >

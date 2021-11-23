@@ -8,6 +8,7 @@ import {
   Image,
   TouchableOpacity,
   ScrollView,
+  FlatList,
 } from "react-native";
 import LottieView from "lottie-react-native";
 
@@ -22,7 +23,7 @@ const searchForUser = (searchValue, UserName) => {
 };
 
 const Search = ({ navigation, userID }) => {
-  const [searchValue, setSearchValue] = useState(null);
+  const [searchValue, setSearchValue] = useState("");
   const [response, setResponse] = useState(null);
   const [loading, setLoading] = useState(true);
 
@@ -37,6 +38,60 @@ const Search = ({ navigation, userID }) => {
         setResponse(data);
         setLoading(false);
       });
+  };
+
+  const renderItem = ({ item, index }) => {
+    console.log(item, index);
+    let clickedUserID = item.userID;
+    let clickedUserName = item.UserName;
+    let myUserId = userID;
+
+    return (
+      <>
+        {searchForUser(
+          searchValue.toLowerCase(),
+          item.UserName.toLowerCase()
+        ) &&
+        response != null &&
+        searchValue != null ? (
+          <TouchableOpacity
+            key={index}
+            style={styles.UserView}
+            onPress={() =>
+              navigation.navigate("UserProfile", {
+                clickedUserID,
+                clickedUserName, // Check if follow feature is working or not
+                myUserId,
+              })
+            }
+          >
+            <Text
+              style={{
+                fontSize: 15,
+                fontWeight: "700",
+                alignSelf: "center",
+              }}
+            >
+              {item.UserName}
+            </Text>
+            {/* ProfilePicture */}
+            {item.ProfilePicPath !== null ? (
+              <Image
+                source={{
+                  uri: item.ProfilePicPath,
+                }}
+                style={styles.ProfilePicture}
+              />
+            ) : (
+              <Image
+                source={require("../assets/images/default_profile_picture.png")}
+                style={styles.ProfilePicture}
+              />
+            )}
+          </TouchableOpacity>
+        ) : null}
+      </>
+    );
   };
 
   useEffect(() => {
@@ -71,6 +126,8 @@ const Search = ({ navigation, userID }) => {
             <Text
               style={{
                 fontSize: 15,
+                fontWeight: "bold",
+                fontFamily: "sans-serif-medium",
                 color: "skyblue",
               }}
             >
@@ -90,7 +147,7 @@ const Search = ({ navigation, userID }) => {
         <View
           style={{
             alignSelf: "center",
-            marginTop: 20,
+            marginTop: Dimensions.get("window").height / 2.0,
           }}
         >
           <LottieView
@@ -103,77 +160,13 @@ const Search = ({ navigation, userID }) => {
       ) : (
         <View />
       )}
-
-      <ScrollView
-        style={{
-          flex: 1,
-          display: "flex",
-          width: "100%",
-          height: "100%",
-          marginTop: 110,
-        }}
-        contentContainerStyle={{
-          flex: 1,
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-        }}
-      >
-        {response != null && searchValue != null ? (
-          response.map((value, index) => {
-            let clickedUserID = value.userID;
-            let clickedUserName = value.UserName;
-            let myUserId = userID;
-
-            if (
-              searchForUser(
-                searchValue.toLowerCase(),
-                value.UserName.toLowerCase()
-              )
-            ) {
-              return (
-                <TouchableOpacity
-                  key={index}
-                  style={styles.UserView}
-                  onPress={() =>
-                    navigation.navigate("UserProfile", {
-                      clickedUserID,
-                      clickedUserName, // Check if follow feature is working or not
-                      myUserId,
-                    })
-                  }
-                >
-                  <Text
-                    style={{
-                      fontSize: 15,
-                      fontWeight: "700",
-                      alignSelf: "center",
-                    }}
-                  >
-                    {value.UserName}
-                  </Text>
-                  {/* ProfilePicture */}
-                  {value.ProfilePicPath !== null ? (
-                    <Image
-                      source={{
-                        uri: value.ProfilePicPath,
-                      }}
-                      style={styles.ProfilePicture}
-                    />
-                  ) : (
-                    <Image
-                      source={require("../assets/images/default_profile_picture.png")}
-                      style={styles.ProfilePicture}
-                    />
-                  )}
-                </TouchableOpacity>
-              );
-            }
-          })
-        ) : (
-          <View />
-        )}
-      </ScrollView>
+      <View style={styles.SearchResultsContainer}>
+        <FlatList
+          data={response}
+          renderItem={renderItem}
+          keyExtractor={(userID) => userID.userID}
+        />
+      </View>
     </View>
   );
 };
@@ -214,9 +207,9 @@ const styles = StyleSheet.create({
     height: 80,
     backgroundColor: "#FAFAFA",
     borderRadius: 20,
-    position: "absolute",
     alignSelf: "center",
-    top: 150,
+    marginTop: 25,
+    elevation: 20,
   },
   ProfilePicture: {
     width: 65,
@@ -231,5 +224,11 @@ const styles = StyleSheet.create({
     height: 120,
     marginTop: 150,
     alignItems: "center",
+  },
+  SearchResultsContainer: {
+    width: Dimensions.get("window").width,
+    height: Dimensions.get("window").height / 1.2,
+    marginTop: 160,
+    paddingBottom: 100,
   },
 });

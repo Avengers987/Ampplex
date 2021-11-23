@@ -271,7 +271,7 @@ const Profile = ({ userID, navigation, route }) => {
               }}
             ></View>
             {myProfilePic !== null ? (
-              <Animated.Image
+              <Image
                 style={{
                   width: 90,
                   height: 90,
@@ -285,7 +285,7 @@ const Profile = ({ userID, navigation, route }) => {
                 }}
               />
             ) : (
-              <Animated.Image
+              <Image
                 style={{
                   width: 90,
                   height: 90,
