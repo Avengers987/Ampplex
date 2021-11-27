@@ -41,7 +41,6 @@ const Search = ({ navigation, userID }) => {
   };
 
   const renderItem = ({ item, index }) => {
-    console.log(item, index);
     let clickedUserID = item.userID;
     let clickedUserName = item.UserName;
     let myUserId = userID;

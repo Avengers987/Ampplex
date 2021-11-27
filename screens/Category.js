@@ -50,7 +50,10 @@ const Category = ({ navigation, route }) => {
     }
   };
 
-  getCategoryData();
+  useEffect(() => {
+    getCategoryData();
+  }, []);
+
   const [searchVal, setSearchVal] = useState(null); // stores the search value
   const [pressedBtn, setPressedBtn] = useState(new Set()); // Stores the pressed button name
 
@@ -663,6 +666,7 @@ const Category = ({ navigation, route }) => {
           display: "flex",
           justifyContent: "center",
           alignItems: "center",
+          elevation: 12,
         }}
       >
         <TextInput
@@ -670,7 +674,7 @@ const Category = ({ navigation, route }) => {
             borderRadius: 100,
             height: 65,
             marginLeft: 55,
-            fontSize: 20,
+            fontSize: 18,
           }}
           onFocus={() => setFocused(true)}
           showSoftInputOnFocus
@@ -694,7 +698,7 @@ const Category = ({ navigation, route }) => {
         <Text style={styles.TitleStyle}>Select your category</Text>
       </View>
       {/* All buttons */}
-      <ScrollView>
+      <ScrollView showsVerticalScrollIndicator={false}>
         {(searchVal === "") | (searchVal === null) ? (
           new Button().RenderAllBtn()
         ) : searchVal === "coding" ? (
@@ -777,6 +781,7 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     fontSize: 30,
     marginTop: Dimensions.get("window").width / 3.5,
+    fontFamily: "sans-serif-medium",
   },
   Category: {
     // backgroundColor: "white",
@@ -785,12 +790,14 @@ const styles = StyleSheet.create({
     marginTop: 30,
     marginLeft: 10,
     borderRadius: 10,
+    elevation: 12,
   },
   CategoryBtnInnerText: {
     fontSize: 15,
     fontWeight: "bold",
     alignSelf: "center",
     color: "black",
+    fontFamily: "sans-serif-medium",
   },
   searchIcon: {
     width: 30,
@@ -804,6 +811,7 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     fontSize: 30,
     fontWeight: "bold",
+    fontFamily: "sans-serif-medium",
     color: "white",
     position: "absolute",
   },
@@ -811,6 +819,7 @@ const styles = StyleSheet.create({
     fontSize: 25,
     fontWeight: "bold",
     marginTop: 50,
+    fontFamily: "sans-serif-medium",
     color: "skyblue",
   },
 });

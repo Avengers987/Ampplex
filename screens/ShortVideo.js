@@ -1,5 +1,12 @@
 import React, { useState, useEffect, useRef, createRef } from "react";
-import { StyleSheet, Text, View, FlatList, Dimensions } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  View,
+  FlatList,
+  Dimensions,
+  Image,
+} from "react-native";
 import PostSingle from "./PostSingle";
 
 const ShortVideo = ({ userID, navigation }) => {

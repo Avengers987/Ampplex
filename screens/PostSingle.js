@@ -4,6 +4,7 @@ import React, {
   useRef,
   forwardRef,
   useImperativeHandle,
+  createRef,
 } from "react";
 import {
   StyleSheet,
@@ -19,6 +20,7 @@ import {
 import { Video, AVPlaybackStatus } from "expo-av";
 import { StatusBar } from "expo-status-bar";
 import Like from "../components/Like3";
+import ActionSheet from "react-native-actions-sheet";
 
 const PostSingle = (props) => {
   const [play, setPlay] = useState(false);
@@ -27,6 +29,7 @@ const PostSingle = (props) => {
   const clickedUserName = props.UserName;
   const navigation = props.navigation;
   const myUserId = props.myUserId;
+  const actionSheetRef = createRef();
 
   const HandleAudio = () => {
     console.log("Audio controller triggered!");
@@ -170,6 +173,21 @@ const PostSingle = (props) => {
           source={require("../Images/comment-icon-short-videos.png")}
         />
       </TouchableOpacity>
+
+      <TouchableOpacity
+        onPress={() => actionSheetRef.current?.setModalVisible()}
+        style={{
+          position: "absolute",
+          top: Dimensions.get("window").height * 0.8,
+          right: 25,
+        }}
+      >
+        <Image
+          style={styles.more}
+          source={require("../assets/images/more-icon_for_short_videos.png")}
+        />
+      </TouchableOpacity>
+
       <TouchableOpacity
         style={{
           position: "absolute",
@@ -194,6 +212,29 @@ const PostSingle = (props) => {
       <Text style={styles.Caption} numberOfLines={1}>
         {props.caption}
       </Text>
+
+      <ActionSheet ref={actionSheetRef} bounceOnOpen={true}>
+        <View style={styles.ActionSheetStyle}>
+          <View
+            style={{
+              backgroundColor: "lightgrey",
+              height: 5,
+              width: "20%",
+              position: "absolute",
+              top: 10,
+              borderRadius: 5,
+              marginTop: 5,
+            }}
+          />
+          <TouchableOpacity>
+            <Text style={styles.ActionSheetText}>Report</Text>
+          </TouchableOpacity>
+          <View style={styles.breakpointStyle} />
+          <TouchableOpacity>
+            <Text style={styles.ActionSheetText2}>Block</Text>
+          </TouchableOpacity>
+        </View>
+      </ActionSheet>
     </>
   );
 };
@@ -246,5 +287,37 @@ const styles = StyleSheet.create({
   comment: {
     width: 37,
     height: 37,
+  },
+  more: {
+    alignSelf: "center",
+    width: 30,
+    height: 30,
+  },
+  ActionSheetStyle: {
+    display: "flex",
+    justifyContent: "flex-start",
+    alignItems: "center",
+    height: 150,
+    borderRadius: 20,
+  },
+  ActionSheetText: {
+    fontSize: 15,
+    color: "red",
+    fontFamily: "sans-serif-medium",
+    fontWeight: "bold",
+    marginTop: 40,
+  },
+  ActionSheetText2: {
+    fontSize: 15,
+    color: "red",
+    fontFamily: "sans-serif-medium",
+    fontWeight: "bold",
+    marginTop: 20,
+  },
+  breakpointStyle: {
+    borderBottomWidth: 1,
+    borderBottomColor: "lightgrey",
+    marginTop: 20,
+    width: "100%",
   },
 });

@@ -8,6 +8,7 @@ import {
   TouchableOpacity,
   ScrollView,
   Dimensions,
+  ActivityIndicator,
 } from "react-native";
 import FlashMessage from "react-native-flash-message";
 import { showMessage } from "react-native-flash-message";
@@ -21,6 +22,8 @@ const ErrorFlasher = (msg) => {
 };
 
 export default function LoginScreen(props) {
+  const [loading, setLoading] = useState(false);
+
   useEffect(() => {
     getData();
   }, []);
@@ -88,6 +91,7 @@ export default function LoginScreen(props) {
 
   const Login = (email, password) => {
     // Login method sends the email and password to flask Rest API and get response like "success" or "error"
+    setLoading(true); // Activating the Activity Indicator
 
     const url = `https://ampplex-backened.herokuapp.com/Login/${email.trim()}/${password.trim()}`;
     fetch(url)
@@ -99,6 +103,7 @@ export default function LoginScreen(props) {
         setLoginResponse(data.status);
         setUserName(data.UserName);
         setUserId(data.user_id);
+        setLoading(false); // Deactivating the Activity Indicator
       })
       .catch((error) => {
         console.log(error);
@@ -157,6 +162,15 @@ export default function LoginScreen(props) {
       >
         <Text style={styles.RegisterBtnText}>Register</Text>
       </TouchableOpacity>
+
+      <View style={styles.LoadingIndicator}>
+        {loading ? (
+          <ActivityIndicator size="large" color="skyblue" />
+        ) : (
+          <View />
+        )}
+      </View>
+
       <View
         style={{
           backgroundColor: "lightgrey",
@@ -323,6 +337,11 @@ const styles = StyleSheet.create({
     position: "absolute",
     top: Dimensions.get("window").height - 45,
     left: 100,
+    alignSelf: "center",
+  },
+  LoadingIndicator: {
+    position: "absolute",
+    top: Dimensions.get("window").height * 0.78,
     alignSelf: "center",
   },
 });
