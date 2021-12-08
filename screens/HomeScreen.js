@@ -179,7 +179,10 @@ const HomeScreen = ({ navigation, userID, userName }) => {
                     </>
                   ) : (
                     <>
-                      <LongVideo imgPath={element.ImgPath} />
+                      <LongVideo
+                        imgPath={element.ImgPath}
+                        caption={element.Caption}
+                      />
                       <Like4
                         postID={element.Post_ID}
                         myUserId={userID}
