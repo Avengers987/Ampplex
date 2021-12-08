@@ -1,4 +1,10 @@
-import React, { useState, useEffect, useRef, createRef } from "react";
+import React, {
+  useState,
+  useEffect,
+  useRef,
+  createRef,
+  useContext,
+} from "react";
 import {
   StyleSheet,
   Text,
@@ -8,11 +14,17 @@ import {
   Image,
 } from "react-native";
 import PostSingle from "./PostSingle";
+import Tab_Bar_Color_Context from "../context/tab_bar_color/Tab_Bar_Color_Context";
 
 const ShortVideo = ({ userID, navigation }) => {
   // const array = [1, 2, 3, 4, 5, 6];
   const [currentIndex, setCurrentIndex] = useState(0);
   const [response, setResponse] = useState([]);
+  const tab_bar_color = useContext(Tab_Bar_Color_Context);
+
+  useEffect(() => {
+    tab_bar_color.changeColor("black");
+  }, []);
 
   const getPostInfo = async () => {
     const url = "https://ampplex-backened.herokuapp.com/GetShortVideos/";
@@ -37,7 +49,7 @@ const ShortVideo = ({ userID, navigation }) => {
     try {
       const play = viewableItems["viewableItems"][0].index;
       setCurrentIndex(play);
-      console.log(play);
+      // console.log(play);
     } catch (e) {
       // console.log(e);
     }

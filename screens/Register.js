@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   KeyboardAvoidingView,
   Platform,
+  Dimensions,
 } from "react-native";
 import FlashMessage from "react-native-flash-message";
 import { showMessage } from "react-native-flash-message";
@@ -114,6 +115,17 @@ export default function Register(props) {
         </TouchableOpacity>
         <FlashMessage position="bottom" />
       </View>
+      <View
+        style={{
+          backgroundColor: "lightgrey",
+          width: 90,
+          height: 4,
+          borderRadius: 20,
+          alignSelf: "center",
+          position: "absolute",
+          top: Dimensions.get("window").height * 0.75,
+        }}
+      />
     </KeyboardAvoidingView>
   );
 }
@@ -136,42 +148,42 @@ const styles = StyleSheet.create({
     width: 260,
     borderRadius: 100,
     alignSelf: "center",
-    borderWidth: StyleSheet.hairlineWidth,
     marginTop: 100,
-    borderColor: "#BAB7C3",
+    borderColor: "#fafafa",
     paddingHorizontal: 16,
-    backgroundColor: "#87cefa",
+    backgroundColor: "#fafafa",
     paddingTop: 10,
     paddingBottom: 10,
     paddingLeft: 60,
+    elevation: 12,
   },
   EmailInput: {
     height: 60,
     width: 260,
     borderRadius: 100,
     alignSelf: "center",
-    borderWidth: StyleSheet.hairlineWidth,
     marginTop: 70,
-    borderColor: "#BAB7C3",
+    borderColor: "#fafafa",
     paddingHorizontal: 16,
-    backgroundColor: "#87cefa",
+    backgroundColor: "#fafafa",
     paddingTop: 10,
     paddingBottom: 10,
     paddingLeft: 60,
+    elevation: 12,
   },
   PasswordInput: {
     height: 60,
     width: 260,
     borderRadius: 30,
     alignSelf: "center",
-    borderWidth: StyleSheet.hairlineWidth,
     marginTop: 90,
-    borderColor: "#BAB7C3",
+    borderColor: "#fafafa",
     paddingHorizontal: 16,
-    backgroundColor: "#87cefa",
+    backgroundColor: "#fafafa",
     paddingTop: 10,
     paddingBottom: 10,
     paddingLeft: 60,
+    elevation: 12,
   },
   Email: {
     fontWeight: "bold",
@@ -179,6 +191,7 @@ const styles = StyleSheet.create({
     marginLeft: 20,
     marginTop: 120,
     position: "absolute",
+    fontFamily: "sans-serif-medium",
     top: 60,
   },
   Password: {
@@ -187,6 +200,7 @@ const styles = StyleSheet.create({
     marginLeft: 20,
     marginTop: 250,
     position: "absolute",
+    fontFamily: "sans-serif-medium",
     top: 60,
   },
   Username: {
@@ -194,6 +208,7 @@ const styles = StyleSheet.create({
     fontSize: 30,
     marginLeft: 20,
     position: "absolute",
+    fontFamily: "sans-serif-medium",
     top: 50,
   },
   Circle: {
@@ -214,6 +229,7 @@ const styles = StyleSheet.create({
     fontSize: 17,
     alignSelf: "center",
     position: "absolute",
+    fontFamily: "san-serif-medium",
     left: 12,
     top: 20,
   },
@@ -224,7 +240,7 @@ const styles = StyleSheet.create({
   RegisterBtn: {
     width: 280,
     height: 45,
-    backgroundColor: "#87cefa",
+    backgroundColor: "#A519F0",
     alignSelf: "center",
     display: "flex",
     justifyContent: "center",
@@ -232,9 +248,11 @@ const styles = StyleSheet.create({
     marginTop: 480,
     borderRadius: 50,
     position: "absolute",
+    elevation: 12,
   },
   RegisterBtnText: {
     fontWeight: "bold",
+    fontFamily: "sans-serif-medium",
     color: "white",
     alignSelf: "center",
     fontSize: 18,

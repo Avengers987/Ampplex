@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect, useContext } from "react";
 import {
   View,
   Text,
@@ -11,10 +11,13 @@ import {
   RefreshControl,
 } from "react-native";
 import Header from "./Header";
-import { Video } from "expo-av";
 import LottieView from "lottie-react-native";
 import Like from "../components/Like";
 import NetInfo from "@react-native-community/netinfo";
+import Tab_Bar_Color_Context from "../context/tab_bar_color/Tab_Bar_Color_Context";
+import Like4 from "../components/Like4";
+import LongVideo from "./LongVideo";
+import { Video } from "expo-av";
 
 const wait = (timeout) => {
   return new Promise((resolve) => setTimeout(resolve, timeout));
@@ -22,12 +25,18 @@ const wait = (timeout) => {
 
 const HomeScreen = ({ navigation, userID, userName }) => {
   let [response, setResponse] = useState([]);
-  const video = React.useRef(null);
+
   const [status, setStatus] = useState({});
   const [refreshing, setRefreshing] = useState(false);
   const [loading, setLoading] = useState(true);
   const [connectedToInternet, setConnectedToInternet] = useState(null);
   const myUserID = userID;
+
+  const tab_bar_color = useContext(Tab_Bar_Color_Context);
+
+  useEffect(() => {
+    tab_bar_color.changeColor("white");
+  }, []);
 
   const ConnectedToInternet = () => {
     let connected = null;
@@ -152,36 +161,33 @@ const HomeScreen = ({ navigation, userID, userName }) => {
                     <Text style={styles.UserName}>{element.UserName}</Text>
                   </TouchableOpacity>
                   {element.Type == "Image" ? (
-                    <TouchableWithoutFeedback>
-                      <Image
-                        importantForAccessibility={"yes"}
-                        source={{
-                          uri: element.ImgPath,
-                        }}
-                        style={styles.postImg}
+                    <>
+                      <TouchableWithoutFeedback>
+                        <Image
+                          importantForAccessibility={"yes"}
+                          source={{
+                            uri: element.ImgPath,
+                          }}
+                          style={styles.postImg}
+                        />
+                      </TouchableWithoutFeedback>
+                      <Like
+                        postID={element.Post_ID}
+                        myUserId={userID}
+                        pressedUserID={element.UserID}
                       />
-                    </TouchableWithoutFeedback>
+                    </>
                   ) : (
-                    <Video
-                      ref={video}
-                      style={styles.video}
-                      source={{
-                        uri: element.ImgPath,
-                      }}
-                      useNativeControls
-                      resizeMode="cover"
-                      isLooping
-                      onMoveShouldSetResponder={() => console.log("Touched!")}
-                      onPlaybackStatusUpdate={(status) =>
-                        setStatus(() => status)
-                      }
-                    />
+                    <>
+                      <LongVideo imgPath={element.ImgPath} />
+                      <Like4
+                        postID={element.Post_ID}
+                        myUserId={userID}
+                        pressedUserID={element.UserID}
+                      />
+                    </>
                   )}
-                  <Like
-                    postID={element.Post_ID}
-                    myUserId={userID}
-                    pressedUserID={element.UserID}
-                  />
+
                   <TouchableOpacity
                     key={index}
                     style={{
@@ -285,12 +291,7 @@ const styles = StyleSheet.create({
     bottom: 0,
     right: 0,
   },
-  video: {
-    alignSelf: "center",
-    width: 365,
-    height: 490,
-    borderRadius: 15,
-  },
+
   buttons: {
     flexDirection: "row",
     justifyContent: "center",
@@ -311,5 +312,16 @@ const styles = StyleSheet.create({
     height: 320,
     marginTop: -100,
     alignItems: "center",
+  },
+  videoContainer: {
+    width: Dimensions.get("window").width - 20,
+    height: Dimensions.get("window").height / 1.5,
+    borderRadius: 20,
+    backgroundColor: "#fafa",
+  },
+  video: {
+    width: 365,
+    height: 490,
+    borderRadius: 15,
   },
 });

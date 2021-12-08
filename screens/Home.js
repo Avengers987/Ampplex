@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import {
   Animated,
   StyleSheet,
@@ -16,6 +16,7 @@ import { StatusBar } from "expo-status-bar";
 import AddPost from "./AddPost";
 import ShortVideo from "./ShortVideo";
 import Icon from "react-native-vector-icons/Ionicons";
+import Tab_Bar_Color_Context from "../context/tab_bar_color/Tab_Bar_Color_Context";
 
 const getWindowDimensions = () => {
   const dimensions = Dimensions.get("window").width;
@@ -29,7 +30,7 @@ const getWindowDimensionsHeight = () => {
 const Tab = createBottomTabNavigator();
 
 const Home = ({ navigation, route }) => {
-  const [backgroundColor, setBackgroundColor] = useState("white");
+  const tab_bar_color = useContext(Tab_Bar_Color_Context);
 
   return (
     <>
@@ -37,11 +38,7 @@ const Home = ({ navigation, route }) => {
       <Tab.Navigator
         tabBarOptions={{
           style: {
-            borderRadius: 100,
-            width: getWindowDimensions() - 20,
-            elevation: 12,
-            left: 10,
-            backgroundColor: backgroundColor,
+            backgroundColor: tab_bar_color.color,
           },
         }}
       >

@@ -209,6 +209,7 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     marginTop: 25,
     elevation: 20,
+    marginBottom: 10,
   },
   ProfilePicture: {
     width: 65,

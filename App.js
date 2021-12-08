@@ -20,6 +20,7 @@ import * as firebase from "firebase";
 import OTP from "./screens/OTP";
 import CreateNewPassword from "./screens/CreateNewPassword";
 import PostSingle from "./screens/PostSingle";
+import Tab_Bar_Color_State from "./context/tab_bar_color/Tab_Bar_Color_State";
 
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 
@@ -42,158 +43,163 @@ if (firebase.apps.length === 0) {
 export default function App() {
   const Stack = createStackNavigator();
   return (
-    <NavigationContainer>
-      <StatusBar style="light" />
-      <Stack.Navigator
-        screenOptions={{
-          headerTitleAlign: "center",
-        }}
-      >
-        <Stack.Screen
-          name="StartScreen"
-          component={StartScreen}
-          options={{
-            headerShown: false,
-          }}
-        />
+    <>
+      <Tab_Bar_Color_State>
+        <NavigationContainer>
+          <StatusBar style="light" />
+          <Stack.Navigator
+            screenOptions={{
+              headerTitleAlign: "center",
+            }}
+          >
+            <Stack.Screen
+              name="StartScreen"
+              component={StartScreen}
+              options={{
+                headerShown: false,
+              }}
+            />
 
-        <Stack.Screen
-          name="OnBoarding"
-          component={OnboardingScreen}
-          options={{
-            headerShown: false,
-          }}
-        />
+            <Stack.Screen
+              name="OnBoarding"
+              component={OnboardingScreen}
+              options={{
+                headerShown: false,
+              }}
+            />
 
-        <Stack.Screen
-          name="Login"
-          component={LoginScreen}
-          options={{
-            headerShown: false,
-          }}
-        />
+            <Stack.Screen
+              name="Login"
+              component={LoginScreen}
+              options={{
+                headerShown: false,
+              }}
+            />
 
-        <Stack.Screen
-          name="Comments"
-          component={Comment}
-          options={{
-            headerShown: true,
-            headerTitleStyle: {
-              fontWeight: "bold",
-            },
-          }}
-        />
+            <Stack.Screen
+              name="Comments"
+              component={Comment}
+              options={{
+                headerShown: true,
+                headerTitleStyle: {
+                  fontWeight: "bold",
+                },
+              }}
+            />
 
-        <Stack.Screen
-          name="Home"
-          component={Home}
-          options={{
-            headerShown: false,
-          }}
-        />
-        <Stack.Screen
-          name="Register"
-          component={Register}
-          options={{
-            headerStyle: {
-              backgroundColor: "#87cefa",
-            },
-            headerTitleStyle: {
-              fontWeight: "bold",
-              color: "white",
-            },
-          }}
-        />
-        <Stack.Screen
-          name="TakePic"
-          component={TakePic}
-          options={{
-            headerShown: false,
-          }}
-        />
-        <Stack.Screen
-          name="AddPost"
-          component={AddPost}
-          options={{
-            headerStyle: {
-              backgroundColor: "#87cefa",
-            },
-            headerTitleStyle: {
-              fontWeight: "bold",
-              color: "white",
-            },
-          }}
-        />
-        <Stack.Screen
-          name="Category"
-          component={Category}
-          options={{
-            headerShown: false,
-          }}
-        />
-        <Stack.Screen
-          name="Profile"
-          component={Profile}
-          options={{
-            headerShown: false,
-          }}
-        />
-        <Stack.Screen
-          name="UserProfile"
-          component={UserProfile}
-          options={{
-            headerShown: false,
-          }}
-        />
+            <Stack.Screen
+              name="Home"
+              component={Home}
+              options={{
+                headerShown: false,
+              }}
+            />
+            <Stack.Screen
+              name="Register"
+              component={Register}
+              options={{
+                headerStyle: {
+                  backgroundColor: "#A519F0",
+                },
+                headerTitleStyle: {
+                  fontWeight: "bold",
+                  color: "white",
+                  fontFamily: "sans-serif-medium",
+                },
+              }}
+            />
+            <Stack.Screen
+              name="TakePic"
+              component={TakePic}
+              options={{
+                headerShown: false,
+              }}
+            />
+            <Stack.Screen
+              name="AddPost"
+              component={AddPost}
+              options={{
+                headerStyle: {
+                  backgroundColor: "#87cefa",
+                },
+                headerTitleStyle: {
+                  fontWeight: "bold",
+                  color: "white",
+                },
+              }}
+            />
+            <Stack.Screen
+              name="Category"
+              component={Category}
+              options={{
+                headerShown: false,
+              }}
+            />
+            <Stack.Screen
+              name="Profile"
+              component={Profile}
+              options={{
+                headerShown: false,
+              }}
+            />
+            <Stack.Screen
+              name="UserProfile"
+              component={UserProfile}
+              options={{
+                headerShown: false,
+              }}
+            />
 
-        <Stack.Screen
-          name="PhoneNumber"
-          component={PhoneNumber}
-          options={{
-            headerShown: false,
-          }}
-        />
+            <Stack.Screen
+              name="PhoneNumber"
+              component={PhoneNumber}
+              options={{
+                headerShown: false,
+              }}
+            />
 
-        <Stack.Screen
-          name="OTP"
-          component={OTP}
-          options={{
-            headerShown: false,
-          }}
-        />
+            <Stack.Screen
+              name="OTP"
+              component={OTP}
+              options={{
+                headerShown: false,
+              }}
+            />
 
-        <Stack.Screen
-          name="CreateNewPassword"
-          component={CreateNewPassword}
-          options={{
-            headerShown: false,
-          }}
-        />
+            <Stack.Screen
+              name="CreateNewPassword"
+              component={CreateNewPassword}
+              options={{
+                headerShown: false,
+              }}
+            />
 
-        <Stack.Screen
-          name="EditProfile"
-          component={EditProfile}
-          options={{
-            headerShown: true,
-            headerTitle: "Edit Profile",
-            headerTitleStyle: {
-              fontWeight: "bold",
-            },
-          }}
-        />
+            <Stack.Screen
+              name="EditProfile"
+              component={EditProfile}
+              options={{
+                headerShown: true,
+                headerTitle: "Edit Profile",
+                headerTitleStyle: {
+                  fontWeight: "bold",
+                },
+              }}
+            />
 
-        <Stack.Screen
-          name="PostSingle"
-          component={PostSingle}
-          options={{
-            headerShown: false,
-            headerTitle: "PostSingle",
-            headerTitleStyle: {
-              fontWeight: "bold",
-            },
-          }}
-        />
-      </Stack.Navigator>
-    </NavigationContainer>
+            <Stack.Screen
+              name="PostSingle"
+              component={PostSingle}
+              options={{
+                headerShown: false,
+                headerTitle: "PostSingle",
+                headerTitleStyle: {
+                  fontWeight: "bold",
+                },
+              }}
+            />
+          </Stack.Navigator>
+        </NavigationContainer>
+      </Tab_Bar_Color_State>
+    </>
   );
 }
