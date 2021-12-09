@@ -30,6 +30,7 @@ const LongVideo = ({ imgPath, caption }) => {
       <StatusBar style="light" />
       <TouchableWithoutFeedback
         onPress={() => {
+          setIsMuted(true);
           actionSheetRef.current?.setModalVisible();
         }}
         style={styles.videoContainer}
@@ -122,17 +123,24 @@ const LongVideo = ({ imgPath, caption }) => {
               console.log("onLoad");
               setLoading2(false);
             }}
+            onError={() => {
+              console.log("Error while loading video");
+            }}
             isLooping={true}
             paginEnabled={true}
             shouldPlay={true}
-            isMuted={Muted}
+            isMuted={false}
           />
           {loading2 ? (
             <View
               style={{
                 position: "absolute",
                 alignSelf: "center",
-                top: Dimensions.get("window").height / 10,
+                top:
+                  orientation == "portrait"
+                    ? Dimensions.get("window").height / 10
+                    : Dimensions.get("window").height / 3,
+                left: Dimensions.get("window").width / 2,
               }}
             >
               <ActivityIndicator size="large" color="white" />
