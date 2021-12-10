@@ -39,7 +39,7 @@ const StartScreen = ({ navigation }) => {
   useEffect(() => {
     setTimeout(() => {
       canNavigateToHomeScreen();
-    }, 1000);
+    }, 900);
   }, []);
 
   return (
