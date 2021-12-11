@@ -15,12 +15,12 @@ const Like = (props) => {
     if (lastTap && Date.now() - lastTap < DOUBLE_PRESS_DELAY) {
       if (liked) {
         setLiked(false);
-        console.log(liked);
+        //(liked);
         setLikesCount(likesCount - 1);
         Decreament_Likes();
       } else {
         setLiked(true);
-        console.log(liked);
+        //(liked);
         setLikesCount(likesCount + 1);
         Increament_Likes();
       }
@@ -59,14 +59,14 @@ const Like = (props) => {
         }
       })
       .catch((error) => {
-        console.log(error);
+        //(error);
       });
   };
 
   const Increament_Likes = () => {
     const url = `https://ampplex-backened.herokuapp.com/UpdateLikes/${props.myUserId}/${props.postID}/${props.pressedUserID}/Like`;
-    console.log("[Increamenting Likes]");
-    console.log(url);
+    //("[Increamenting Likes]");
+    //(url);
 
     fetch(url)
       .then((response) => {
@@ -74,17 +74,17 @@ const Like = (props) => {
       })
       .then((data) => {
         setLiked(true);
-        console.log("Inc: ", data);
+        //("Inc: ", data);
       })
       .catch((error) => {
-        console.log(error);
+        //(error);
       });
   };
 
   const Decreament_Likes = () => {
     const url = `https://ampplex-backened.herokuapp.com/UpdateLikes/${props.myUserId}/${props.postID}/${props.pressedUserID}/Dislike`;
-    console.log("[Decreamenting Likes]");
-    console.log(url);
+    //("[Decreamenting Likes]");
+    //(url);
 
     fetch(url)
       .then((response) => {
@@ -92,10 +92,10 @@ const Like = (props) => {
       })
       .then((data) => {
         setLiked(false);
-        console.log("Dec: ", data);
+        //("Dec: ", data);
       })
       .catch((error) => {
-        console.log(error);
+        //(error);
       });
   };
 
@@ -110,7 +110,7 @@ const Like = (props) => {
         setLikesCount(data.Likes);
       })
       .catch((error) => {
-        console.log(error);
+        //(error);
       });
   };
 
@@ -137,15 +137,15 @@ const Like = (props) => {
       <Pressable
         onPress={() => {
           if (liked) {
-            console.log(liked, "Already Likes");
+            //(liked, "Already Likes");
             setLiked(false);
-            console.log(liked);
+            //(liked);
             setLikesCount(likesCount - 1);
             Decreament_Likes();
           } else {
-            console.log(liked, "Liking for the first time");
+            //(liked, "Liking for the first time");
             setLiked(true);
-            console.log(liked);
+            //(liked);
             setLikesCount(likesCount + 1);
             Increament_Likes();
           }

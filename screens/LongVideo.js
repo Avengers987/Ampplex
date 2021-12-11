@@ -9,12 +9,22 @@ import {
   Pressable,
   Image,
   ActivityIndicator,
+  TouchableOpacity,
 } from "react-native";
 import { Video } from "expo-av";
 import ActionSheet from "react-native-actions-sheet";
 import { useDeviceOrientation } from "@react-native-community/hooks";
+import Like4 from "../components/Like4";
 
-const LongVideo = ({ imgPath, caption }) => {
+const LongVideo = ({
+  imgPath,
+  caption,
+  postID,
+  userID,
+  timestamp,
+  myUserId,
+  navigation,
+}) => {
   const [Muted, setIsMuted] = useState(true);
   const actionSheetRef = createRef();
   const orientation = useDeviceOrientation().portrait
@@ -22,8 +32,42 @@ const LongVideo = ({ imgPath, caption }) => {
     : "landscape";
   const [loading1, setLoading1] = useState(true);
   const [loading2, setLoading2] = useState(true);
+  const [response, setResponse] = useState(null);
+  const [views, setViews] = useState(0);
+
   const testing_video =
     "https://test-videos.co.uk/vids/bigbuckbunny/mp4/h264/720/Big_Buck_Bunny_720_10s_1MB.mp4";
+
+  const IncreaseViewCount = async () => {
+    const url = `https://ampplex-backened.herokuapp.com/IncreaseViewCount/${postID}/${userID}`;
+
+    await fetch(url)
+      .then((response) => {
+        return response.json();
+      })
+      .then((data) => {
+        setResponse(data);
+      })
+      .catch((error) => {
+        // console.log(error);
+      });
+  };
+
+  const GetViewCount = async () => {
+    const url = `https://ampplex-backened.herokuapp.com/GetViewCount/${postID}/${userID}`;
+
+    await fetch(url)
+      .then((response) => {
+        return response.json();
+      })
+      .then((data) => {
+        console.log(data.ViewCount);
+        setViews(data.ViewCount);
+      })
+      .catch((error) => {
+        // console.log(error);
+      });
+  };
 
   return (
     <View>
@@ -32,6 +76,8 @@ const LongVideo = ({ imgPath, caption }) => {
         onPress={() => {
           setIsMuted(true);
           actionSheetRef.current?.setModalVisible();
+          IncreaseViewCount();
+          GetViewCount();
         }}
         style={styles.videoContainer}
       >
@@ -151,6 +197,40 @@ const LongVideo = ({ imgPath, caption }) => {
               <View style={styles.caption}>
                 <Text style={styles.text}>{caption}</Text>
               </View>
+              <View style={styles.Views}>
+                <Text style={styles.viewsText}>
+                  {views} views • {timestamp}
+                </Text>
+              </View>
+              <View style={styles.breakpointStyle} />
+              <View style={styles.Like}>
+                <Like4
+                  postID={postID}
+                  myUserId={myUserId}
+                  pressedUserID={userID}
+                />
+              </View>
+              <TouchableOpacity
+                style={{
+                  marginLeft: Dimensions.get("window").width / 3.7,
+                  marginTop: Dimensions.get("window").height / 8,
+                }}
+                onPress={() => {
+                  let clickedUserID = userID;
+                  let myUserID = myUserId;
+
+                  navigation.navigate("Comments", {
+                    myUserID,
+                    clickedUserID,
+                    postID,
+                  });
+                }}
+              >
+                <Image
+                  style={styles.comment}
+                  source={require("../Images/comment-icon.png")}
+                />
+              </TouchableOpacity>
             </View>
           ) : (
             <View />
@@ -193,5 +273,31 @@ const styles = StyleSheet.create({
     height: Dimensions.get("window").height / 1.3,
     position: "absolute",
     top: Dimensions.get("window").height / 3.3,
+  },
+  Views: {
+    position: "absolute",
+    top: Dimensions.get("window").height / 16.5,
+    alignSelf: "center",
+    left: 10,
+  },
+  viewsText: {
+    fontSize: 13,
+    fontFamily: "sans-serif-medium",
+    color: "grey",
+  },
+  breakpointStyle: {
+    backgroundColor: "lightgrey",
+    width: Dimensions.get("window").width,
+    height: 1,
+    position: "absolute",
+    top: Dimensions.get("window").height / 8.8,
+  },
+  Like: {
+    position: "absolute",
+    top: Dimensions.get("window").height / 10,
+  },
+  comment: {
+    width: 28,
+    height: 28,
   },
 });
