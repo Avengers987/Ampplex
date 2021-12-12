@@ -144,8 +144,8 @@ const Like = (props) => {
           position: "absolute",
           top: -507,
           borderRadius: 20,
-          opacity: 0,
           left: 11,
+          opacity: 0,
         }}
       />
 

@@ -35,6 +35,10 @@ const LongVideo = ({
   const [response, setResponse] = useState(null);
   const [views, setViews] = useState(0);
 
+  if (userID != undefined) {
+    console.log(userID, "\n");
+  }
+
   const testing_video =
     "https://test-videos.co.uk/vids/bigbuckbunny/mp4/h264/720/Big_Buck_Bunny_720_10s_1MB.mp4";
 
@@ -76,7 +80,9 @@ const LongVideo = ({
         onPress={() => {
           setIsMuted(true);
           actionSheetRef.current?.setModalVisible();
-          IncreaseViewCount();
+          if (userID != undefined) {
+            IncreaseViewCount();
+          }
           GetViewCount();
         }}
         style={styles.videoContainer}
@@ -276,7 +282,7 @@ const styles = StyleSheet.create({
   },
   Views: {
     position: "absolute",
-    top: Dimensions.get("window").height / 16.5,
+    marginTop: Dimensions.get("window").height / 16.5,
     alignSelf: "center",
     left: 10,
   },

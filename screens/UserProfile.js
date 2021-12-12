@@ -13,6 +13,8 @@ import {
 import { Video } from "expo-av";
 import EditProfile from "../components/EditProfile";
 import Likes from "../components/Like";
+import LongVideo from "./LongVideo";
+import Likes4 from "../components/Like4";
 
 const Profile = ({ navigation, route }) => {
   const [posts, SetPosts] = useState(0);
@@ -396,29 +398,37 @@ const Profile = ({ navigation, route }) => {
                   </Text>
                 </View>
                 {element.Type == "Image" ? (
-                  <Image
-                    source={{
-                      uri: element.ImgPath,
-                    }}
-                    style={styles.postImg}
-                  />
+                  <>
+                    <Image
+                      source={{
+                        uri: element.ImgPath,
+                      }}
+                      style={styles.postImg}
+                    />
+                    <Likes
+                      postID={element.Post_ID}
+                      myUserId={myUserId}
+                      pressedUserID={userID}
+                    />
+                  </>
                 ) : (
-                  <Video
-                    ref={video}
-                    style={styles.video}
-                    source={{
-                      uri: element.ImgPath,
-                    }}
-                    useNativeControls
-                    resizeMode="cover"
-                    isLooping
-                  />
+                  <>
+                    <LongVideo
+                      imgPath={element.ImgPath}
+                      caption={element.Caption}
+                      postID={element.Post_ID}
+                      userID={myUserId}
+                      timestamp={element.Timestamp}
+                      myUserId={myUserId}
+                      navigation={navigation}
+                    />
+                    <Likes4
+                      postID={element.Post_ID}
+                      myUserId={myUserId}
+                      pressedUserID={userID}
+                    />
+                  </>
                 )}
-                <Likes
-                  postID={element.Post_ID}
-                  myUserId={myUserId}
-                  pressedUserID={userID}
-                />
                 <TouchableOpacity
                   style={{
                     marginLeft: 90,

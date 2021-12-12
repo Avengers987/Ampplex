@@ -17,8 +17,10 @@ import * as ImagePicker from "expo-image-picker";
 import firebase from "firebase";
 import { Video, AVPlaybackStatus } from "expo-av";
 import EditProfile from "../components/EditProfile";
+import Like4 from "../components/Like4";
 import Like2 from "../components/Like2";
 import More from "../components/More";
+import LongVideo from "./LongVideo";
 
 const wait = (timeout) => {
   return new Promise((resolve) => setTimeout(resolve, timeout));
@@ -395,32 +397,37 @@ const Profile = ({ userID, navigation, route }) => {
                   </Text>
                 </View>
                 {element.Type == "Image" ? (
-                  <Image
-                    source={{
-                      uri: element.ImgPath,
-                    }}
-                    style={styles.postImg}
-                  />
+                  <>
+                    <Image
+                      source={{
+                        uri: element.ImgPath,
+                      }}
+                      style={styles.postImg}
+                    />
+                    <Like2
+                      postID={element.Post_ID}
+                      myUserId={userID}
+                      pressedUserID={userID}
+                    />
+                  </>
                 ) : (
-                  <Video
-                    ref={video}
-                    style={styles.video}
-                    source={{
-                      uri: element.ImgPath,
-                    }}
-                    useNativeControls
-                    resizeMode="cover"
-                    isLooping
-                    onMoveShouldSetResponder={() => console.log("Touched!")}
-                    onLoadStart={() => console.log("Loading...")}
-                    onPlaybackStatusUpdate={(status) => setStatus(() => status)}
-                  />
+                  <>
+                    <LongVideo
+                      imgPath={element.ImgPath}
+                      caption={element.Caption}
+                      postID={element.Post_ID}
+                      userID={element.UserID}
+                      timestamp={element.Timestamp}
+                      myUserId={userID}
+                      navigation={navigation}
+                    />
+                    <Like4
+                      postID={element.Post_ID}
+                      myUserId={userID}
+                      pressedUserID={userID}
+                    />
+                  </>
                 )}
-                <Like2
-                  postID={element.Post_ID}
-                  myUserId={userID}
-                  pressedUserID={userID}
-                />
                 <TouchableOpacity
                   style={{
                     marginLeft: 90,

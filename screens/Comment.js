@@ -112,6 +112,7 @@ const Comment = ({ route, navigation }) => {
                     <Block_report
                       userID={element.myUserID}
                       myUserID={myUserID}
+                      commentID={element.Comment_ID}
                     />
                   )}
                   {element.ImgPath != null ? (
