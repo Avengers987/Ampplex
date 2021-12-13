@@ -35,7 +35,7 @@ const LongVideo = ({
   const [response, setResponse] = useState(null);
   const [views, setViews] = useState(0);
 
-  if (userID != undefined) {
+  if (userID == undefined) {
     console.log(userID, "\n");
   }
 

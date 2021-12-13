@@ -416,7 +416,7 @@ const Profile = ({ userID, navigation, route }) => {
                       imgPath={element.ImgPath}
                       caption={element.Caption}
                       postID={element.Post_ID}
-                      userID={element.UserID}
+                      userID={userID}
                       timestamp={element.Timestamp}
                       myUserId={userID}
                       navigation={navigation}
