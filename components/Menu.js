@@ -12,15 +12,25 @@ import {
 const Menu = ({ navigation }) => {
   const [menuBtnPressed, setMenuButtonPressed] = useState(false);
   const [menuIconOpacity, setMenuIconOpacity] = useState(1);
-  const menuBarAnimation = new Animated.Value(0);
+  const [closeMenu, setCloseMenu] = useState(false);
+  let menuBarAnimation = new Animated.Value(-200);
 
   useEffect(() => {
     Animated.timing(menuBarAnimation, {
-      toValue: Dimensions.get("window").width / 1.5,
+      toValue: 0,
       duration: 500,
       useNativeDriver: false,
     }).start();
+    menuBarAnimation = new Animated.Value(0);
   }, [menuBtnPressed]);
+
+  useEffect(() => {
+    Animated.timing(menuBarAnimation, {
+      toValue: -300,
+      duration: 500,
+      useNativeDriver: false,
+    }).start();
+  }, [closeMenu]);
 
   const MenuBtnHandler = () => {
     setMenuButtonPressed(!menuBtnPressed);
@@ -46,16 +56,21 @@ const Menu = ({ navigation }) => {
           style={{
             position: "absolute",
             backgroundColor: "#fff",
-            width: menuBarAnimation,
+            width: Dimensions.get("window").width / 1.5,
             height: Dimensions.get("window").height,
             left: -Dimensions.get("window").width / 2,
             elevation: 12,
             borderTopRightRadius: 30,
             borderBottomRightRadius: 30,
             top: -30,
+            transform: [{ translateX: menuBarAnimation }],
           }}
         >
-          <TouchableOpacity onPress={() => MenuBtnHandler()}>
+          <TouchableOpacity
+            onPress={() => {
+              setCloseMenu(!closeMenu);
+            }}
+          >
             <View>
               {/* Menu Button */}
               <Image
@@ -63,7 +78,7 @@ const Menu = ({ navigation }) => {
                   width: 30,
                   height: 30,
                   marginLeft: 17,
-                  marginTop: 15,
+                  marginTop: 30,
                 }}
                 source={require("../Images/menu-icon.png")}
               />
@@ -99,14 +114,14 @@ export default Menu;
 const styles = StyleSheet.create({
   positionMenuIcon: {
     position: "absolute",
-    top: -15,
+    top: -2,
     marginLeft: -180,
   },
   LogoutBtn: {
     position: "absolute",
     width: "80%",
     height: "5%",
-    top: 50,
+    top: 60,
     backgroundColor: "#FFD8E0",
     borderTopRightRadius: 20,
     borderBottomRightRadius: 20,

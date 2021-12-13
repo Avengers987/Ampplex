@@ -21,6 +21,8 @@ const OTP = ({ route, navigation }) => {
       console.log("OTP Matched");
       Alert.alert("Success!", "OTP verified!");
       navigation.navigate("CreateNewPassword", { email });
+    } else {
+      Alert.alert("Error!", "OTP does not match!");
     }
   };
 
