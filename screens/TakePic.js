@@ -57,16 +57,6 @@ export default function TakePic({ navigation, route }) {
           flex: 1,
           aspectRatio: Orientation == "portrait" ? 0.7 : 2.0,
         }}
-        onFacesDetected={() => {
-          console.log("Face Detected!");
-        }}
-        faceDetectorSettings={{
-          mode: FaceDetector.Constants.Mode.fast,
-          detectLandmarks: FaceDetector.Constants.Landmarks.none,
-          runClassifications: FaceDetector.Constants.Classifications.none,
-          minDetectionInterval: 100,
-          tracking: true,
-        }}
         ref={(ref) => setCamera(ref)}
         type={type}
         zoom

@@ -16,11 +16,13 @@ import {
   TouchableOpacity,
   Pressable,
   ActivityIndicator,
+  ScrollView,
 } from "react-native";
 import { Video, AVPlaybackStatus } from "expo-av";
 import { StatusBar } from "expo-status-bar";
 import Like from "../components/Like3";
 import ActionSheet from "react-native-actions-sheet";
+import Modal from "react-native-modal";
 
 const PostSingle = (props) => {
   const [play, setPlay] = useState(false);
@@ -30,13 +32,17 @@ const PostSingle = (props) => {
   const navigation = props.navigation;
   const myUserId = props.myUserId;
   const actionSheetRef = createRef();
+  const [isModalVisible, setModalVisible] = useState(false);
+  const [selectedCategory, setSelectedCategory] = useState("");
 
   const HandleAudio = () => {
     console.log("Audio controller triggered!");
     setPlay(!play);
   };
 
-  console.log(props.index, props.currentIndex);
+  const handleModalClick = () => {
+    setModalVisible(!isModalVisible);
+  };
 
   const userNamePressHandler = () => {
     navigation.navigate("UserProfile", {
@@ -44,6 +50,40 @@ const PostSingle = (props) => {
       clickedUserName,
       myUserId,
     });
+  };
+
+  const handleBlock = () => {
+    const url = `https://ampplex-backened.herokuapp.com/BlockUser/${props.userId}/${props.myUserId}`;
+
+    fetch(url)
+      .then((response) => {
+        return response.text();
+      })
+      .then((data) => {
+        if (data === "success") {
+          alert("User Blocked");
+        }
+      });
+  };
+
+  const handleReport = () => {
+    const url = `https://ampplex-backened.herokuapp.com/ReportPost/${props.postID}/${props.userId}/${props.myUserId}/${selectedCategory}`;
+    fetch(url)
+      .then((response) => {
+        return response.json();
+      })
+      .then((data) => {
+        console.log(data);
+        if (data.message === "success") {
+          alert(
+            "We have sent your request to Ampplex team. Thank you for reporting!"
+          );
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+        alert("Some error occured. Please try again later.");
+      });
   };
 
   // useEffect(() => {
@@ -143,6 +183,91 @@ const PostSingle = (props) => {
           <ActivityIndicator size="large" color="white" />
         </View>
       ) : null}
+      {isModalVisible ? (
+        <Modal isVisible={isModalVisible}>
+          <View style={styles.reportModalContainer}>
+            <Text style={styles.reportCategoryTitle}>
+              Report this comment for:
+            </Text>
+            <View style={styles.breakpointStyle} />
+            <ScrollView>
+              <TouchableOpacity
+                style={styles.Category1_Style}
+                onPress={() => {
+                  setSelectedCategory("Unwanted commercial content or spam");
+                  handleReport();
+                  handleModalClick();
+                  setModalVisible(false);
+                }}
+              >
+                <Text style={styles.Category1_Text_Style}>
+                  Unwanted commercial content or spam
+                </Text>
+              </TouchableOpacity>
+              <View style={styles.breakpointStyle} />
+              <TouchableOpacity
+                style={styles.Category1_Style}
+                onPress={() => {
+                  setSelectedCategory("Hate speech or graphic violence");
+                  handleReport();
+                  handleModalClick();
+                  setModalVisible(false);
+                }}
+              >
+                <Text style={styles.Category1_Text_Style}>
+                  Hate speech or graphic violence
+                </Text>
+              </TouchableOpacity>
+              <View style={styles.breakpointStyle} />
+              <TouchableOpacity
+                style={styles.Category1_Style}
+                onPress={() => {
+                  setSelectedCategory("Harassment or bullying");
+                  handleReport();
+                  handleModalClick();
+                  setModalVisible(false);
+                }}
+              >
+                <Text style={styles.Category1_Text_Style}>
+                  Harassment or bullying
+                </Text>
+              </TouchableOpacity>
+              <View style={styles.breakpointStyle} />
+              <TouchableOpacity
+                style={styles.Category1_Style}
+                onPress={() => {
+                  setSelectedCategory("Child abuse");
+                  handleReport();
+                  handleModalClick();
+                  setModalVisible(false);
+                }}
+              >
+                <Text style={styles.Category1_Text_Style}>Child abuse</Text>
+              </TouchableOpacity>
+              <View style={styles.breakpointStyle} />
+              <TouchableOpacity
+                style={styles.Category1_Style}
+                onPress={() => {
+                  handleModalClick();
+                  setModalVisible(false);
+                }}
+              >
+                <Text
+                  style={{
+                    fontSize: 16,
+                    fontFamily: "sans-serif-medium",
+                    fontWeight: "bold",
+                    color: "skyblue",
+                    marginBottom: 10,
+                  }}
+                >
+                  Cancel
+                </Text>
+              </TouchableOpacity>
+            </ScrollView>
+          </View>
+        </Modal>
+      ) : null}
       <View style={styles.like}>
         <Like
           postID={props.postID}
@@ -226,11 +351,19 @@ const PostSingle = (props) => {
               marginTop: 5,
             }}
           />
-          <TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => {
+              setModalVisible(true);
+            }}
+          >
             <Text style={styles.ActionSheetText}>Report</Text>
           </TouchableOpacity>
           <View style={styles.breakpointStyle} />
-          <TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => {
+              handleBlock();
+            }}
+          >
             <Text style={styles.ActionSheetText2}>Block</Text>
           </TouchableOpacity>
         </View>
@@ -319,5 +452,36 @@ const styles = StyleSheet.create({
     borderBottomColor: "lightgrey",
     marginTop: 20,
     width: "100%",
+  },
+  reportModalContainer: {
+    backgroundColor: "white",
+    width: "90%",
+    height: "45%",
+    borderRadius: 20,
+    alignSelf: "center",
+  },
+  reportCategoryTitle: {
+    fontSize: 16,
+    fontWeight: "bold",
+    fontFamily: "sans-serif-medium",
+    alignSelf: "center",
+    marginTop: "5%",
+    color: "skyblue",
+  },
+  Category1_Style: {
+    alignSelf: "center",
+    marginTop: "5%",
+  },
+  Category1_Text_Style: {
+    fontSize: 16,
+    fontFamily: "sans-serif-medium",
+    fontWeight: "bold",
+    color: "red",
+    alignSelf: "center",
+  },
+  breakpointStyle: {
+    backgroundColor: "lightgrey",
+    height: 1,
+    marginTop: "5%",
   },
 });

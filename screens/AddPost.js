@@ -19,6 +19,7 @@ import FlashMessage from "react-native-flash-message";
 import { showMessage } from "react-native-flash-message";
 import { StatusBar } from "expo-status-bar";
 import firebase from "firebase";
+import Modal from "react-native-modal";
 
 const Push_User_Data_To_RealTime_DB = (
   imgPath,
@@ -64,11 +65,20 @@ export default function AddPost({ navigation, route, userID }) {
   const [userId, setUserId] = useState(null);
   const [postTxt, setPostTxt] = useState(null);
   const [posted, setPosted] = useState(null);
-  const [uploadStatus, setUploadStatus] = useState("");
+  const [uploadStatus, setUploadStatus] = useState(0);
   const [error, setError] = useState(false); // if true then user have not attached picture or video or not written caption
   const [clickedPost, setClickedPost] = useState(false);
   const [mediaType, setMediaType] = useState(null);
   const [autoFocus, setAutoFocus] = useState(true); // Change default focus to true
+  const [isModalVisible, setIsModalVisible] = useState(false);
+  // const [counter, setCounter] = useState(0);
+
+  // for (let i = 0; i < 200; i++) {
+  //   setTimeout(() => {
+  //     let counter_ = i;
+  //     setCounter(counter_);
+  //   }, 10);
+  // }
 
   let animatedImgContainer = new Animated.Value(-20);
 
@@ -170,7 +180,8 @@ export default function AddPost({ navigation, route, userID }) {
             var progress =
               (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
             console.log("Upload is " + progress + "% done");
-            setUploadStatus(progress.toFixed(2) + "%");
+            setIsModalVisible(true);
+            setUploadStatus(progress);
             setAutoFocus(false);
             switch (snapshot.state) {
               case firebase.storage.TaskState.PAUSED: // or 'paused'
@@ -189,6 +200,7 @@ export default function AddPost({ navigation, route, userID }) {
             // Handle successful uploads on complete
             // For instance, get the download URL: https://firebasestorage.googleapis.com/...
             task.snapshot.ref.getDownloadURL().then((downloadURL) => {
+              setIsModalVisible(false);
               console.log("File available at", downloadURL);
               Push_User_Data_To_RealTime_DB(
                 downloadURL,
@@ -349,23 +361,57 @@ export default function AddPost({ navigation, route, userID }) {
                 fontSize: 20,
               }}
             ></Text>
-            <ActivityIndicator size="large" color="skyblue" />
           </View>
         ) : (
           <View />
         )}
+        {/* clickedPost === true && isModalVisible */}
         {clickedPost === true ? (
-          <View>
-            <Text
+          <Modal isVisible={isModalVisible}>
+            <View
               style={{
-                fontSize: 17,
-                fontWeight: "bold",
-                fontFamily: "sans-serif-medium",
+                width: Dimensions.get("window").width / 1.5,
+                height: Dimensions.get("window").height / 4,
+                backgroundColor: "#fff",
+                alignSelf: "center",
+                borderRadius: 15,
+                justifyContent: "center",
+                alignItems: "center",
               }}
             >
-              Uploaded : {uploadStatus}
-            </Text>
-          </View>
+              <Text
+                style={{
+                  fontFamily: "sans-serif-medium",
+                  fontSize: 20,
+                  fontWeight: "bold",
+                  position: "absolute",
+                  top: 10,
+                  color: "grey",
+                }}
+              >
+                Uploading...
+              </Text>
+              <View
+                style={{
+                  position: "absolute",
+                  top: 5,
+                  right: "10%",
+                  opacity: 0,
+                }}
+              >
+                <ActivityIndicator size="large" color="skyblue" />
+              </View>
+              <View
+                style={{
+                  width: uploadStatus,
+                  height: 5,
+                  backgroundColor: "lightgreen",
+                  borderRadius: 10,
+                  marginBottom: 20,
+                }}
+              />
+            </View>
+          </Modal>
         ) : (
           <View />
         )}

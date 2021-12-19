@@ -84,6 +84,9 @@ const HomeScreen = ({ navigation, userID, userName }) => {
         refreshControl={
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
         }
+        onScrollEndDrag={() => {
+          console.log("onScrollEndDrag");
+        }}
       >
         {connectedToInternet == false ? (
           <>

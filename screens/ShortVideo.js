@@ -49,7 +49,6 @@ const ShortVideo = ({ userID, navigation }) => {
     try {
       const play = viewableItems["viewableItems"][0].index;
       setCurrentIndex(play);
-      // console.log(play);
     } catch (e) {
       // console.log(e);
     }
@@ -95,6 +94,9 @@ const ShortVideo = ({ userID, navigation }) => {
         onViewableItemsChanged={onViewRef.current}
         viewabilityConfig={{
           itemVisiblePercentThreshold: 50,
+        }}
+        onEndReached={() => {
+          console.log("onEndReached");
         }}
       />
       <Text style={styles.Title}>Shorts</Text>
