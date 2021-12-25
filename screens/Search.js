@@ -12,33 +12,36 @@ import {
 } from "react-native";
 import LottieView from "lottie-react-native";
 
-const searchForUser = (searchValue, UserName) => {
-  if (
-    searchValue != "" &&
-    searchValue === UserName.substring(0, searchValue.length)
-  ) {
-    return true;
-  }
-  return false;
-};
-
 const Search = ({ navigation, userID }) => {
   const [searchValue, setSearchValue] = useState("");
   const [response, setResponse] = useState(null);
   const [loading, setLoading] = useState(true);
 
   const getUserName = async () => {
-    const url = `http://ampplex-backened.herokuapp.com/GetUserNames/`;
+    setLoading(true);
+
+    const url = `http://ampplex-backened.herokuapp.com/GetUserNames/${searchValue}`;
 
     await fetch(url)
       .then((response) => {
+        console.log(response);
         return response.json();
       })
       .then((data) => {
+        console.log(data);
         setResponse(data);
         setLoading(false);
+      })
+      .catch((error) => {
+        // console.log(error);
       });
   };
+
+  useEffect(() => {
+    if (searchValue !== "") {
+      getUserName();
+    }
+  }, [searchValue]);
 
   const renderItem = ({ item, index }) => {
     let clickedUserID = item.userID;
@@ -47,12 +50,7 @@ const Search = ({ navigation, userID }) => {
 
     return (
       <>
-        {searchForUser(
-          searchValue.toLowerCase(),
-          item.UserName.toLowerCase()
-        ) &&
-        response != null &&
-        searchValue != null ? (
+        {response != null && searchValue != null && searchValue !== "" ? (
           <TouchableOpacity
             key={index}
             style={styles.UserView}
@@ -93,16 +91,12 @@ const Search = ({ navigation, userID }) => {
     );
   };
 
-  useEffect(() => {
-    getUserName();
-  }, []);
-
   return (
     <View style={styles.container}>
       <View style={styles.SearchBar}>
         <TextInput
           placeholder={"Search for users..."}
-          onChangeText={(e) => setSearchValue(e.trim())}
+          onChangeText={(e) => setSearchValue(e)}
           value={searchValue}
           style={{
             fontSize: 16,

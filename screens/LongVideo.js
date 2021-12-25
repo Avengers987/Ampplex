@@ -35,10 +35,6 @@ const LongVideo = ({
   const [response, setResponse] = useState(null);
   const [views, setViews] = useState(0);
 
-  if (userID == undefined) {
-    console.log(userID, "\n");
-  }
-
   const testing_video =
     "https://test-videos.co.uk/vids/bigbuckbunny/mp4/h264/720/Big_Buck_Bunny_720_10s_1MB.mp4";
 
