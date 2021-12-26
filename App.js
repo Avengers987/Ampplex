@@ -1,5 +1,5 @@
 import { StatusBar } from "expo-status-bar";
-import React from "react";
+import React, { useEffect } from "react";
 import { StyleSheet, Text, View, SafeAreaView } from "react-native";
 import LoginScreen from "./screens/LoginScreen";
 import { createStackNavigator } from "@react-navigation/stack";
@@ -21,6 +21,12 @@ import OTP from "./screens/OTP";
 import CreateNewPassword from "./screens/CreateNewPassword";
 import PostSingle from "./screens/PostSingle";
 import Tab_Bar_Color_State from "./context/tab_bar_color/Tab_Bar_Color_State";
+import {
+  AdMobBanner,
+  AdMobInterstitial,
+  PublisherBanner,
+  AdMobRewarded,
+} from "react-native-admob";
 
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 
@@ -42,8 +48,24 @@ if (firebase.apps.length === 0) {
 
 export default function App() {
   const Stack = createStackNavigator();
+
+  // useEffect(() => {
+  //   // Display a DFP Publisher banner
+  //   // Display an interstitial
+  //   AdMobInterstitial.setAdUnitID("ca-app-pub-3940256099942544/1033173712");
+  //   AdMobInterstitial.setTestDevices([AdMobInterstitial.simulatorId]);
+  //   AdMobInterstitial.requestAd().then(() => AdMobInterstitial.showAd());
+  // }, []);
+
   return (
     <>
+      {/* <AdMobBanner
+        adSize="fullBanner"
+        adUnitID="ca-app-pub-3940256099942544/6300978111"
+        testDevices={[AdMobBanner.simulatorId]}
+        onAdFailedToLoad={(error) => console.error(error)}
+      /> */}
+
       <Tab_Bar_Color_State>
         <NavigationContainer>
           <StatusBar style="light" />

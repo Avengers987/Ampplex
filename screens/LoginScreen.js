@@ -21,6 +21,232 @@ const ErrorFlasher = (msg) => {
   });
 };
 
+const Cryptography_Encrypt = (text) => {
+  const alpha = {
+    a: 2073,
+    b: 2076,
+    c: 2079,
+    d: 2082,
+    e: 2085,
+    f: 2088,
+    g: 2091,
+    h: 2094,
+    i: 2097,
+    j: 2100,
+    k: 2103,
+    l: 2106,
+    m: 2109,
+    n: 2112,
+    o: 2115,
+    p: 2118,
+    q: 2121,
+    r: 2124,
+    s: 2127,
+    t: 2130,
+    u: 2133,
+    v: 2136,
+    w: 2139,
+    x: 2142,
+    y: 2145,
+    z: 2148,
+    " ": 2151,
+    1: 234,
+    2: 89,
+    3: 45,
+    4: 1095,
+    5: 77,
+    6: 12,
+    7: 61,
+    8: 55,
+    9: 23,
+    0: 22,
+    "`": 1288,
+    "~`": 226096,
+    "!": 33,
+    "@": 44,
+    "#": 59,
+    $: 66,
+    "%": 7754,
+    "^": 88,
+    "&": 99,
+    "*": 401,
+    "(": 402,
+    ")": 403,
+    "-": 404,
+    _: "405",
+    "=": 406,
+    "+": 407,
+    "[": 408,
+    "]": 409,
+    "{": 410,
+    "}": 411,
+    "\\": 412,
+    "|": 413,
+    ";": 414,
+    ":": 415,
+    "'": 416,
+    '"': 417,
+    ",": 418,
+    ".": 419,
+    "/": 420,
+    "?": 422,
+    A: 630,
+    B: 632,
+    C: 634,
+    D: 636,
+    E: "638",
+    F: 640,
+    G: 642,
+    H: 644,
+    I: 646,
+    J: 648,
+    K: 650,
+    L: 652,
+    M: 654,
+    N: 656,
+    O: 658,
+    P: 660,
+    Q: 662,
+    R: 664,
+    S: 666,
+    T: 668,
+    U: 670,
+    V: 672,
+    W: 674,
+    X: 676,
+    Y: 678,
+    Z: 680,
+  };
+
+  let encryptedTxt = "";
+  let firstTime = true;
+
+  text = text.split("");
+
+  console.log(text);
+
+  text.forEach((e) => {
+    if (firstTime) {
+      encryptedTxt += alpha[e];
+      firstTime = false;
+    } else {
+      encryptedTxt += " ";
+      encryptedTxt += alpha[e];
+    }
+  });
+
+  return encryptedTxt;
+};
+
+const Cryptography_Decrypt = (encryptedTxt) => {
+  const alpha_num = {
+    2073: "a",
+    2076: "b",
+    2079: "c",
+    2082: "d",
+    2085: "e",
+    2088: "f",
+    2091: "g",
+    2094: "h",
+    2097: "i",
+    2100: "j",
+    2103: "k",
+    2106: "l",
+    2109: "m",
+    2112: "n",
+    2115: "o",
+    2118: "p",
+    2121: "q",
+    2124: "r",
+    2127: "s",
+    2130: "t",
+    2133: "u",
+    2136: "v",
+    2139: "w",
+    2142: "x",
+    2145: "y",
+    2148: "z",
+    2151: " ",
+    234: "1",
+    89: "2",
+    45: "3",
+    1095: "4",
+    77: "5",
+    12: "6",
+    61: "7",
+    55: "8",
+    23: "9",
+    22: "0",
+    1288: "`",
+    226096: "~",
+    33: "!",
+    44: "@",
+    59: "#",
+    66: "$",
+    7754: "%",
+    88: "^",
+    99: "&",
+    401: "*",
+    402: "(",
+    403: ")",
+    404: "-",
+    405: "_",
+    406: "=",
+    407: "+",
+    408: "[",
+    409: "]",
+    410: "{",
+    411: "}",
+    412: "\\",
+    413: "|",
+    414: ";",
+    415: ":",
+    416: "'",
+    417: '"',
+    418: ",",
+    419: ".",
+    420: "/",
+    422: "?",
+    630: "A",
+    632: "B",
+    634: "C",
+    636: "D",
+    638: "E",
+    640: "F",
+    642: "G",
+    644: "H",
+    646: "I",
+    648: "J",
+    650: "K",
+    652: "L",
+    654: "M",
+    656: "N",
+    658: "O",
+    660: "P",
+    662: "Q",
+    664: "R",
+    666: "S",
+    668: "T",
+    670: "U",
+    672: "V",
+    674: "W",
+    676: "X",
+    678: "Y",
+    680: "Z",
+  };
+
+  let decryptedTxt = "";
+
+  let encryptedLst = encryptedTxt.split(" ");
+
+  encryptedLst.forEach((element) => {
+    console.log(alpha_num[element], element);
+    decryptedTxt += alpha_num[element];
+  });
+
+  return decryptedTxt;
+};
+
 export default function LoginScreen(props) {
   const [loading, setLoading] = useState(false);
 
@@ -93,7 +319,9 @@ export default function LoginScreen(props) {
     // Login method sends the email and password to flask Rest API and get response like "success" or "error"
     setLoading(true); // Activating the Activity Indicator
 
-    const url = `https://ampplex-backened.herokuapp.com/Login/${email.trim()}/${password.trim()}`;
+    const url = `https://ampplex-backened.herokuapp.com/Login/${email.trim()}/${Cryptography_Encrypt(
+      password.trim()
+    )}`;
     fetch(url)
       .then((response) => {
         return response.json();

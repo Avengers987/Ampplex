@@ -6,6 +6,9 @@ import android.net.Uri;
 
 import com.facebook.react.PackageList;
 import com.facebook.react.ReactApplication;
+import com.sbugert.rnadmob.RNAdMobPackage;
+import com.sbugert.rnadmob.RNAdMobPackage;
+import com.sbugert.rnadmob.RNAdMobPackage;
 import com.brentvatne.react.ReactVideoPackage;
 import com.brentvatne.react.ReactVideoPackage;
 import com.brentvatne.react.ReactVideoPackage;

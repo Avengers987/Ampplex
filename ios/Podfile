@@ -30,4 +30,6 @@ target 'Ampplex' do
 
   pod 'react-native-fast-video', :path => '../node_modules/react-native-fast-video'
 
+  pod 'react-native-admob', :path => '../node_modules/react-native-admob'
+
 end
