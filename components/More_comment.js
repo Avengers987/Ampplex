@@ -1,10 +1,12 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { StyleSheet, Text, View, TouchableOpacity, Image } from "react-native";
 import Modal from "react-native-modal";
+import Comment_Context from "../context/Comment/Comment_Context";
 
 const More_comment = ({ clickedUserID, postID, commentID }) => {
   const [isModalVisible, setModalVisible] = useState(false);
   const [isModal2Visible, setisModal2Visible] = useState(false);
+  const comment_context = useContext(Comment_Context);
 
   const handleModalClick = () => {
     setModalVisible(!isModalVisible);
@@ -22,10 +24,15 @@ const More_comment = ({ clickedUserID, postID, commentID }) => {
         return response.text();
       })
       .then((data) => {
-        if (data === "success") {
-          alert("Comment Deleted!. Please refresh once to see changes");
+        if (data != "success") {
+          alert("Some error occurred!");
         }
+      })
+      .catch((error) => {
+        alert("Some error occurred!");
       });
+
+    comment_context.changeShouldReload(true);
   };
 
   return (

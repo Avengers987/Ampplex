@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import {
   StyleSheet,
   Text,
@@ -16,6 +16,7 @@ import EmojiBoard from "react-native-emoji-board";
 import LottieView from "lottie-react-native";
 import More_comment from "../components/More_comment";
 import Block_report from "../components/Block_report";
+import Comment_Context from "../context/Comment/Comment_Context";
 
 const wait = (timeout) => {
   return new Promise((resolve) => setTimeout(resolve, timeout));
@@ -32,6 +33,7 @@ const Comment = ({ route, navigation }) => {
   const clickedUserID = route.params.clickedUserID;
   const postID = route.params.postID;
   const myUserID = route.params.myUserID;
+  const comment_context = useContext(Comment_Context);
 
   const onClick = (emoji) => {
     setExperience(experience + emoji.code);
@@ -78,6 +80,13 @@ const Comment = ({ route, navigation }) => {
   useEffect(() => {
     getComments();
   }, []);
+
+  useEffect(() => {
+    if (comment_context.shouldReload) {
+      getComments();
+      comment_context.changeShouldReload(false);
+    }
+  }, [comment_context.shouldReload]);
 
   return (
     <>
