@@ -9,7 +9,7 @@ import {
 } from "react-native";
 import Modal from "react-native-modal";
 
-const More = ({ userID, postID }) => {
+const More = ({ userID, postID, navigation }) => {
   const [isModalVisible, setModalVisible] = useState(false);
   const [isModal2Visible, setisModal2Visible] = useState(false);
 
@@ -67,7 +67,7 @@ const More = ({ userID, postID }) => {
               alignSelf: "center",
               backgroundColor: "white",
               width: "80%",
-              height: "20%",
+              height: "30%",
               borderRadius: 20,
             }}
           >
@@ -95,7 +95,40 @@ const More = ({ userID, postID }) => {
                 backgroundColor: "lightgrey",
                 height: 1,
                 width: "100%",
-                marginTop: "6%",
+                marginTop: "8%",
+              }}
+            />
+            <TouchableOpacity
+              style={{
+                position: "absolute",
+                bottom: 20,
+                right: 120,
+              }}
+              onPress={() => {
+                navigation.navigate("Add_Assignments");
+              }}
+            >
+              <Text
+                style={{
+                  color: "skyblue",
+                  textAlign: "center",
+                  fontSize: 16,
+                  fontWeight: "bold",
+                  fontFamily: "sans-serif",
+                  left: "18%",
+                  marginBottom: "26%",
+                  marginLeft: "40%",
+                }}
+              >
+                Add assignment
+              </Text>
+            </TouchableOpacity>
+            <View
+              style={{
+                backgroundColor: "lightgrey",
+                height: 1,
+                width: "100%",
+                marginTop: "25%",
               }}
             />
             <TouchableOpacity

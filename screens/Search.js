@@ -15,7 +15,7 @@ import LottieView from "lottie-react-native";
 const Search = ({ navigation, userID }) => {
   const [searchValue, setSearchValue] = useState("");
   const [response, setResponse] = useState(null);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
 
   const getUserName = async () => {
     setLoading(true);

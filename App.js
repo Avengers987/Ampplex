@@ -22,6 +22,7 @@ import CreateNewPassword from "./screens/CreateNewPassword";
 import PostSingle from "./screens/PostSingle";
 import Tab_Bar_Color_State from "./context/tab_bar_color/Tab_Bar_Color_State";
 import Comment_State from "./context/Comment/Comment_State";
+import Add_Assignments from "./screens/Add_Assignments";
 
 import {
   AdMobBanner,
@@ -218,6 +219,22 @@ export default function App() {
                   headerTitle: "PostSingle",
                   headerTitleStyle: {
                     fontWeight: "bold",
+                  },
+                }}
+              />
+
+              <Stack.Screen
+                name="Add_Assignments"
+                component={Add_Assignments}
+                options={{
+                  headerShown: true,
+                  headerTitle: "Add Assignments",
+                  headerTitleStyle: {
+                    fontWeight: "bold",
+                    color: "white",
+                  },
+                  headerStyle: {
+                    backgroundColor: "#87cefa",
                   },
                 }}
               />

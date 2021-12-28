@@ -376,7 +376,11 @@ const Profile = ({ userID, navigation, route }) => {
           response.map((element, index) => {
             return (
               <View style={styles.postView} key={index}>
-                <More userID={userID} postID={element.Post_ID} />
+                <More
+                  userID={userID}
+                  postID={element.Post_ID}
+                  navigation={navigation}
+                />
                 <View>
                   {/*Profile Picture*/}
                   <Image
