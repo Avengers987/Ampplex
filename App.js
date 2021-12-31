@@ -23,6 +23,7 @@ import PostSingle from "./screens/PostSingle";
 import Tab_Bar_Color_State from "./context/tab_bar_color/Tab_Bar_Color_State";
 import Comment_State from "./context/Comment/Comment_State";
 import Add_Assignments from "./screens/Add_Assignments";
+import More from "../Ampplex/components/More";
 
 import {
   AdMobBanner,
@@ -224,6 +225,18 @@ export default function App() {
               />
 
               <Stack.Screen
+                name="More"
+                component={More}
+                options={{
+                  headerShown: false,
+                  headerTitle: "More",
+                  headerTitleStyle: {
+                    fontWeight: "bold",
+                  },
+                }}
+              />
+
+              <Stack.Screen
                 name="Add_Assignments"
                 component={Add_Assignments}
                 options={{
@@ -231,10 +244,6 @@ export default function App() {
                   headerTitle: "Add Assignments",
                   headerTitleStyle: {
                     fontWeight: "bold",
-                    color: "white",
-                  },
-                  headerStyle: {
-                    backgroundColor: "#87cefa",
                   },
                 }}
               />
