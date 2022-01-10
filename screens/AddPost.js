@@ -71,14 +71,6 @@ export default function AddPost({ navigation, route, userID }) {
   const [mediaType, setMediaType] = useState(null);
   const [autoFocus, setAutoFocus] = useState(true); // Change default focus to true
   const [isModalVisible, setIsModalVisible] = useState(false);
-  // const [counter, setCounter] = useState(0);
-
-  // for (let i = 0; i < 200; i++) {
-  //   setTimeout(() => {
-  //     let counter_ = i;
-  //     setCounter(counter_);
-  //   }, 10);
-  // }
 
   let animatedImgContainer = new Animated.Value(-20);
 

@@ -105,7 +105,7 @@ const More = ({ userID, postID, navigation }) => {
                 right: 120,
               }}
               onPress={() => {
-                navigation.navigate("Add_Assignments", { userID, postID });
+                navigation.navigate("Subject", { userID, postID });
               }}
             >
               <Text

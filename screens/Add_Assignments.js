@@ -9,14 +9,16 @@ import {
   ScrollView,
 } from "react-native";
 
-const Add_Assignments = ({ route }) => {
+const Add_Assignments = ({ route, navigation }) => {
   const [question, setQuestion] = useState("");
   const [correctOption, setCorrectOption] = useState("");
   const [option1, setOption1] = useState("");
   const [option2, setOption2] = useState("");
   const [option3, setOption3] = useState("");
   const [option4, setOption4] = useState("");
-  const temp_subject = "Theory  of Computation";
+  const subject = route.params.subject;
+  const userID = route.params.userID;
+  const postID = route.params.postID;
 
   const verifyUserInfo = () => {
     if (
@@ -41,7 +43,7 @@ const Add_Assignments = ({ route }) => {
 
   const UploadAssignmnement = async () => {
     if (verifyUserInfo()) {
-      const url = `https://ampplex-backened.herokuapp.com/UploadAssignment/${route.params.userID}/${route.params.postID}/${temp_subject}/${question}/${option1}/${option2}/${option3}/${option4}/${correctOption}`;
+      const url = `https://ampplex-backened.herokuapp.com/UploadAssignment/${userID}/${postID}/${subject}/${question}/${option1}/${option2}/${option3}/${option4}/${correctOption}`;
       await fetch(url)
         .then((response) => {
           return response.json();
@@ -50,6 +52,11 @@ const Add_Assignments = ({ route }) => {
           console.log(data);
           if (data === "success") {
             alert("Assignment Uploaded");
+            navigation.replace("Add_Assignments", {
+              subject,
+              userID,
+              postID,
+            });
           } else {
             alert("Some error occurred!");
           }
