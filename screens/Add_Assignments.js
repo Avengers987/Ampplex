@@ -10,15 +10,26 @@ import {
 } from "react-native";
 
 const Add_Assignments = ({ route, navigation }) => {
-  const [question, setQuestion] = useState("");
+  let [question, setQuestion] = useState("");
   const [correctOption, setCorrectOption] = useState("");
   const [option1, setOption1] = useState("");
   const [option2, setOption2] = useState("");
   const [option3, setOption3] = useState("");
   const [option4, setOption4] = useState("");
+  const [quest_Mark_isThere, setQuest_Mark_isThere] = useState(false);
   const subject = route.params.subject;
   const userID = route.params.userID;
   const postID = route.params.postID;
+
+  const checkQuestionMark = () => {
+    if (question.includes("?")) {
+      setQuest_Mark_isThere(true);
+      question = question.replace("?", "");
+    } else {
+      setQuest_Mark_isThere(false);
+    }
+    console.log("HERE IS THE QUESION: ", question);
+  };
 
   const verifyUserInfo = () => {
     if (
@@ -35,15 +46,26 @@ const Add_Assignments = ({ route, navigation }) => {
       option4 != null &&
       option4 != ""
     ) {
+      if (
+        option1.includes("/") ||
+        option2.includes("/") ||
+        option3.includes("/") ||
+        option4.includes("/")
+      ) {
+        return "Please do not use '/' in your options";
+      }
       return true;
     } else {
-      return false;
+      return "Please fill all the fields";
     }
   };
 
   const UploadAssignmnement = async () => {
-    if (verifyUserInfo()) {
-      const url = `https://ampplex-backened.herokuapp.com/UploadAssignment/${userID}/${postID}/${subject}/${question}/${option1}/${option2}/${option3}/${option4}/${correctOption}`;
+    if (verifyUserInfo() === true) {
+      checkQuestionMark();
+
+      const url = `https://ampplex-backened.herokuapp.com/UploadAssignment/${userID}/${postID}/${subject}/${question}/${option1}/${option2}/${option3}/${option4}/${correctOption}/${quest_Mark_isThere}`;
+
       await fetch(url)
         .then((response) => {
           return response.json();
@@ -51,21 +73,19 @@ const Add_Assignments = ({ route, navigation }) => {
         .then((data) => {
           console.log(data);
           if (data === "success") {
-            alert("Assignment Uploaded");
-            navigation.replace("Add_Assignments", {
-              subject,
-              userID,
-              postID,
-            });
-          } else {
-            alert("Some error occurred!");
+            alert("Assignment Uploaded!");
           }
+          navigation.replace("Add_Assignments", {
+            subject,
+            userID,
+            postID,
+          });
         })
         .catch((error) => {
           console.log(error);
         });
     } else {
-      alert("Please fill all the fields");
+      alert(verifyUserInfo());
     }
   };
 

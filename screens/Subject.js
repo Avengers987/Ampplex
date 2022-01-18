@@ -37,7 +37,7 @@ const Subject = ({ route, navigation }) => {
 
   const verifyUserInfo = async () => {
     if (subject === "" || subject === null) {
-      setError("Please enter a subject to contunue!");
+      setError("Please enter a subject to continue!");
       Vibration.vibrate(200);
 
       setTimeout(() => {
@@ -74,6 +74,7 @@ const Subject = ({ route, navigation }) => {
 
       return false;
     }
+
     navigation.navigate("Add_Assignments", {
       subject,
       userID,
@@ -125,7 +126,12 @@ const Subject = ({ route, navigation }) => {
               <TextInput
                 style={styles.textInput}
                 placeholder="Enter subject name"
-                onChangeText={(text) => setSubject(text)}
+                onChangeText={(text) => {
+                  if (subject != "" || subject != null) {
+                    setError("");
+                  }
+                  setSubject(text);
+                }}
                 value={subject}
               />
             </View>

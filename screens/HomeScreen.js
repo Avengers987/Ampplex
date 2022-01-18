@@ -72,6 +72,7 @@ const HomeScreen = ({ navigation, userID, userName }) => {
     getPostInfo(); // Calling the getPost API for retrieving user posts
   }, []);
 
+  // Checking if user is connected to the internet or not every 7 seconds
   setInterval(() => {
     ConnectedToInternet();
   }, 7000);
