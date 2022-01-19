@@ -17,7 +17,7 @@ const Subject = ({ route, navigation }) => {
   const Animated_Box_opacity = new Animated.Value(0);
   let error_container_animation = new Animated.Value(0);
   const [error, setError] = useState("");
-  const [subject, setSubject] = useState("");
+  let [subject, setSubject] = useState("");
 
   useEffect(() => {
     Animated.timing(select_subject, {
@@ -34,6 +34,27 @@ const Subject = ({ route, navigation }) => {
       useNativeDriver: false,
     }).start();
   }, []);
+
+  const Capitalize_Str = (str) => {
+    // Capitalizing subject before passing it to the Add_Assignments screen as a prop
+
+    // example :- "maths" -> "Maths"
+
+    let new_str = "";
+
+    str = str.trim();
+    str = str.toLowerCase();
+
+    for (let i = 0; i < str.length; i++) {
+      if (i === 0) {
+        new_str += str[i].toUpperCase();
+      } else {
+        new_str += str[i];
+      }
+    }
+
+    return new_str;
+  };
 
   const verifyUserInfo = async () => {
     if (subject === "" || subject === null) {
@@ -74,6 +95,8 @@ const Subject = ({ route, navigation }) => {
 
       return false;
     }
+
+    subject = Capitalize_Str(subject);
 
     navigation.navigate("Add_Assignments", {
       subject,

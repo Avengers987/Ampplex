@@ -7,6 +7,7 @@ import {
   TextInput,
   TouchableOpacity,
   ScrollView,
+  ToastAndroid,
 } from "react-native";
 
 const Add_Assignments = ({ route, navigation }) => {
@@ -16,20 +17,19 @@ const Add_Assignments = ({ route, navigation }) => {
   const [option2, setOption2] = useState("");
   const [option3, setOption3] = useState("");
   const [option4, setOption4] = useState("");
-  const [quest_Mark_isThere, setQuest_Mark_isThere] = useState(false);
   const subject = route.params.subject;
   const userID = route.params.userID;
   const postID = route.params.postID;
 
-  const checkQuestionMark = () => {
-    if (question.includes("?")) {
-      setQuest_Mark_isThere(true);
-      question = question.replace("?", "");
-    } else {
-      setQuest_Mark_isThere(false);
-    }
-    console.log("HERE IS THE QUESION: ", question);
+  const showToast = () => {
+    ToastAndroid.show("Assignment uploaded!", ToastAndroid.SHORT);
   };
+
+  useEffect(() => {
+    console.log("subject: ", subject);
+    console.log("userID: ", userID);
+    console.log("postID: ", postID);
+  }, []);
 
   const verifyUserInfo = () => {
     if (
@@ -62,9 +62,12 @@ const Add_Assignments = ({ route, navigation }) => {
 
   const UploadAssignmnement = async () => {
     if (verifyUserInfo() === true) {
-      checkQuestionMark();
-
-      const url = `https://ampplex-backened.herokuapp.com/UploadAssignment/${userID}/${postID}/${subject}/${question}/${option1}/${option2}/${option3}/${option4}/${correctOption}/${quest_Mark_isThere}`;
+      const url = `https://ampplex-backened.herokuapp.com/UploadAssignment/${userID}/${postID}/${subject}/${question.replace(
+        "?",
+        ""
+      )}/${option1}/${option2}/${option3}/${option4}/${correctOption}/${question.includes(
+        "?"
+      )}`;
 
       await fetch(url)
         .then((response) => {
@@ -72,8 +75,8 @@ const Add_Assignments = ({ route, navigation }) => {
         })
         .then((data) => {
           console.log(data);
-          if (data === "success") {
-            alert("Assignment Uploaded!");
+          if (data.status === "success") {
+            showToast();
           }
           navigation.replace("Add_Assignments", {
             subject,

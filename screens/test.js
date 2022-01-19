@@ -1,10 +1,19 @@
-let question = "ddfgdfg?";
+const Capitalize_Str = (str) => {
+  let new_str = "";
 
-const checkQuestionMark = () => {
-  if (question.includes("?")) {
-    question = question.replace("?", "");
+  str = str.toLowerCase();
+
+  for (let i = 0; i < str.length; i++) {
+    if (i === 0) {
+      new_str += str[i].toUpperCase();
+    } else {
+      new_str += str[i];
+    }
   }
-  console.log("HERE IS THE QUESION: ", question);
+
+  return new_str;
 };
 
-checkQuestionMark();
+const subject = "HELLO WORLD!";
+
+console.log("HERE IS THE SUBJECT: ", Capitalize_Str(subject));
