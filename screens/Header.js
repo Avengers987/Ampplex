@@ -1,5 +1,12 @@
 import React from "react";
-import { StyleSheet, Text, View, Dimensions } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  View,
+  Dimensions,
+  Image,
+  TouchableOpacity,
+} from "react-native";
 import Menu from "../components/Menu";
 
 const Header = ({ navigation }) => {
@@ -38,6 +45,12 @@ const Header = ({ navigation }) => {
             Ampplex
           </Text>
         </View>
+        <TouchableOpacity style={styles.positionNotification}>
+          <Image
+            style={styles.notification}
+            source={require("../assets/images/notification.png")}
+          />
+        </TouchableOpacity>
       </View>
     </>
   );
@@ -62,5 +75,14 @@ const styles = StyleSheet.create({
     position: "absolute",
     top: -10,
     marginLeft: -180,
+  },
+  notification: {
+    width: 35,
+    height: 35,
+  },
+  positionNotification: {
+    position: "absolute",
+    right: 46,
+    top: 20,
   },
 });

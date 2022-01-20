@@ -23,8 +23,9 @@ import PostSingle from "./screens/PostSingle";
 import Tab_Bar_Color_State from "./context/tab_bar_color/Tab_Bar_Color_State";
 import Comment_State from "./context/Comment/Comment_State";
 import Add_Assignments from "./screens/Add_Assignments";
-import More from "../Ampplex/components/More";
+import More from "./components/More";
 import Subject from "./screens/Subject";
+import Notification from "./screens/Notification";
 
 import {
   AdMobBanner,
@@ -252,6 +253,18 @@ export default function App() {
               <Stack.Screen
                 name="Subject"
                 component={Subject}
+                options={{
+                  headerShown: true,
+                  headerTitle: "Add Assignments",
+                  headerTitleStyle: {
+                    fontWeight: "bold",
+                  },
+                }}
+              />
+
+              <Stack.Screen
+                name="Notification"
+                component={Notification}
                 options={{
                   headerShown: true,
                   headerTitle: "Add Assignments",

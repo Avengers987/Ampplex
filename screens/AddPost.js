@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, createRef } from "react";
 import {
   View,
   Text,
@@ -20,6 +20,8 @@ import { showMessage } from "react-native-flash-message";
 import { StatusBar } from "expo-status-bar";
 import firebase from "firebase";
 import Modal from "react-native-modal";
+import ActionSheet from "react-native-actions-sheet";
+import LottieView from "lottie-react-native";
 
 const Push_User_Data_To_RealTime_DB = (
   imgPath,
@@ -71,12 +73,23 @@ export default function AddPost({ navigation, route, userID }) {
   const [mediaType, setMediaType] = useState(null);
   const [autoFocus, setAutoFocus] = useState(true); // Change default focus to true
   const [isModalVisible, setIsModalVisible] = useState(false);
+  const [showTaskCompleteSheet, setShowTaskCompleteSheet] = useState(false);
+  const actionSheetRef = createRef();
 
   let animatedImgContainer = new Animated.Value(-20);
 
   if (userID === undefined) {
     userID = route.params.userID;
   }
+
+  setInterval(() => {
+    if (showTaskCompleteSheet) {
+      actionSheetRef.current?.setModalVisible();
+      setTimeout(() => {
+        setShowTaskCompleteSheet(false);
+      }, 3000);
+    }
+  }, 3500);
 
   const startImgAnimation = async () => {
     setTimeout(() => {
@@ -193,6 +206,7 @@ export default function AddPost({ navigation, route, userID }) {
             // For instance, get the download URL: https://firebasestorage.googleapis.com/...
             task.snapshot.ref.getDownloadURL().then((downloadURL) => {
               setIsModalVisible(false);
+
               console.log("File available at", downloadURL);
               Push_User_Data_To_RealTime_DB(
                 downloadURL,
@@ -205,7 +219,7 @@ export default function AddPost({ navigation, route, userID }) {
               );
             });
 
-            Alert.alert("Post status", "Successfully posted!");
+            setShowTaskCompleteSheet(true);
             setPosted(true);
             setImage(null);
             setPostTxt(null);
@@ -309,6 +323,17 @@ export default function AddPost({ navigation, route, userID }) {
             <Icon name="md-images-outline" style={styles.actionButtonIcon} />
           </ActionButton.Item>
         </ActionButton>
+        <ActionSheet ref={actionSheetRef} bounceOnOpen={true}>
+          <View style={styles.ActionSheetStyle}>
+            {/* Post sent animation  */}
+            <LottieView
+              style={styles.task_completed}
+              source={require("../assets/lottie/task-complete.json")}
+              autoPlay
+              loop={true}
+            />
+          </View>
+        </ActionSheet>
         <FlashMessage position="bottom" />
       </>
     );
@@ -458,5 +483,9 @@ const styles = StyleSheet.create({
     position: "absolute",
     alignSelf: "center",
     top: -22,
+  },
+  ActionSheetStyle: {
+    height: Dimensions.get("window").height,
+    width: Dimensions.get("window").width,
   },
 });
