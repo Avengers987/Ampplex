@@ -25,12 +25,6 @@ const Add_Assignments = ({ route, navigation }) => {
     ToastAndroid.show("Assignment uploaded!", ToastAndroid.SHORT);
   };
 
-  useEffect(() => {
-    console.log("subject: ", subject);
-    console.log("userID: ", userID);
-    console.log("postID: ", postID);
-  }, []);
-
   const verifyUserInfo = () => {
     if (
       question != null &&

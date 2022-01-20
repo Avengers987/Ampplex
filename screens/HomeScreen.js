@@ -9,6 +9,7 @@ import {
   TouchableWithoutFeedback,
   TouchableOpacity,
   RefreshControl,
+  Share,
 } from "react-native";
 import Header from "./Header";
 import LottieView from "lottie-react-native";
@@ -17,7 +18,6 @@ import NetInfo from "@react-native-community/netinfo";
 import Tab_Bar_Color_Context from "../context/tab_bar_color/Tab_Bar_Color_Context";
 import Like4 from "../components/Like4";
 import LongVideo from "./LongVideo";
-import { Video } from "expo-av";
 
 const wait = (timeout) => {
   return new Promise((resolve) => setTimeout(resolve, timeout));
@@ -37,6 +37,25 @@ const HomeScreen = ({ navigation, userID, userName }) => {
   useEffect(() => {
     tab_bar_color.changeColor("white");
   }, []);
+
+  const onShare = async () => {
+    try {
+      const result = await Share.share({
+        message: "https://ampplex-website.web.app/",
+      });
+      if (result.action === Share.sharedAction) {
+        if (result.activityType) {
+          // shared with activity type of result.activityType
+        } else {
+          // shared
+        }
+      } else if (result.action === Share.dismissedAction) {
+        // dismissed
+      }
+    } catch (error) {
+      alert(error.message);
+    }
+  };
 
   const ConnectedToInternet = () => {
     let connected = null;
@@ -221,6 +240,23 @@ const HomeScreen = ({ navigation, userID, userName }) => {
                       source={require("../Images/comment-icon.png")}
                     />
                   </TouchableOpacity>
+
+                  {/* Share button */}
+                  <TouchableOpacity
+                    style={{
+                      marginLeft: 150,
+                      marginTop: -32,
+                    }}
+                    onPress={() => {
+                      onShare();
+                    }}
+                  >
+                    <Image
+                      style={styles.share}
+                      source={require("../assets/images/share-icon.png")}
+                    />
+                  </TouchableOpacity>
+
                   <View>
                     <Text
                       key={index}
@@ -335,5 +371,9 @@ const styles = StyleSheet.create({
     width: 365,
     height: 490,
     borderRadius: 15,
+  },
+  share: {
+    width: 35,
+    height: 35,
   },
 });

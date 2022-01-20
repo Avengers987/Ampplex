@@ -32,4 +32,6 @@ target 'Ampplex' do
 
   pod 'react-native-admob', :path => '../node_modules/react-native-admob'
 
+  pod 'RNShare', :path => '../node_modules/react-native-share'
+
 end
