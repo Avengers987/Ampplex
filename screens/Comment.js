@@ -88,6 +88,14 @@ const Comment = ({ route, navigation }) => {
     }
   }, [comment_context.shouldReload]);
 
+  const AddbreakLine = (sent) => {
+    if (sent.length > 15) {
+      return sent.substring(0, 18) + "\n" + sent.substring(18);
+    } else {
+      return sent;
+    }
+  };
+
   return (
     <>
       <ScrollView
@@ -150,7 +158,7 @@ const Comment = ({ route, navigation }) => {
                       left: 80,
                     }}
                   >
-                    <Text style={{}}>{element.Comment}</Text>
+                    <Text>{AddbreakLine(element.Comment)}</Text>
                   </View>
                 </View>
               </>

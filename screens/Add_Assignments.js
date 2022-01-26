@@ -236,12 +236,9 @@ export default Add_Assignments;
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    backgroundColor: "#fff",
-    alignItems: "center",
+    display: "flex",
     justifyContent: "center",
-    height: Dimensions.get("window").height,
-    width: Dimensions.get("window").width,
+    alignItems: "center",
   },
 
   InnerBox: {

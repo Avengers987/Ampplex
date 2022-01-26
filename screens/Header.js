@@ -45,7 +45,10 @@ const Header = ({ navigation }) => {
             Ampplex
           </Text>
         </View>
-        <TouchableOpacity style={styles.positionNotification}>
+        <TouchableOpacity
+          style={styles.positionNotification}
+          onPress={() => navigation.navigate("Notification")}
+        >
           <Image
             style={styles.notification}
             source={require("../assets/images/notification.png")}

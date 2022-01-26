@@ -26,6 +26,7 @@ import Add_Assignments from "./screens/Add_Assignments";
 import More from "./components/More";
 import Subject from "./screens/Subject";
 import Notification from "./screens/Notification";
+import Logined_userID_State from "./context/Logined_userID/Logined_userID_State";
 
 import {
   AdMobBanner,
@@ -71,6 +72,7 @@ export default function App() {
         testDevices={[AdMobBanner.simulatorId]}
         onAdFailedToLoad={(error) => console.error(error)}
       /> */}
+      <Logined_userID_State>
       <Comment_State>
         <Tab_Bar_Color_State>
           <NavigationContainer>
@@ -267,7 +269,7 @@ export default function App() {
                 component={Notification}
                 options={{
                   headerShown: true,
-                  headerTitle: "Add Assignments",
+                  headerTitle: "Notifications",
                   headerTitleStyle: {
                     fontWeight: "bold",
                   },
@@ -277,6 +279,7 @@ export default function App() {
           </NavigationContainer>
         </Tab_Bar_Color_State>
       </Comment_State>
+      </Logined_userID_State>
     </>
   );
 }

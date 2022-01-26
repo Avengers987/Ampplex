@@ -1,9 +1,11 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { StyleSheet, Text, View, Animated, Dimensions } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import Logined_userID_Context from "../context/Logined_userID/Logined_userID_Context";
 
 const StartScreen = ({ navigation }) => {
   const logoOpacity = new Animated.Value(0);
+  const Logined_userID = useContext(Logined_userID_Context);
 
   useEffect(() => {
     Animated.timing(logoOpacity, {
@@ -20,6 +22,8 @@ const StartScreen = ({ navigation }) => {
     const userID = await AsyncStorage.getItem("user_id");
     const onboarding = await AsyncStorage.getItem("onboarding");
     const category = await AsyncStorage.getItem("Category");
+
+    Logined_userID.changeLoginedUserID(userID);
 
     if (
       isLogined === "true" &&

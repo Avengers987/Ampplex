@@ -50,6 +50,21 @@ const Push_User_Data_To_RealTime_DB = (
     });
 };
 
+const sendNotification = async (myUserID, postID, caption, PostTime) => {
+  const url = `https://ampplex-backened.herokuapp.com/Send_Push_notification/${myUserID}/${postID}/${caption}/${PostTime}`;
+
+  await fetch(url)
+    .then((response) => {
+      return response.json();
+    })
+    .then((data) => {
+      console.log(data);
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+};
+
 const getWindowDimensionsWidth = () => {
   const dimensions = Dimensions.get("window").width;
   return dimensions;
