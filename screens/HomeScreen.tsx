@@ -19,26 +19,42 @@ import Tab_Bar_Color_Context from "../context/tab_bar_color/Tab_Bar_Color_Contex
 import Like4 from "../components/Like4";
 import LongVideo from "./LongVideo";
 
-const wait = (timeout) => {
+const wait = (timeout: number): Promise<unknown> => {
   return new Promise((resolve) => setTimeout(resolve, timeout));
 };
 
-const HomeScreen = ({ navigation, userID, userName }) => {
-  let [response, setResponse] = useState([]);
+interface IState {
+  UserData: {
+    profilePicPath: string;
+    UserID: string;
+    UserName: string;
+    Type: string;
+    ImgPath: string;
+    Post_ID: string;
+    Caption?: string;
+    Timestamp: string;
+  }[]
+}
 
-  const [status, setStatus] = useState({});
-  const [refreshing, setRefreshing] = useState(false);
-  const [loading, setLoading] = useState(true);
-  const [connectedToInternet, setConnectedToInternet] = useState(null);
-  const myUserID = userID;
+type HomeScreen_Props = {
+  navigation: any;
+  userID: string;
+  userName: string;
+}
 
-  const tab_bar_color = useContext(Tab_Bar_Color_Context);
+const HomeScreen = ({ navigation, userID, userName }: HomeScreen_Props) => {
+  const [response, setResponse] = useState<IState["UserData"]>([]);
+  const [refreshing, setRefreshing] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [connectedToInternet, setConnectedToInternet] = useState<boolean | null>(null);
+  const myUserID: string = userID;
+  const tab_bar_color = useContext<any>(Tab_Bar_Color_Context);
 
   useEffect(() => {
     tab_bar_color.changeColor("white");
   }, []);
 
-  const onShare = async () => {
+  const onShare = async (): Promise<void> => {
     try {
       const result = await Share.share({
         message: "https://ampplex-website.web.app/",
@@ -57,16 +73,16 @@ const HomeScreen = ({ navigation, userID, userName }) => {
     }
   };
 
-  const ConnectedToInternet = () => {
-    let connected = null;
+  const ConnectedToInternet = (): void => {
+    let connected: boolean | null = null;
     NetInfo.addEventListener((networkState) => {
       connected = networkState.isConnected;
     });
     setConnectedToInternet(connected);
   };
 
-  const getPostInfo = async () => {
-    const url = "https://ampplex-backened.herokuapp.com/GetPostJson/";
+  const getPostInfo = async () : Promise<void> => {
+    const url: string = "https://ampplex-backened.herokuapp.com/GetPostJson/";
 
     await fetch(url)
       .then((response) => {
@@ -81,7 +97,7 @@ const HomeScreen = ({ navigation, userID, userName }) => {
       });
   };
 
-  const onRefresh = React.useCallback(() => {
+  const onRefresh = React.useCallback((): void => {
     setRefreshing(true);
     wait(2000).then(() => setRefreshing(false));
     getPostInfo();
@@ -104,9 +120,6 @@ const HomeScreen = ({ navigation, userID, userName }) => {
         refreshControl={
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
         }
-        onScrollEndDrag={() => {
-          console.log("onScrollEndDrag");
-        }}
       >
         {connectedToInternet == false ? (
           <>
@@ -148,7 +161,7 @@ const HomeScreen = ({ navigation, userID, userName }) => {
             />
           </View>
         ) : (
-          response.map((element, index) => {
+          response.map((element, index: number) => {
             return (
               <>
                 <View style={styles.postView} key={index}>

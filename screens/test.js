@@ -1,19 +1,10 @@
-const Capitalize_Str = (str) => {
-  let new_str = "";
+// Generating unique postID
 
-  str = str.toLowerCase();
+const date = new Date();
 
-  for (let i = 0; i < str.length; i++) {
-    if (i === 0) {
-      new_str += str[i].toUpperCase();
-    } else {
-      new_str += str[i];
-    }
-  }
+const postID =
+  date.getMilliseconds() * date.getSeconds() +
+  Math.floor(Math.random() * 1000 + 2) *
+    Math.floor(Math.random() * 150000 + 100);
 
-  return new_str;
-};
-
-const subject = "HELLO WORLD!";
-
-console.log("HERE IS THE SUBJECT: ", Capitalize_Str(subject));
+console.log(postID);

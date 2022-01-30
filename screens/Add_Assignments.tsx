@@ -10,22 +10,22 @@ import {
   ToastAndroid,
 } from "react-native";
 
-const Add_Assignments = ({ route, navigation }) => {
-  let [question, setQuestion] = useState("");
-  const [correctOption, setCorrectOption] = useState("");
-  const [option1, setOption1] = useState("");
-  const [option2, setOption2] = useState("");
-  const [option3, setOption3] = useState("");
-  const [option4, setOption4] = useState("");
-  const subject = route.params.subject;
-  const userID = route.params.userID;
-  const postID = route.params.postID;
+const Add_Assignments = ({ route, navigation }: any) => {
+  let [question, setQuestion] = useState<string>("");
+  const [correctOption, setCorrectOption] = useState<string>("");
+  const [option1, setOption1] = useState<string>("");
+  const [option2, setOption2] = useState<string>("");
+  const [option3, setOption3] = useState<string>("");
+  const [option4, setOption4] = useState<string>("");
+  const subject: string = route.params.subject;
+  const userID: string = route.params.userID;
+  const postID: string = route.params.postID;
 
-  const showToast = () => {
+  const showToast = (): void => {
     ToastAndroid.show("Assignment uploaded!", ToastAndroid.SHORT);
   };
 
-  const verifyUserInfo = () => {
+  const verifyUserInfo = (): boolean | string => {
     if (
       question != null &&
       question != "" &&
@@ -54,7 +54,7 @@ const Add_Assignments = ({ route, navigation }) => {
     }
   };
 
-  const UploadAssignmnement = async () => {
+  const UploadAssignmnement = async (): Promise<void> => {
     if (verifyUserInfo() === true) {
       const url = `https://ampplex-backened.herokuapp.com/UploadAssignment/${userID}/${postID}/${subject}/${question.replace(
         "?",
@@ -100,7 +100,7 @@ const Add_Assignments = ({ route, navigation }) => {
               }}
             />
           </View>
-          <View style={styles.optionsContainer}>
+          <View>
             <Text
               style={{
                 fontSize: 17,

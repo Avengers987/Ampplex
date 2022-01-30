@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, FunctionComponent } from "react";
 import {
   StyleSheet,
   Text,
@@ -9,13 +9,13 @@ import {
   Alert,
 } from "react-native";
 
-const OTP = ({ route, navigation }) => {
-  const [enteredOTP, setEnteredOTP] = useState(0);
-  const [time, setTime] = useState(120);
-  const email = route.params.email;
-  const [otp, setOTP] = useState(route.params.otp);
+const OTP = ({ route, navigation } : any) => {
+  const [enteredOTP, setEnteredOTP] = useState<number | string>(0);
+  const [time, setTime] = useState<number>(120);
+  const email: string = route.params.email;
+  const [otp, setOTP] = useState<number>(route.params.otp);
 
-  const VerifyOTP = () => {
+  const VerifyOTP = () : void => {
     if (enteredOTP == otp) {
       console.log(otp);
       console.log("OTP Matched");
@@ -27,12 +27,11 @@ const OTP = ({ route, navigation }) => {
   };
 
   // Implementing a timer using recursion algorithm
-  const timer = (sec) => {
+  const timer = (sec: number) => {
     if (sec == -1) {
-      let OTP = Math.floor(1000 + Math.random() * 9000);
+      let OTP: number = Math.floor(1000 + Math.random() * 9000);
       setOTP(OTP);
-      console.log(OTP, otp, OTP == otp);
-      const url = `https://ampplex-backened.herokuapp.com/SendOTP/${email}/Ampplex : Your OTP is ${OTP}. Please do not share it with anyone/`;
+      const url: string = `https://ampplex-backened.herokuapp.com/SendOTP/${email}/Ampplex : Your OTP is ${OTP}. Please do not share it with anyone/`;
 
       fetch(url)
         .then((res) => res.text())

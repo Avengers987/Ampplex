@@ -10,6 +10,7 @@ import {
   Alert,
   KeyboardAvoidingView,
   Platform,
+  Dimensions,
 } from "react-native";
 import ActionSheet from "react-native-actions-sheet";
 import firebase from "firebase";
@@ -212,7 +213,7 @@ const EditProfile = ({ route }) => {
               height: 90,
               borderRadius: PROFILE_PIC_RADIUS_ANIMATION,
               position: "absolute",
-              left: 150,
+              left: Dimensions.get("window").width / 2,
               top: 0,
               alignSelf: "center",
             }}

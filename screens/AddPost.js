@@ -32,6 +32,15 @@ const Push_User_Data_To_RealTime_DB = (
 ) => {
   const Likes = 0; // Initial likes are 0
 
+  // Generating unique postID
+
+  const date = new Date();
+
+  const postID =
+    date.getMilliseconds() * date.getSeconds() +
+    Math.floor(Math.random() * 1000 + 2) *
+      Math.floor(Math.random() * 150000 + 100);
+
   firebase
     .database()
     .ref(`User/${userID}/Post/`)
@@ -41,9 +50,11 @@ const Push_User_Data_To_RealTime_DB = (
       timestamp,
       type,
       Likes,
+      postID,
     })
     .then((res) => {
       console.log(`Success: ${res}`);
+      sendNotification(userID, postID, caption, timestamp);
     })
     .catch((error) => {
       console.log(`Error: ${error}`);

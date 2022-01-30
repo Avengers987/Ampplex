@@ -16,6 +16,16 @@ import ActionSheet from "react-native-actions-sheet";
 import { useDeviceOrientation } from "@react-native-community/hooks";
 import Like4 from "../components/Like4";
 
+type LongVideo_Props = {
+  navigation: any;
+  imgPath: string;
+  caption: string;
+  postID: string;
+  userID: string;
+  timestamp: string;
+  myUserId: string;
+}
+
 const LongVideo = ({
   imgPath,
   caption,
@@ -24,22 +34,22 @@ const LongVideo = ({
   timestamp,
   myUserId,
   navigation,
-}) => {
-  const [Muted, setIsMuted] = useState(true);
-  const actionSheetRef = createRef();
-  const orientation = useDeviceOrientation().portrait
+}: LongVideo_Props) => {
+  const [Muted, setIsMuted] = useState<boolean>(true);
+  const actionSheetRef: any = createRef();
+  const orientation: string = useDeviceOrientation().portrait
     ? "portrait"
     : "landscape";
-  const [loading1, setLoading1] = useState(true);
-  const [loading2, setLoading2] = useState(true);
-  const [response, setResponse] = useState(null);
-  const [views, setViews] = useState(0);
+  const [loading1, setLoading1] = useState<boolean>(true);
+  const [loading2, setLoading2] = useState<boolean>(true);
+  const [response, setResponse] = useState<string | null>(null);
+  const [views, setViews] = useState<number>(0);
 
-  const testing_video =
+  const testing_video: string =
     "https://test-videos.co.uk/vids/bigbuckbunny/mp4/h264/720/Big_Buck_Bunny_720_10s_1MB.mp4";
 
-  const IncreaseViewCount = async () => {
-    const url = `https://ampplex-backened.herokuapp.com/IncreaseViewCount/${postID}/${userID}`;
+  const IncreaseViewCount = async (): Promise<void> => {
+    const url: string = `https://ampplex-backened.herokuapp.com/IncreaseViewCount/${postID}/${userID}`;
 
     await fetch(url)
       .then((response) => {
@@ -53,8 +63,8 @@ const LongVideo = ({
       });
   };
 
-  const GetViewCount = async () => {
-    const url = `https://ampplex-backened.herokuapp.com/GetViewCount/${postID}/${userID}`;
+  const GetViewCount = async (): Promise<void> => {
+    const url: string = `https://ampplex-backened.herokuapp.com/GetViewCount/${postID}/${userID}`;
 
     await fetch(url)
       .then((response) => {
@@ -88,7 +98,7 @@ const LongVideo = ({
           source={{
             uri: imgPath,
           }}
-          resizeMode={"contain"}
+          resizeMode={"cover"}
           onLoadStart={() => {
             console.log("onLoadStart");
           }}
@@ -97,7 +107,6 @@ const LongVideo = ({
             setLoading1(false);
           }}
           isLooping={true}
-          paginEnabled={true}
           shouldPlay={true}
           isMuted={Muted}
         />
@@ -107,7 +116,8 @@ const LongVideo = ({
           style={{
             position: "absolute",
             alignSelf: "center",
-            top: 90,
+            top: "40%",
+            justifyContent: "center",
           }}
         >
           <ActivityIndicator size="large" color="white" />
@@ -175,7 +185,6 @@ const LongVideo = ({
               console.log("Error while loading video");
             }}
             isLooping={true}
-            paginEnabled={true}
             shouldPlay={true}
             isMuted={false}
           />
@@ -218,8 +227,8 @@ const LongVideo = ({
                   marginTop: Dimensions.get("window").height / 8,
                 }}
                 onPress={() => {
-                  let clickedUserID = userID;
-                  let myUserID = myUserId;
+                  let clickedUserID: string = userID;
+                  let myUserID: string = myUserId;
 
                   navigation.navigate("Comments", {
                     myUserID,
@@ -252,9 +261,10 @@ const styles = StyleSheet.create({
     borderRadius: 20,
   },
   video: {
-    width: 400,
-    height: 228,
+    width: Dimensions.get("window").width,
+    height: Dimensions.get("window").width / 1.5,
     backgroundColor: "black",
+    alignSelf: "center",
   },
   ActionSheetStyle: {
     height: Dimensions.get("window").height,

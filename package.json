@@ -16,7 +16,7 @@
     "@react-native-firebase/storage": "^12.4.0",
     "@react-native-masked-view/masked-view": "^0.2.6",
     "@react-navigation/bottom-tabs": "^5.11.13",
-    "@react-navigation/drawer": "^5.12.7",
+    "@react-navigation/drawer": "^5.12.9",
     "@react-navigation/native": "^5.9.6",
     "@react-navigation/stack": "^5.14.7",
     "axios": "^0.21.4",
@@ -32,7 +32,7 @@
     "expo-splash-screen": "^0.10.3",
     "expo-status-bar": "~1.0.4",
     "expo-updates": "~0.5.4",
-    "firebase": "^8.9.1",
+    "firebase": "^8.10.0",
     "lottie-react-native": "^3.5.0",
     "react": "16.13.1",
     "react-dom": "16.13.1",
@@ -73,7 +73,12 @@
     "undefined": "react-native-masked-view\\masked-view"
   },
   "devDependencies": {
-    "@babel/core": "^7.15.0"
+    "@babel/core": "^7.15.0",
+    "@types/jest": "^27.4.0",
+    "@types/react": "^17.0.38",
+    "@types/react-native": "^0.66.15",
+    "@types/react-test-renderer": "^17.0.1",
+    "typescript": "^4.5.5"
   },
   "private": true,
   "name": "Ampplex",

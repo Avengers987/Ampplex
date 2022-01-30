@@ -13,13 +13,29 @@ import Logined_userID_Context from "../context/Logined_userID/Logined_userID_Con
 import Post_Notification from "../components/Post_Notification";
 import LottieView from "lottie-react-native";
 
+interface LineBreak {
+  (sent: string): string;
+}
+
+interface IState {
+  Notification: {
+    read: boolean;
+    UserName: string;
+    Caption: string;
+    ProfilePic: string;
+    PostPic: string;
+    PostTime: string;
+  }[]
+}
+
 const Notification = () => {
   const Logined_userID = useContext(Logined_userID_Context);
-  const [response, setResponse] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
-  const [refreshing, setRefreshing] = useState(false);
+  const [response, setResponse] = useState<IState["Notification"]>([]);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [refreshing, setRefreshing] = useState<boolean>(false);
+  const [showNotification, setShowNotification] = useState<boolean>(true);
 
-  const AddbreakLine = (sent) => {
+  const AddbreakLine: LineBreak = (sent: string): string => {
     if (sent.length > 15) {
       return sent.substring(0, 16) + "\n" + sent.substring(16);
     } else {
@@ -27,7 +43,7 @@ const Notification = () => {
     }
   };
 
-  const CaptionAddbreakLine = (sent) => {
+  const CaptionAddbreakLine: LineBreak = (sent: string): string => {
     if (sent.length > 15) {
       return sent.substring(0, 22) + "\n" + sent.substring(22);
     } else {
@@ -35,24 +51,24 @@ const Notification = () => {
     }
   };
 
-  const wait = (timeout) => {
+  const wait = (timeout: number) => {
     return new Promise((resolve) => setTimeout(resolve, timeout));
   };
 
-  const getNotifications = async () => {
-    const url = `https://ampplex-backened.herokuapp.com/Retrieve_Notification/${Logined_userID.userID}`;
+  const getNotifications = async (): Promise<void> => {
+    const url: string = `https://ampplex-backened.herokuapp.com/Retrieve_Notification/${Logined_userID.userID}`;
 
     await fetch(url)
       .then((response) => {
-        return response.json();
+          return response.json();
       })
-      .then((data) => {
-        console.log("RESPONSE", data);
-        setResponse(data);
+      .then((data: any) => {
+        console.log(data);
+        setResponse(data["Notification"]);
         setIsLoading(false);
       })
       .catch((error) => {
-        console.log(error);
+        setShowNotification(false);
       });
   };
 
@@ -62,9 +78,10 @@ const Notification = () => {
     getNotifications();
   }, []);
 
-  useEffect(() => {
+
+  setInterval(() => {
     getNotifications();
-  }, []);
+  }, 2000);
 
   return (
     <>
@@ -81,8 +98,8 @@ const Notification = () => {
           <Text style={styles.Day_Text}>Today</Text>
         </View>
 
-        {!isLoading ? (
-          response.map((element, index) => {
+        {!isLoading && showNotification ? (
+          response.map((element, index: number) => {
             return (
               <Post_Notification
                 read={element.read}
@@ -94,25 +111,36 @@ const Notification = () => {
               />
             );
           })
-        ) : (
-          <View
-            style={{
-              position: "absolute",
-              top: 0,
-              width: "100%",
-              height: "100%",
-              justifyContent: "center",
-              alignItems: "center",
-            }}
-          >
-            <LottieView
-              style={styles.loading}
-              source={require("../assets/lottie/loading-notifications.json")}
-              autoPlay
-              loop={true}
-            />
-          </View>
-        )}
+        ) : 
+          <>
+          {showNotification ? 
+            <View
+              style={{
+                position: "absolute",
+                top: 0,
+                width: "100%",
+                height: "100%",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
+              <LottieView
+                style={styles.loading}
+                source={require("../assets/lottie/loading-notifications.json")}
+                autoPlay
+                loop={true}
+              />
+            </View>
+          : <View/>}
+            {showNotification === false ? 
+            <>
+              <View>
+                <Text style={styles.No_Notification}>No notifications</Text>
+              </View>
+            </> 
+            : <View/>}
+          </>
+        }
 
         <View>
           <Text style={styles.Day_Text}>This Week</Text>
@@ -335,4 +363,9 @@ const styles = StyleSheet.create({
     position: "absolute",
     top: 20,
   },
+  No_Notification: {
+    textAlign: "center", 
+    fontSize: 20, 
+    fontWeight: "bold",
+  }
 });
