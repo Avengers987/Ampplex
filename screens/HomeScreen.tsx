@@ -184,8 +184,8 @@ const HomeScreen = ({ navigation, userID, userName }: HomeScreen_Props) => {
                   <TouchableOpacity
                     style={styles.UserNameContainer}
                     onPress={() => {
-                      const clickedUserID = element.UserID;
-                      const clickedUserName = element.UserName;
+                      const clickedUserID: string = element.UserID;
+                      const clickedUserName: string = element.UserName;
                       const myUserId = userID;
                       navigation.navigate("UserProfile", {
                         clickedUserID,
