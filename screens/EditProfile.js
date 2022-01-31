@@ -186,10 +186,10 @@ const EditProfile = ({ route }) => {
         <View
           style={{
             width: 100,
-            height: 110,
+            height: 100,
             borderRadius: 100,
             marginTop: 0,
-            marginLeft: 145,
+            marginLeft: Dimensions.get("window").width / 2.5,
             opacity: 0,
             backgroundColor: "black",
           }}
@@ -201,7 +201,7 @@ const EditProfile = ({ route }) => {
               height: 90,
               borderRadius: PROFILE_PIC_RADIUS_ANIMATION,
               position: "absolute",
-              left: 150,
+              left: Dimensions.get("window").width / 2.5,
               top: 0,
             }}
             source={require("../assets/images/default_profile_picture.png")}
@@ -213,7 +213,7 @@ const EditProfile = ({ route }) => {
               height: 90,
               borderRadius: PROFILE_PIC_RADIUS_ANIMATION,
               position: "absolute",
-              left: Dimensions.get("window").width / 2,
+              left: Dimensions.get("window").width / 2.5,
               top: 0,
               alignSelf: "center",
             }}
@@ -225,9 +225,9 @@ const EditProfile = ({ route }) => {
         {profilePicLoading === true ? (
           <View
             style={{
-              marginLeft: 50,
+              marginLeft: Dimensions.get("window").width / 2.2,
               position: "absolute",
-              top: 100,
+              top: "20%",
             }}
           >
             <ActivityIndicator size="large" color="black" />

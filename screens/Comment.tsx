@@ -18,29 +18,48 @@ import More_comment from "../components/More_comment";
 import Block_report from "../components/Block_report";
 import Comment_Context from "../context/Comment/Comment_Context";
 
-const wait = (timeout) => {
+interface IState {
+  Comment_Data: {
+    myUserID: string;
+    Comment_ID: string;
+    ImgPath: string | null;
+    UserName: string;
+    Comment: string;
+  }[]
+}
+
+interface Emoji_Interface {
+    code: string;
+}
+
+interface AddbreakLine_Interface {
+  (sent: string): string
+}
+
+const wait = (timeout: number) => {
   return new Promise((resolve) => setTimeout(resolve, timeout));
 };
 
-const Comment = ({ route, navigation }) => {
+const Comment = ({ route, navigation }: any) => {
   // Props - postID, clickedUserID, myUserID
 
-  const [experience, setExperience] = useState("");
-  const [showEmoji, setShowEmoji] = useState(false);
-  const [response, setResponse] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [refreshing, setRefreshing] = useState(false);
-  const clickedUserID = route.params.clickedUserID;
-  const postID = route.params.postID;
-  const myUserID = route.params.myUserID;
-  const comment_context = useContext(Comment_Context);
+  const [experience, setExperience] = useState<string>("");
+  const [showEmoji, setShowEmoji] = useState<boolean>(false);
+  const [response, setResponse] = useState<IState["Comment_Data"]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [refreshing, setRefreshing] = useState<boolean>(false);
+  const clickedUserID: string = route.params.clickedUserID;
+  const postID: string = route.params.postID;
+  const myUserID: string = route.params.myUserID;
+  const comment_context = useContext<any>(Comment_Context);
 
-  const onClick = (emoji) => {
+  const onClick = (emoji: Emoji_Interface) => {
+    console.log(typeof emoji.code)
     setExperience(experience + emoji.code);
   };
 
-  const PostComment = async () => {
-    const url = `https://ampplex-backened.herokuapp.com/Comment/${route.params.myUserID}/${route.params.clickedUserID}/${route.params.postID}/${experience}`;
+  const PostComment = async (): Promise<void> => {
+    const url: string = `https://ampplex-backened.herokuapp.com/Comment/${route.params.myUserID}/${route.params.clickedUserID}/${route.params.postID}/${experience}`;
 
     await fetch(url)
       .then((response) => {
@@ -55,8 +74,8 @@ const Comment = ({ route, navigation }) => {
       });
   };
 
-  const getComments = async () => {
-    const url = `https://ampplex-backened.herokuapp.com/getComments/${route.params.clickedUserID}/${route.params.postID}`;
+  const getComments = async (): Promise<void> => {
+    const url: string = `https://ampplex-backened.herokuapp.com/getComments/${route.params.clickedUserID}/${route.params.postID}`;
 
     await fetch(url)
       .then((response) => {
@@ -88,7 +107,7 @@ const Comment = ({ route, navigation }) => {
     }
   }, [comment_context.shouldReload]);
 
-  const AddbreakLine = (sent) => {
+  const AddbreakLine: AddbreakLine_Interface = (sent: string): string => {
     if (sent.length > 15) {
       return sent.substring(0, 18) + "\n" + sent.substring(18);
     } else {
@@ -155,7 +174,7 @@ const Comment = ({ route, navigation }) => {
                       alignSelf: "center",
                       position: "absolute",
                       top: 27,
-                      left: 80,
+                      left: Dimensions.get("window").width / 4,
                     }}
                   >
                     <Text>{AddbreakLine(element.Comment)}</Text>
@@ -319,7 +338,7 @@ const styles = StyleSheet.create({
     height: 50,
     borderRadius: 50,
     position: "absolute",
-    left: -160,
+    left: -Dimensions.get("window").width / 2.7,
     alignSelf: "flex-start",
     top: 10,
   },

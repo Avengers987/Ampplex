@@ -6,22 +6,29 @@ import {
   TouchableOpacity,
   Image,
   ScrollView,
+  Dimensions,
 } from "react-native";
 import Modal from "react-native-modal";
 
-const Block_report = ({ userID, myUserID, commentID }) => {
-  const [isModalVisible, setModalVisible] = useState(false);
-  const [isReportModalVisible, setReportModalVisible] = useState(false);
-  const [selectedCategory, setSelectedCategory] = useState("");
+interface PropsInterface {
+  userID: string;
+  myUserID : string;
+  commentID: string;
+}
 
-  const handleModalClick = () => {
+const Block_report = ({ userID, myUserID, commentID }: PropsInterface) => {
+  const [isModalVisible, setModalVisible] = useState<boolean>(false);
+  const [isReportModalVisible, setReportModalVisible] = useState<boolean>(false);
+  const [selectedCategory, setSelectedCategory] = useState<string>("");
+
+  const handleModalClick = (): void => {
     setModalVisible(!isModalVisible);
   };
 
-  const handleBlock = () => {
-    const url = `https://ampplex-backened.herokuapp.com/BlockUser/${userID}/${myUserID}`;
+  const handleBlock = async (): Promise<void> => {
+    const url: string = `https://ampplex-backened.herokuapp.com/BlockUser/${userID}/${myUserID}`;
 
-    fetch(url)
+    await fetch(url)
       .then((response) => {
         return response.text();
       })
@@ -32,10 +39,10 @@ const Block_report = ({ userID, myUserID, commentID }) => {
       });
   };
 
-  const handleReport = () => {
+  const handleReport = async (): Promise<void> => {
     const url = `https://ampplex-backened.herokuapp.com/ReportComment/${commentID}/${userID}/${myUserID}/${selectedCategory}`;
 
-    fetch(url)
+    await fetch(url)
       .then((response) => {
         return response.json();
       })
@@ -115,7 +122,7 @@ const Block_report = ({ userID, myUserID, commentID }) => {
               style={{
                 position: "absolute",
                 bottom: 35,
-                right: 120,
+                right: Dimensions.get("window").width / 4,
               }}
               onPress={() => {
                 setReportModalVisible(true);
@@ -129,7 +136,7 @@ const Block_report = ({ userID, myUserID, commentID }) => {
                   fontSize: 16,
                   fontWeight: "bold",
                   fontFamily: "sans-serif",
-                  left: "18%",
+                  right: "50%",
                 }}
               >
                 Report
@@ -147,7 +154,7 @@ const Block_report = ({ userID, myUserID, commentID }) => {
               style={{
                 position: "absolute",
                 bottom: 20,
-                right: 120,
+                right: Dimensions.get("window").width / 3.5,
               }}
               onPress={() => {
                 handleModalClick();
@@ -161,7 +168,6 @@ const Block_report = ({ userID, myUserID, commentID }) => {
                   fontSize: 16,
                   fontWeight: "bold",
                   fontFamily: "sans-serif",
-                  left: "18%",
                 }}
               >
                 Cancel

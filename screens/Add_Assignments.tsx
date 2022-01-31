@@ -56,7 +56,7 @@ const Add_Assignments = ({ route, navigation }: any) => {
 
   const UploadAssignmnement = async (): Promise<void> => {
     if (verifyUserInfo() === true) {
-      const url = `https://ampplex-backened.herokuapp.com/UploadAssignment/${userID}/${postID}/${subject}/${question.replace(
+      const url: string = `https://ampplex-backened.herokuapp.com/UploadAssignment/${userID}/${postID}/${subject}/${question.replace(
         "?",
         ""
       )}/${option1}/${option2}/${option3}/${option4}/${correctOption}/${question.includes(
@@ -236,9 +236,12 @@ export default Add_Assignments;
 
 const styles = StyleSheet.create({
   container: {
-    display: "flex",
-    justifyContent: "center",
+    flex: 1,
+    backgroundColor: "#fff",
     alignItems: "center",
+    justifyContent: "center",
+    height: Dimensions.get("window").height,
+    width: Dimensions.get("window").width,
   },
 
   InnerBox: {

@@ -157,14 +157,15 @@ const LongVideo = ({
             style={{
               width:
                 orientation == "portrait"
-                  ? 400
+                  ? Dimensions.get("window").width
                   : Dimensions.get("window").width,
               height:
                 orientation == "portrait"
-                  ? 300
+                  ? Dimensions.get("window").height / 2.8
                   : Dimensions.get("window").height,
               position: "absolute",
               backgroundColor: "black",
+              alignSelf: "center",
               top:
                 orientation == "portrait"
                   ? -Dimensions.get("window").height / 11.7

@@ -12,7 +12,7 @@ import TakePic from "../screens/TakePic";
 import Category from "../screens/Category";
 import Profile from "../screens/Profile";
 import UserProfile from "../screens/UserProfile";
-import Comment from "../screens/Comment.js";
+import Comment from "../screens/Comment";
 import StartScreen from "../screens/StartScreen";
 import EditProfile from "../screens/EditProfile";
 import PhoneNumber from "../screens/PhoneNumber";
@@ -73,212 +73,212 @@ export default function App() {
         onAdFailedToLoad={(error) => console.error(error)}
       /> */}
       <Logined_userID_State>
-      <Comment_State>
-        <Tab_Bar_Color_State>
-          <NavigationContainer>
-            <StatusBar style="light" />
-            <Stack.Navigator
-              screenOptions={{
-                headerTitleAlign: "center",
-              }}
-            >
-              <Stack.Screen
-                name="StartScreen"
-                component={StartScreen}
-                options={{
-                  headerShown: false,
+        <Comment_State>
+          <Tab_Bar_Color_State>
+            <NavigationContainer>
+              <StatusBar style="light" />
+              <Stack.Navigator
+                screenOptions={{
+                  headerTitleAlign: "center",
                 }}
-              />
+              >
+                <Stack.Screen
+                  name="StartScreen"
+                  component={StartScreen}
+                  options={{
+                    headerShown: false,
+                  }}
+                />
 
-              <Stack.Screen
-                name="OnBoarding"
-                component={OnboardingScreen}
-                options={{
-                  headerShown: false,
-                }}
-              />
+                <Stack.Screen
+                  name="OnBoarding"
+                  component={OnboardingScreen}
+                  options={{
+                    headerShown: false,
+                  }}
+                />
 
-              <Stack.Screen
-                name="Login"
-                component={LoginScreen}
-                options={{
-                  headerShown: false,
-                }}
-              />
+                <Stack.Screen
+                  name="Login"
+                  component={LoginScreen}
+                  options={{
+                    headerShown: false,
+                  }}
+                />
 
-              <Stack.Screen
-                name="Comments"
-                component={Comment}
-                options={{
-                  headerShown: true,
-                  headerTitleStyle: {
-                    fontWeight: "bold",
-                  },
-                }}
-              />
+                <Stack.Screen
+                  name="Comments"
+                  component={Comment}
+                  options={{
+                    headerShown: true,
+                    headerTitleStyle: {
+                      fontWeight: "bold",
+                    },
+                  }}
+                />
 
-              <Stack.Screen
-                name="Home"
-                component={Home}
-                options={{
-                  headerShown: false,
-                }}
-              />
-              <Stack.Screen
-                name="Register"
-                component={Register}
-                options={{
-                  headerStyle: {
-                    backgroundColor: "#A519F0",
-                  },
-                  headerTitleStyle: {
-                    fontWeight: "bold",
-                    color: "white",
-                    fontFamily: "sans-serif-medium",
-                  },
-                }}
-              />
-              <Stack.Screen
-                name="TakePic"
-                component={TakePic}
-                options={{
-                  headerShown: false,
-                }}
-              />
-              <Stack.Screen
-                name="AddPost"
-                component={AddPost}
-                options={{
-                  headerStyle: {
-                    backgroundColor: "#87cefa",
-                  },
-                  headerTitleStyle: {
-                    fontWeight: "bold",
-                    color: "white",
-                  },
-                }}
-              />
-              <Stack.Screen
-                name="Category"
-                component={Category}
-                options={{
-                  headerShown: false,
-                }}
-              />
-              <Stack.Screen
-                name="Profile"
-                component={Profile}
-                options={{
-                  headerShown: false,
-                }}
-              />
-              <Stack.Screen
-                name="UserProfile"
-                component={UserProfile}
-                options={{
-                  headerShown: false,
-                }}
-              />
+                <Stack.Screen
+                  name="Home"
+                  component={Home}
+                  options={{
+                    headerShown: false,
+                  }}
+                />
+                <Stack.Screen
+                  name="Register"
+                  component={Register}
+                  options={{
+                    headerStyle: {
+                      backgroundColor: "#A519F0",
+                    },
+                    headerTitleStyle: {
+                      fontWeight: "bold",
+                      color: "white",
+                      fontFamily: "sans-serif-medium",
+                    },
+                  }}
+                />
+                <Stack.Screen
+                  name="TakePic"
+                  component={TakePic}
+                  options={{
+                    headerShown: false,
+                  }}
+                />
+                <Stack.Screen
+                  name="AddPost"
+                  component={AddPost}
+                  options={{
+                    headerStyle: {
+                      backgroundColor: "#87cefa",
+                    },
+                    headerTitleStyle: {
+                      fontWeight: "bold",
+                      color: "white",
+                    },
+                  }}
+                />
+                <Stack.Screen
+                  name="Category"
+                  component={Category}
+                  options={{
+                    headerShown: false,
+                  }}
+                />
+                <Stack.Screen
+                  name="Profile"
+                  component={Profile}
+                  options={{
+                    headerShown: false,
+                  }}
+                />
+                <Stack.Screen
+                  name="UserProfile"
+                  component={UserProfile}
+                  options={{
+                    headerShown: false,
+                  }}
+                />
 
-              <Stack.Screen
-                name="PhoneNumber"
-                component={PhoneNumber}
-                options={{
-                  headerShown: false,
-                }}
-              />
+                <Stack.Screen
+                  name="PhoneNumber"
+                  component={PhoneNumber}
+                  options={{
+                    headerShown: false,
+                  }}
+                />
 
-              <Stack.Screen
-                name="OTP"
-                component={OTP}
-                options={{
-                  headerShown: false,
-                }}
-              />
+                <Stack.Screen
+                  name="OTP"
+                  component={OTP}
+                  options={{
+                    headerShown: false,
+                  }}
+                />
 
-              <Stack.Screen
-                name="CreateNewPassword"
-                component={CreateNewPassword}
-                options={{
-                  headerShown: false,
-                }}
-              />
+                <Stack.Screen
+                  name="CreateNewPassword"
+                  component={CreateNewPassword}
+                  options={{
+                    headerShown: false,
+                  }}
+                />
 
-              <Stack.Screen
-                name="EditProfile"
-                component={EditProfile}
-                options={{
-                  headerShown: true,
-                  headerTitle: "Edit Profile",
-                  headerTitleStyle: {
-                    fontWeight: "bold",
-                  },
-                }}
-              />
+                <Stack.Screen
+                  name="EditProfile"
+                  component={EditProfile}
+                  options={{
+                    headerShown: true,
+                    headerTitle: "Edit Profile",
+                    headerTitleStyle: {
+                      fontWeight: "bold",
+                    },
+                  }}
+                />
 
-              <Stack.Screen
-                name="PostSingle"
-                component={PostSingle}
-                options={{
-                  headerShown: false,
-                  headerTitle: "PostSingle",
-                  headerTitleStyle: {
-                    fontWeight: "bold",
-                  },
-                }}
-              />
+                <Stack.Screen
+                  name="PostSingle"
+                  component={PostSingle}
+                  options={{
+                    headerShown: false,
+                    headerTitle: "PostSingle",
+                    headerTitleStyle: {
+                      fontWeight: "bold",
+                    },
+                  }}
+                />
 
-              <Stack.Screen
-                name="More"
-                component={More}
-                options={{
-                  headerShown: false,
-                  headerTitle: "More",
-                  headerTitleStyle: {
-                    fontWeight: "bold",
-                  },
-                }}
-              />
+                <Stack.Screen
+                  name="More"
+                  component={More}
+                  options={{
+                    headerShown: false,
+                    headerTitle: "More",
+                    headerTitleStyle: {
+                      fontWeight: "bold",
+                    },
+                  }}
+                />
 
-              <Stack.Screen
-                name="Add_Assignments"
-                component={Add_Assignments}
-                options={{
-                  headerShown: true,
-                  headerTitle: "Add Assignments",
-                  headerTitleStyle: {
-                    fontWeight: "bold",
-                  },
-                }}
-              />
+                <Stack.Screen
+                  name="Add_Assignments"
+                  component={Add_Assignments}
+                  options={{
+                    headerShown: true,
+                    headerTitle: "Add Assignments",
+                    headerTitleStyle: {
+                      fontWeight: "bold",
+                    },
+                  }}
+                />
 
-              <Stack.Screen
-                name="Subject"
-                component={Subject}
-                options={{
-                  headerShown: true,
-                  headerTitle: "Add Assignments",
-                  headerTitleStyle: {
-                    fontWeight: "bold",
-                  },
-                }}
-              />
+                <Stack.Screen
+                  name="Subject"
+                  component={Subject}
+                  options={{
+                    headerShown: true,
+                    headerTitle: "Add Assignments",
+                    headerTitleStyle: {
+                      fontWeight: "bold",
+                    },
+                  }}
+                />
 
-              <Stack.Screen
-                name="Notification"
-                component={Notification}
-                options={{
-                  headerShown: true,
-                  headerTitle: "Notifications",
-                  headerTitleStyle: {
-                    fontWeight: "bold",
-                  },
-                }}
-              />
-            </Stack.Navigator>
-          </NavigationContainer>
-        </Tab_Bar_Color_State>
-      </Comment_State>
+                <Stack.Screen
+                  name="Notification"
+                  component={Notification}
+                  options={{
+                    headerShown: true,
+                    headerTitle: "Notifications",
+                    headerTitleStyle: {
+                      fontWeight: "bold",
+                    },
+                  }}
+                />
+              </Stack.Navigator>
+            </NavigationContainer>
+          </Tab_Bar_Color_State>
+        </Comment_State>
       </Logined_userID_State>
     </>
   );
