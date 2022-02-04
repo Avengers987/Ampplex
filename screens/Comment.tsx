@@ -54,7 +54,6 @@ const Comment = ({ route, navigation }: any) => {
   const comment_context = useContext<any>(Comment_Context);
 
   const onClick = (emoji: Emoji_Interface) => {
-    console.log(typeof emoji.code)
     setExperience(experience + emoji.code);
   };
 

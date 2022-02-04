@@ -14,15 +14,15 @@ import FlashMessage from "react-native-flash-message";
 import { showMessage } from "react-native-flash-message";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-const ErrorFlasher = (msg) => {
+const ErrorFlasher = (msg: string): void => {
   showMessage({
     message: msg,
     type: "danger",
   });
 };
 
-const Cryptography_Encrypt = (text) => {
-  const alpha = {
+const Cryptography_Encrypt = (text: string): string => {
+  const alpha: object = {
     a: 2073,
     b: 2076,
     c: 2079,
@@ -118,14 +118,12 @@ const Cryptography_Encrypt = (text) => {
     Z: 680,
   };
 
-  let encryptedTxt = "";
-  let firstTime = true;
+  let encryptedTxt: string = "";
+  let firstTime: boolean = true;
 
-  text = text.split("");
+  const text_Arr: string[] = text.split("");
 
-  console.log(text);
-
-  text.forEach((e) => {
+  text_Arr.forEach((e) => {
     if (firstTime) {
       encryptedTxt += alpha[e];
       firstTime = false;
@@ -138,8 +136,8 @@ const Cryptography_Encrypt = (text) => {
   return encryptedTxt;
 };
 
-const Cryptography_Decrypt = (encryptedTxt) => {
-  const alpha_num = {
+const Cryptography_Decrypt = (encryptedTxt: string): string => {
+  const alpha_num: object = {
     2073: "a",
     2076: "b",
     2079: "c",
@@ -235,26 +233,25 @@ const Cryptography_Decrypt = (encryptedTxt) => {
     680: "Z",
   };
 
-  let decryptedTxt = "";
+  let decryptedTxt: string = "";
 
-  let encryptedLst = encryptedTxt.split(" ");
+  const encryptedLst: string[] = encryptedTxt.split(" ");
 
   encryptedLst.forEach((element) => {
-    console.log(alpha_num[element], element);
     decryptedTxt += alpha_num[element];
   });
 
   return decryptedTxt;
 };
 
-export default function LoginScreen(props) {
-  const [loading, setLoading] = useState(false);
+export default function LoginScreen(props: any) {
+  const [loading, setLoading] = useState<boolean>(false);
 
   useEffect(() => {
     getData();
   }, []);
 
-  const storeData = async (value) => {
+  const storeData = async (value: string): Promise<void> => {
     // value take boolean type value
     try {
       await AsyncStorage.setItem("isLogined_Boolean", value);
@@ -265,7 +262,7 @@ export default function LoginScreen(props) {
     }
   };
 
-  async function getData() {
+  const getData = async (): Promise<void> => {
     try {
       const value = await AsyncStorage.removeItem("isLogined_Boolean");
       const userName = await AsyncStorage.removeItem("user_name");
@@ -280,7 +277,7 @@ export default function LoginScreen(props) {
     }
   }
 
-  const LoginBtnHandler = () => {
+  const LoginBtnHandler = (): void => {
     Login(email, password);
     if (
       loginResponse === "success" &&
@@ -296,7 +293,7 @@ export default function LoginScreen(props) {
       }, 1000);
       setTimeout(() => {
         storeData("true");
-        let user_id = userId;
+        let user_id: string = userId;
         props.navigation.replace("Category", { user_id });
         setEmail("");
         setPassword("");
@@ -315,13 +312,14 @@ export default function LoginScreen(props) {
     }
   };
 
-  const Login = (email, password) => {
+  const Login = (email: string, password: string): void => {
     // Login method sends the email and password to flask Rest API and get response like "success" or "error"
     setLoading(true); // Activating the Activity Indicator
 
-    const url = `https://ampplex-backened.herokuapp.com/Login/${email.trim()}/${Cryptography_Encrypt(
+    const url: string = `https://ampplex-backened.herokuapp.com/Login/${email.trim()}/${Cryptography_Encrypt(
       password.trim()
     )}`;
+
     fetch(url)
       .then((response) => {
         return response.json();
@@ -338,12 +336,12 @@ export default function LoginScreen(props) {
       });
   };
 
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [loginResponse, setLoginResponse] = useState("");
-  const [errorMessage, setErrorMessage] = useState("");
-  const [UserName, setUserName] = useState("");
-  const [userId, setUserId] = useState("");
+  const [email, setEmail] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
+  const [loginResponse, setLoginResponse] = useState<string>("");
+  const [errorMessage, setErrorMessage] = useState<string>("");
+  const [UserName, setUserName] = useState<string>("");
+  const [userId, setUserId] = useState<string>("");
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
@@ -358,7 +356,7 @@ export default function LoginScreen(props) {
       <TextInput
         style={styles.EmailInput}
         placeholder="Enter your email-id"
-        type="email"
+        textContentType="emailAddress"
         value={email}
         autoFocus
         onChangeText={(e) => {
@@ -369,7 +367,7 @@ export default function LoginScreen(props) {
       <TextInput
         style={styles.PasswordInput}
         placeholder="Enter your password"
-        type="password"
+        textContentType="password"
         secureTextEntry
         value={password}
         autoFocus

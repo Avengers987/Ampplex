@@ -30,7 +30,7 @@ interface IState {
 }
 
 const Notification = () => {
-  const Logined_userID = useContext(Logined_userID_Context);
+  const Logined_userID = useContext<any>(Logined_userID_Context);
   const [response, setResponse] = useState<IState["Notification"]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [refreshing, setRefreshing] = useState<boolean>(false);
