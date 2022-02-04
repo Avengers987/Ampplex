@@ -8,7 +8,12 @@ import {
   Image,
 } from "react-native";
 
-const EditProfile = ({ navigation, userID }) => {
+interface Props {
+  navigation: any;
+  userID: string;
+}
+
+const EditProfile = ({ navigation, userID }: Props) => {
   return (
     <View style={styles.container}>
       <TouchableOpacity

@@ -10,10 +10,9 @@ import {
 } from "react-native";
 
 const Menu = ({ navigation }) => {
-  const [menuBtnPressed, setMenuButtonPressed] = useState(false);
-  const [menuIconOpacity, setMenuIconOpacity] = useState(1);
-  const [closeMenu, setCloseMenu] = useState(false);
-  let menuBarAnimation = new Animated.Value(-200);
+  const [menuBtnPressed, setMenuButtonPressed] = useState<boolean>(false);
+  const [closeMenu, setCloseMenu] = useState<boolean>(false);
+  let menuBarAnimation: Animated.Value = new Animated.Value(-200);
 
   useEffect(() => {
     Animated.timing(menuBarAnimation, {
@@ -34,14 +33,13 @@ const Menu = ({ navigation }) => {
 
   const MenuBtnHandler = () => {
     setMenuButtonPressed(!menuBtnPressed);
-    setMenuIconOpacity(!menuIconOpacity);
   };
 
   return (
     <View>
       <TouchableOpacity
         style={styles.positionMenuIcon}
-        onPress={() => MenuBtnHandler()}
+        onPress={(): void => MenuBtnHandler()}
       >
         <Image
           style={{
@@ -86,7 +84,7 @@ const Menu = ({ navigation }) => {
           </TouchableOpacity>
           <TouchableOpacity
             style={styles.LogoutBtn}
-            onPress={() => navigation.navigate("Login")}
+            onPress={(): void => navigation.navigate("Login")}
           >
             {/* Log out button */}
             <Text

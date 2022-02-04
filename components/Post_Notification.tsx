@@ -8,6 +8,20 @@ import {
 } from "react-native";
 import React, { useEffect } from "react";
 
+interface LineBreak_Class_Interface {
+  AddbreakLine(sent: string): string;
+  CaptionAddbreakLine(sent: string): string;
+}
+
+interface Props_interface {
+    read: boolean;
+    UserName: string;
+    Caption: string;
+    ProfilePic: string;
+    PostPic: string;
+    Timestamp: string;
+}
+
 const Post_Notification = ({
   read,
   UserName,
@@ -15,36 +29,40 @@ const Post_Notification = ({
   ProfilePic,
   PostPic,
   Timestamp,
-}) => {
-  const AddbreakLine = (sent) => {
-    if (sent.length > 15) {
-      return sent.substring(0, 18) + "\n" + sent.substring(18);
-    } else {
-      return sent;
-    }
-  };
+}: Props_interface) => {
+  
+  class LineBreak implements LineBreak_Class_Interface {
 
-  const CaptionAddbreakLine = (sent) => {
-    if (sent.length > 15) {
-      return sent.substring(0, 22) + "\n" + sent.substring(22);
-    } else {
-      return sent;
-    }
-  };
+    AddbreakLine(sent: string): string{
+      if (sent.length > 15) {
+        return sent.substring(0, 16) + "\n" + sent.substring(16);
+      } else {
+        return sent;
+      }
+    };
+  
+    CaptionAddbreakLine(sent: string): string {
+      if (sent.length > 15) {
+        return sent.substring(0, 22) + "\n" + sent.substring(22);
+      } else {
+        return sent;
+      }
+    };
+  }
 
-  const CreateTimeStamp = (time_stamp) => {
-    let time_stamp_lst = time_stamp.split("|")[1];
+  const CreateTimeStamp = (time_stamp: string): string => {
+    let time_stamp_lst: string | string[] = time_stamp.split("|")[1];
     time_stamp_lst = time_stamp_lst.trim().split(" ");
 
-    let month = time_stamp_lst[1];
-    let date = time_stamp_lst[2];
-    let year = time_stamp_lst[3];
+    const month: string = time_stamp_lst[1];
+    const date: number = parseInt(time_stamp_lst[2]);
+    const year: number = parseInt(time_stamp_lst[3]);
 
-    let current_year = new Date().getFullYear();
-    let current_month = new Date().toDateString().split(" ")[1];
-    let current_date = new Date().getDate();
+    const current_year: number = new Date().getFullYear();
+    const current_month: string = new Date().toDateString().split(" ")[1];
+    const current_date: number = new Date().getDate();
 
-    const months = {
+    const months: object = {
       Jan: 0,
       Feb: 1,
       Mar: 2,
@@ -60,19 +78,19 @@ const Post_Notification = ({
     };
 
     if (current_year != year) {
-      let yearDifference = current_year - year;
+      const yearDifference: number = current_year - year;
 
       return yearDifference > 1
         ? yearDifference + " years ago"
         : yearDifference + " year ago";
     } else if (current_month === month) {
-      let dateDifference = new Date().getDate() - date;
+      const dateDifference: number = current_date - date;
 
       return dateDifference > 1
         ? dateDifference + " days ago"
         : dateDifference + " day ago";
     } else if (current_month != month) {
-      let monthDifference = new Date().getMonth() + 1 - (months[month] + 1);
+      const monthDifference: number = new Date().getMonth() + 1 - (months[month] + 1);
 
       return monthDifference > 1
         ? monthDifference + " months ago"
@@ -83,6 +101,8 @@ const Post_Notification = ({
   useEffect(() => {
     CreateTimeStamp("22:54:34 | Fri Sep 24 2021");
   }, []);
+
+  const lineBreak = new LineBreak();
 
   return (
     <>
@@ -101,13 +121,13 @@ const Post_Notification = ({
         {/* UserName */}
 
         <View style={styles.userNamePosition}>
-          <Text style={styles.userName}>{AddbreakLine(UserName)}</Text>
+          <Text style={styles.userName}>{lineBreak.AddbreakLine(UserName)}</Text>
         </View>
 
         {/* Caption */}
 
         <View style={styles.CaptionPosition}>
-          <Text style={styles.caption}>{CaptionAddbreakLine(Caption)}</Text>
+          <Text style={styles.caption}>{lineBreak.CaptionAddbreakLine(Caption)}</Text>
         </View>
 
         <View style={styles.MessagePosition}>

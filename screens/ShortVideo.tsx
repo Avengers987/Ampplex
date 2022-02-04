@@ -16,18 +16,24 @@ import {
 import PostSingle from "./PostSingle";
 import Tab_Bar_Color_Context from "../context/tab_bar_color/Tab_Bar_Color_Context";
 
+interface RenderParams_Interface {
+    item: any;
+    index: number;
+}
+
+
 const ShortVideo = ({ userID, navigation }) => {
   // const array = [1, 2, 3, 4, 5, 6];
-  const [currentIndex, setCurrentIndex] = useState(0);
+  const [currentIndex, setCurrentIndex] = useState<number>(0);
   const [response, setResponse] = useState([]);
-  const tab_bar_color = useContext(Tab_Bar_Color_Context);
+  const tab_bar_color = useContext<any>(Tab_Bar_Color_Context);
 
   useEffect(() => {
     tab_bar_color.changeColor("black");
   }, []);
 
-  const getPostInfo = async () => {
-    const url = "https://ampplex-backened.herokuapp.com/GetShortVideos/";
+  const getPostInfo = async (): Promise<void> => {
+    const url: string = "https://ampplex-backened.herokuapp.com/GetShortVideos/";
 
     await fetch(url)
       .then((response) => {
@@ -45,16 +51,16 @@ const ShortVideo = ({ userID, navigation }) => {
     getPostInfo();
   }, []);
 
-  const onViewRef = React.useRef((viewableItems) => {
+  const onViewRef = React.useRef((viewableItems: object): void => {
     try {
-      const play = viewableItems["viewableItems"][0].index;
+      const play: number = viewableItems["viewableItems"][0].index;
       setCurrentIndex(play);
     } catch (e) {
       // console.log(e);
     }
   });
 
-  const renderItem = ({ item, index }) => {
+  const renderItem = ({ item, index}: RenderParams_Interface) => {
     return (
       <View
         style={{
@@ -90,7 +96,7 @@ const ShortVideo = ({ userID, navigation }) => {
         initialNumToRender={1}
         snapToInterval={Dimensions.get("window").height}
         snapToAlignment={"start"}
-        keyExtractor={(item, index) => index.toString()}
+        keyExtractor={(item, index: number) => index.toString()}
         onViewableItemsChanged={onViewRef.current}
         viewabilityConfig={{
           itemVisiblePercentThreshold: 50,

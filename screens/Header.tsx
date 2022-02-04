@@ -9,7 +9,7 @@ import {
 } from "react-native";
 import Menu from "../components/Menu";
 
-const Header = ({ navigation }) => {
+const Header = ({ navigation }: any) => {
   return (
     <>
       <View style={styles.container}>

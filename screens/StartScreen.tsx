@@ -3,9 +3,9 @@ import { StyleSheet, Text, View, Animated, Dimensions } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import Logined_userID_Context from "../context/Logined_userID/Logined_userID_Context";
 
-const StartScreen = ({ navigation }) => {
-  const logoOpacity = new Animated.Value(0);
-  const Logined_userID = useContext(Logined_userID_Context);
+const StartScreen = ({ navigation }: any) => {
+  const logoOpacity: Animated.Value = new Animated.Value(0);
+  const Logined_userID: any = useContext(Logined_userID_Context);
 
   useEffect(() => {
     Animated.timing(logoOpacity, {
@@ -17,11 +17,11 @@ const StartScreen = ({ navigation }) => {
 
   const canNavigateToHomeScreen = async () => {
     // This function Handles the navigation, if user is using this app for the first time then he/she will be navigated to the Onboarding screen else user will be navigated directly to the Home Screen.
-    const isLogined = await AsyncStorage.getItem("isLogined_Boolean");
-    const userName = await AsyncStorage.getItem("user_name");
-    const userID = await AsyncStorage.getItem("user_id");
-    const onboarding = await AsyncStorage.getItem("onboarding");
-    const category = await AsyncStorage.getItem("Category");
+    const isLogined: string = await AsyncStorage.getItem("isLogined_Boolean");
+    const userName: string = await AsyncStorage.getItem("user_name");
+    const userID: string = await AsyncStorage.getItem("user_id");
+    const onboarding: string = await AsyncStorage.getItem("onboarding");
+    const category: string = await AsyncStorage.getItem("Category");
 
     Logined_userID.changeLoginedUserID(userID);
 
@@ -71,7 +71,7 @@ const StartScreen = ({ navigation }) => {
       </Text>
       <Text
         style={{
-          fontSize: 30,
+          fontSize: 40,
           fontFamily: "sans-serif-medium",
         }}
       >

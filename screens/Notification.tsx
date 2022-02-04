@@ -13,8 +13,9 @@ import Logined_userID_Context from "../context/Logined_userID/Logined_userID_Con
 import Post_Notification from "../components/Post_Notification";
 import LottieView from "lottie-react-native";
 
-interface LineBreak {
-  (sent: string): string;
+interface LineBreak_Class_Interface {
+  AddbreakLine(): string;
+  CaptionAddbreakLine(): string
 }
 
 interface IState {
@@ -35,21 +36,31 @@ const Notification = () => {
   const [refreshing, setRefreshing] = useState<boolean>(false);
   const [showNotification, setShowNotification] = useState<boolean>(true);
 
-  const AddbreakLine: LineBreak = (sent: string): string => {
-    if (sent.length > 15) {
-      return sent.substring(0, 16) + "\n" + sent.substring(16);
-    } else {
-      return sent;
-    }
-  };
+  class LineBreak implements LineBreak_Class_Interface {
 
-  const CaptionAddbreakLine: LineBreak = (sent: string): string => {
-    if (sent.length > 15) {
-      return sent.substring(0, 22) + "\n" + sent.substring(22);
-    } else {
-      return sent;
+    private sent: string;
+
+    constructor(sent: string) {
+      this.sent = sent;
     }
-  };
+
+    AddbreakLine (): string {
+      if (this.sent.length > 15) {
+        return this.sent.substring(0, 16) + "\n" + this.sent.substring(16);
+      } else {
+        return this.sent;
+      }
+    };
+  
+    CaptionAddbreakLine(): string {
+      if (this.sent.length > 15) {
+        return this.sent.substring(0, 22) + "\n" + this.sent.substring(22);
+      } else {
+        return this.sent;
+      }
+    };
+  }
+
 
   const wait = (timeout: number) => {
     return new Promise((resolve) => setTimeout(resolve, timeout));
@@ -161,16 +172,16 @@ const Notification = () => {
               numberOfLines={2}
               ellipsizeMode="tail"
             >
-              {AddbreakLine("Alex Software engineer")}
+              {new LineBreak("Alex Software engineer").AddbreakLine()}
             </Text>
           </View>
 
           {/* Caption */}
           <View style={styles.CaptionPosition}>
             <Text style={styles.caption}>
-              {CaptionAddbreakLine(
+              {new LineBreak(
                 "Became a software engineer at Google Silicon valley, california"
-              )}
+              ).CaptionAddbreakLine()}
             </Text>
           </View>
           <View style={styles.MessagePosition}>
@@ -199,13 +210,13 @@ const Notification = () => {
           />
           {/* UserName */}
           <View style={styles.userNamePosition}>
-            <Text style={styles.userName}>{AddbreakLine("Sofia Bailey")}</Text>
+            <Text style={styles.userName}>{new LineBreak("Sofia Bailey").AddbreakLine()}</Text>
           </View>
 
           {/* Caption */}
           <View style={styles.CaptionPosition}>
             <Text style={styles.caption}>
-              {CaptionAddbreakLine("Day 1 at New york city")}
+              {new LineBreak("Day 1 at New york city").CaptionAddbreakLine()}
             </Text>
           </View>
           <View style={styles.MessagePosition}>
@@ -235,14 +246,14 @@ const Notification = () => {
           {/* UserName */}
           <View style={styles.userNamePosition}>
             <Text style={styles.userName}>
-              {AddbreakLine("Arthur Jognson")}
+              {new LineBreak("Arthur Jognson").AddbreakLine()}
             </Text>
           </View>
 
           {/* Caption */}
           <View style={styles.CaptionPosition}>
             <Text style={styles.caption}>
-              {CaptionAddbreakLine("On a tour!")}
+              {new LineBreak("On a tour!").CaptionAddbreakLine()}
             </Text>
           </View>
 
