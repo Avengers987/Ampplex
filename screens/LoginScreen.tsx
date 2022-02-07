@@ -560,10 +560,11 @@ const styles = StyleSheet.create({
   forgotPassword: {
     fontSize: 15,
     fontFamily: "sans-serif-medium",
+    fontWeight: "bold",
     position: "absolute",
     top: Dimensions.get("window").height - 45,
-    left: 100,
     alignSelf: "center",
+    right: Dimensions.get("window").width * 0.42,
   },
   LoadingIndicator: {
     position: "absolute",

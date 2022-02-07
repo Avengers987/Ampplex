@@ -27,6 +27,7 @@ import More from "../components/More";
 import Subject from "../screens/Subject";
 import Notification from "../screens/Notification";
 import Logined_userID_State from "../context/Logined_userID/Logined_userID_State";
+import Assignments from "../screens/Assignment";
 
 import {
   AdMobBanner,
@@ -269,6 +270,18 @@ export default function App() {
                   component={Notification}
                   options={{
                     headerShown: true,
+                    headerTitle: "Notifications",
+                    headerTitleStyle: {
+                      fontWeight: "bold",
+                    },
+                  }}
+                />
+
+                <Stack.Screen
+                  name="Assignments"
+                  component={Assignments}
+                  options={{
+                    headerShown: false,
                     headerTitle: "Notifications",
                     headerTitleStyle: {
                       fontWeight: "bold",

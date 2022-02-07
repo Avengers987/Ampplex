@@ -8,6 +8,7 @@ import {
   KeyboardAvoidingView,
   Platform,
   Dimensions,
+  ScrollView,
 } from "react-native";
 import FlashMessage from "react-native-flash-message";
 import { showMessage } from "react-native-flash-message";
@@ -185,68 +186,76 @@ export default function Register(props) {
   const [errorMessage, setErrorMessage] = useState("");
 
   return (
-    <KeyboardAvoidingView
-      behavior={Platform.OS === "ios" ? "padding" : "position"}
-      style={styles.container}
-    >
-      <View>
-        <FlashMessage position="bottom" />
-        <View style={styles.Circle} />
-        <Text style={styles.Username}>Username</Text>
-        <TextInput
-          style={styles.UserNameInput}
-          placeholder="Enter your username"
-          value={username}
-          autoFocus
-          onChangeText={(e) => {
-            setUsername(e);
-          }}
-        />
-        <Text style={styles.Email}>Email</Text>
-        <TextInput
-          style={styles.EmailInput}
-          placeholder="Enter your email-id"
-          type="email"
-          value={email}
-          autoFocus
-          onChangeText={(e) => {
-            setEmail(e);
-          }}
-        />
-        <Text style={styles.Password}>Password</Text>
-        <TextInput
-          style={styles.PasswordInput}
-          placeholder="Enter your password"
-          type="password"
-          secureTextEntry
-          value={password}
-          autoFocus
-          onChangeText={(e) => {
-            setPassword(e);
-          }}
-        />
-        <TouchableOpacity
-          style={styles.RegisterBtn}
-          onPress={() => {
-            verifyUserInfo();
-          }}
-        >
-          <Text style={styles.RegisterBtnText}>Register</Text>
-        </TouchableOpacity>
-        <FlashMessage position="bottom" />
-      </View>
-      <View
-        style={{
-          backgroundColor: "lightgrey",
-          width: 90,
-          height: 4,
-          borderRadius: 20,
-          alignSelf: "center",
-          position: "absolute",
-          top: Dimensions.get("window").height * 0.75,
+    <>
+      <ScrollView
+        contentContainerStyle={{
+          flexGrow: 0.5,
         }}
-      />
-    </KeyboardAvoidingView>
+      >
+        <KeyboardAvoidingView
+          behavior={Platform.OS === "ios" ? "padding" : "position"}
+          style={styles.container}
+        >
+          <View>
+            <FlashMessage position="bottom" />
+            <View style={styles.Circle} />
+            <Text style={styles.Username}>Username</Text>
+            <TextInput
+              style={styles.UserNameInput}
+              placeholder="Enter your username"
+              value={username}
+              autoFocus
+              onChangeText={(e) => {
+                setUsername(e);
+              }}
+            />
+            <Text style={styles.Email}>Email</Text>
+            <TextInput
+              style={styles.EmailInput}
+              placeholder="Enter your email-id"
+              type="email"
+              value={email}
+              autoFocus
+              onChangeText={(e) => {
+                setEmail(e);
+              }}
+            />
+            <Text style={styles.Password}>Password</Text>
+            <TextInput
+              style={styles.PasswordInput}
+              placeholder="Enter your password"
+              type="password"
+              secureTextEntry
+              value={password}
+              autoFocus
+              onChangeText={(e) => {
+                setPassword(e);
+              }}
+            />
+            <TouchableOpacity
+              style={styles.RegisterBtn}
+              onPress={() => {
+                verifyUserInfo();
+              }}
+            >
+              <Text style={styles.RegisterBtnText}>Register</Text>
+            </TouchableOpacity>
+            <FlashMessage position="bottom" />
+          </View>
+          <View
+            style={{
+              backgroundColor: "lightgrey",
+              width: 90,
+              height: 4,
+              borderRadius: 20,
+              alignSelf: "center",
+              position: "absolute",
+              top: Dimensions.get("window").height * 0.75,
+            }}
+          />
+        </KeyboardAvoidingView>
+      </ScrollView>
+    </>
   );
 }
 

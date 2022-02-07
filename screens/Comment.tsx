@@ -53,7 +53,7 @@ const Comment = ({ route, navigation }: any) => {
   const myUserID: string = route.params.myUserID;
   const comment_context = useContext<any>(Comment_Context);
 
-  const onClick = (emoji: Emoji_Interface) => {
+  const onClick = (emoji: Emoji_Interface): void => {
     setExperience(experience + emoji.code);
   };
 
@@ -151,19 +151,46 @@ const Comment = ({ route, navigation }: any) => {
                     />
                   )}
                   {element.ImgPath != null ? (
-                    <View>
-                      <Image
-                        source={{ uri: element.ImgPath }}
-                        style={styles.profilePicture}
-                      />
-                    </View>
+                    <>
+                      <View>
+                        <Image
+                          source={{ uri: element.ImgPath }}
+                          style={styles.profilePicture}
+                        />
+                      </View>
+
+                      <TouchableOpacity style={styles.UserProf} onPress={() => {
+                        console.log("clicked");
+                        const userName: string = element.UserName;
+                        const clickedUserID: string = element.myUserID;
+                        const myUserId = myUserID;
+                        navigation.navigate("UserProfile", {
+                          clickedUserID,
+                          userName,
+                          myUserId,
+                      })
+                      }} />
+                    </>
                   ) : (
-                    <View>
-                      <Image
-                        style={styles.profilePicture}
-                        source={require("../assets/images/default_profile_picture.png")}
-                      />
-                    </View>
+                    <>
+
+                      <View>
+                        <Image
+                          style={styles.profilePicture}
+                          source={require("../assets/images/default_profile_picture.png")}
+                        />
+                      </View>
+                      <TouchableOpacity style={styles.UserProf} onPress={() => {
+                        const userName: string = element.UserName;
+                        const clickedUserID: string = element.myUserID;
+                        const myUserId = myUserID;
+                        navigation.navigate("UserProfile", {
+                        clickedUserID,
+                        userName,
+                        myUserId,
+                      })
+                      }} />
+                    </>
                   )}
                   <View>
                     <Text style={styles.UserName}>{element.UserName}</Text>
@@ -350,4 +377,13 @@ const styles = StyleSheet.create({
     width: 350,
     height: 350,
   },
+  UserProf: {
+    width: 50,
+    height: 50,
+    borderRadius: 50,
+    position: "absolute",
+    alignSelf: "flex-start",
+    left: Dimensions.get("window").width / 12,
+    top: 10,
+  }
 });

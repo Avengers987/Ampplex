@@ -174,6 +174,7 @@ const More = ({ userID, postID, navigation }) => {
               style={{
                 fontSize: 16,
                 fontFamily: "sans-serif-medium",
+                fontWeight: "bold",
                 textAlign: "center",
                 marginTop: 5,
               }}

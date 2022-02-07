@@ -10,11 +10,14 @@ import {
   Image,
   ActivityIndicator,
   TouchableOpacity,
+  TouchableHighlight
 } from "react-native";
 import { Video } from "expo-av";
 import ActionSheet from "react-native-actions-sheet";
 import { useDeviceOrientation } from "@react-native-community/hooks";
 import Like4 from "../components/Like4";
+import LottieView from "lottie-react-native";
+import { LinearGradient } from 'expo-linear-gradient';
 
 type LongVideo_Props = {
   navigation: any;
@@ -24,6 +27,7 @@ type LongVideo_Props = {
   userID: string;
   timestamp: string;
   myUserId: string;
+  userName: string;
 }
 
 const LongVideo = ({
@@ -34,6 +38,7 @@ const LongVideo = ({
   timestamp,
   myUserId,
   navigation,
+  userName
 }: LongVideo_Props) => {
   const [Muted, setIsMuted] = useState<boolean>(true);
   const actionSheetRef: any = createRef();
@@ -78,6 +83,55 @@ const LongVideo = ({
         // console.log(error);
       });
   };
+
+  const CreateTimeStamp = (time_stamp: string): string => {
+    let time_stamp_lst: string | string[] = time_stamp.split("|")[1];
+    time_stamp_lst = time_stamp_lst.trim().split(" ");
+
+    const month: string = time_stamp_lst[1];
+    const date: number = parseInt(time_stamp_lst[2]);
+    const year: number = parseInt(time_stamp_lst[3]);
+
+    const current_year: number = new Date().getFullYear();
+    const current_month: string = new Date().toDateString().split(" ")[1];
+    const current_date: number = new Date().getDate();
+
+    enum months {
+      Jan,
+      Feb,
+      Mar,
+      Apr,
+      May,
+      Jun,
+      Jul,
+      Aug,
+      Sep,
+      Oct,
+      Nov,
+      Dec,
+    };
+
+    if (current_year != year) {
+      const yearDifference: number = current_year - year;
+
+      return yearDifference > 1
+        ? yearDifference + " years ago"
+        : yearDifference + " year ago";
+    } else if (current_month === month) {
+      const dateDifference: number = current_date - date;
+
+      return dateDifference > 1
+        ? dateDifference + " days ago"
+        : dateDifference + " day ago";
+    } else if (current_month != month) {
+      const monthDifference: number = new Date().getMonth() + 1 - (months[month] + 1);
+
+      return monthDifference > 1
+        ? monthDifference + " months ago"
+        : monthDifference + " month ago";
+    }
+  };
+
 
   return (
     <View>
@@ -211,7 +265,7 @@ const LongVideo = ({
               </View>
               <View style={styles.Views}>
                 <Text style={styles.viewsText}>
-                  {views} views • {timestamp}
+                  {views} views • {CreateTimeStamp(timestamp)}
                 </Text>
               </View>
               <View style={styles.breakpointStyle} />
@@ -243,10 +297,43 @@ const LongVideo = ({
                   source={require("../Images/comment-icon.png")}
                 />
               </TouchableOpacity>
+            {/* Assignment */}
+            
+            <View style={styles.AssignmentCard}>
+              <Text style={styles.Card_Title}>Hey, {userName.toString().split(' ')[0]}</Text>
+              <Text style={{
+                fontSize: 20,
+                fontFamily: "sans-serif-medium",
+                fontWeight: "bold",
+                color: "#A2A2A2",
+                alignSelf: "center",
+                marginTop: Dimensions.get("window").height * 0.02,
+              }}>Assignments are waiting for you!</Text>
+
+              {/* Complete Assignment buttton */}
+
+              <TouchableHighlight onPress={() => {
+                navigation.navigate("Assignments")
+              }} style={{
+                marginTop: Dimensions.get("window").height / 4,
+                alignSelf: "center",
+                backgroundColor: "#fafa",
+                width: 300,
+                height: 60,
+                borderRadius: 40,
+                position: "absolute",
+              }}>
+                <LinearGradient colors={['#E125FF', '#5CD5FF', '#fff']} end={{ x: 2.0, y: 0.2 }} style={styles.linearGradient}>
+                  <Text style={styles.assignment_btn}>Complete Assignment</Text>
+                </LinearGradient>
+              </TouchableHighlight>
+
+            </View>
             </View>
           ) : (
             <View />
           )}
+
         </View>
       </ActionSheet>
     </View>
@@ -263,7 +350,7 @@ const styles = StyleSheet.create({
   },
   video: {
     width: Dimensions.get("window").width,
-    height: Dimensions.get("window").width / 1.5,
+    height: Dimensions.get("window").width,
     backgroundColor: "black",
     alignSelf: "center",
   },
@@ -313,4 +400,37 @@ const styles = StyleSheet.create({
     width: 28,
     height: 28,
   },
+  linearGradient: {
+    width: 300,
+    height: 60,
+    borderRadius: 40,
+    elevation: 5,
+    alignSelf: "center",
+  },
+  assignment_btn: {
+    fontSize: 18,
+    fontFamily: "sans-serif-medium",
+    color: "white",
+    alignSelf: "center",
+    marginTop: Dimensions.get("window").height / 70,
+    fontWeight: "bold",
+  },
+  AssignmentCard: {
+    position: "absolute",
+    bottom: 110,
+    width: Dimensions.get("window").width / 1.1,
+    height: Dimensions.get("window").height / 2.7,
+    backgroundColor: "#fff",
+    borderRadius: 25,
+    elevation: 8,
+    alignSelf: "center",
+  }, 
+  Card_Title: {
+    fontSize: 20,
+    fontFamily: "sans-serif-medium",
+    fontWeight: "bold",
+    color: "#A2A2A2",
+    alignSelf: "center",
+    marginTop: Dimensions.get("window").height * 0.05,
+  }
 });

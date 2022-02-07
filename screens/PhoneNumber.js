@@ -7,8 +7,8 @@ import {
   Dimensions,
   TouchableOpacity,
 } from "react-native";
-// import auth from "@react-native-firebase/auth";
 import firebase from "firebase";
+import { LinearGradient } from "expo-linear-gradient";
 
 const email = ({ navigation }) => {
   const [email, setEmail] = useState("");
@@ -60,7 +60,13 @@ const email = ({ navigation }) => {
           sendOTP();
         }}
       >
-        <Text style={styles.ButtonText}>Send OTP</Text>
+        <LinearGradient
+          colors={["#E125FF", "#5CD5FF", "#fff"]}
+          end={{ x: 2.0, y: 0.2 }}
+          style={styles.linearGradient}
+        >
+          <Text style={styles.ButtonText}>Send OTP</Text>
+        </LinearGradient>
       </TouchableOpacity>
     </View>
   );
@@ -98,19 +104,17 @@ const styles = StyleSheet.create({
   Button: {
     width: "55%",
     height: 40,
-    backgroundColor: "#5AFF60",
     borderRadius: 10,
-    elevation: 12,
     position: "absolute",
     top: Dimensions.get("window").height * 0.6,
   },
   ButtonText: {
-    alignSelf: "center",
-    fontSize: 17,
+    fontSize: 18,
     fontFamily: "sans-serif-medium",
     color: "white",
+    alignSelf: "center",
+    marginTop: Dimensions.get("window").height / 70,
     fontWeight: "bold",
-    padding: 5,
   },
   Error: {
     color: "red",
@@ -118,5 +122,12 @@ const styles = StyleSheet.create({
     fontFamily: "sans-serif-medium",
     position: "absolute",
     top: Dimensions.get("window").height * 0.4,
+  },
+  linearGradient: {
+    width: 250,
+    height: 50,
+    borderRadius: 40,
+    elevation: 12,
+    alignSelf: "center",
   },
 });

@@ -17,7 +17,7 @@ const Done = ({ ...props }) => {
       <Text
         style={{
           alignSelf: "flex-end",
-          fontSize: 20,
+          fontSize: 17,
           fontWeight: "bold",
           color: "skyblue",
           marginRight: 20,
@@ -34,7 +34,7 @@ const Skip = ({ ...props }) => {
     <TouchableOpacity {...props}>
       <Text
         style={{
-          fontSize: 20,
+          fontSize: 17,
           fontWeight: "bold",
           color: "skyblue",
           alignSelf: "flex-start",
@@ -52,7 +52,7 @@ const Next = ({ ...props }) => {
     <TouchableOpacity {...props}>
       <Text
         style={{
-          fontSize: 20,
+          fontSize: 17,
           fontWeight: "bold",
           marginRight: 20,
           color: "skyblue",

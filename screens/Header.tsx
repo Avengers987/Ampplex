@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useContext } from "react";
 import {
   StyleSheet,
   Text,
@@ -8,8 +8,35 @@ import {
   TouchableOpacity,
 } from "react-native";
 import Menu from "../components/Menu";
+import Logined_userID_Context from "../context/Logined_userID/Logined_userID_Context";
+
 
 const Header = ({ navigation }: any) => {
+
+  const [notification_badgeVisible, setnotification_badgeVisible] = useState<boolean>(false);
+  const Logined_userID = useContext<any>(Logined_userID_Context);
+
+  const getNotifications = async (): Promise<void> => {
+    const url: string = `https://ampplex-backened.herokuapp.com/Check_For_Notifications/${Logined_userID.userID}`;
+
+    await fetch(url)
+      .then((response) => {
+          return response.json();
+      })
+      .then((data: any) => {
+        console.log(data);
+        setnotification_badgeVisible(data.ShowNotification_Badge);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
+  setInterval(() => {
+    getNotifications();
+  }, 5000);
+
+
   return (
     <>
       <View style={styles.container}>
@@ -45,6 +72,7 @@ const Header = ({ navigation }: any) => {
             Ampplex
           </Text>
         </View>
+        
         <TouchableOpacity
           style={styles.positionNotification}
           onPress={() => navigation.navigate("Notification")}
@@ -53,6 +81,13 @@ const Header = ({ navigation }: any) => {
             style={styles.notification}
             source={require("../assets/images/notification.png")}
           />
+          {notification_badgeVisible ? 
+          (
+            <>
+              <View style={styles.Notification_Badge} />
+            </>
+          )
+          : <View/>}
         </TouchableOpacity>
       </View>
     </>
@@ -88,4 +123,13 @@ const styles = StyleSheet.create({
     right: 46,
     top: 20,
   },
+  Notification_Badge: {
+    width: 10,
+    height: 10,
+    borderRadius: 100,
+    backgroundColor: "red",
+    position: "absolute",
+    right: Dimensions.get("window").width * 0.015,
+    top: Dimensions.get("window").height * 0.005,
+  }
 });

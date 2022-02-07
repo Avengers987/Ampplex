@@ -15,20 +15,39 @@ import {
 import ActionSheet from "react-native-actions-sheet";
 import * as ImagePicker from "expo-image-picker";
 import firebase from "firebase";
-import { Video, AVPlaybackStatus } from "expo-av";
 import EditProfile from "../components/EditProfile";
 import Like4 from "../components/Like4";
 import Like2 from "../components/Like2";
 import More from "../components/More";
 import LongVideo from "./LongVideo";
 
-const wait = (timeout) => {
+interface Push_User_Data_To_RealTime_DB {
+  (profilePicPath: string, userID: string)
+}
+
+interface Profile_Props {
+  userID: string;
+  navigation: any;
+  route: any;
+}
+
+interface IState {
+  UserData: {
+    Type: string;
+    ImgPath: string;
+    Post_ID: string;
+    Caption: string;
+    Timestamp: string;
+  }[]
+}
+
+const wait = (timeout: number) => {
   return new Promise((resolve) => setTimeout(resolve, timeout));
 };
 
-const actionSheetRef = createRef();
+const actionSheetRef: any = createRef();
 
-const Push_User_Data_To_RealTime_DB = (profilePicPath, userID) => {
+const Push_User_Data_To_RealTime_DB: Push_User_Data_To_RealTime_DB = (profilePicPath: string, userID: string) => {
   console.warn("User ID is : ", userID);
   firebase
     .database()
@@ -44,19 +63,17 @@ const Push_User_Data_To_RealTime_DB = (profilePicPath, userID) => {
     });
 };
 
-const Profile = ({ userID, navigation, route }) => {
-  const [posts, SetPosts] = useState(0);
-  const [response, setResponse] = useState([]);
-  const [profilePic, setProfilePicGallery] = useState(null);
-  const [myProfilePic, setMyProfilePic] = useState(null);
-  const [profilePicLoading, setProfilePicLoading] = useState(false);
-  const video = React.useRef(null);
-  const [status, setStatus] = React.useState({});
-  const [follower, setFollower] = useState(0);
-  const [loading, setLoading] = useState(true);
-  const [userName, setUserName] = useState(userName);
-  const [bio, setBio] = useState("");
-  const [refreshing, setRefreshing] = useState(false);
+const Profile = ({ userID, navigation, route }: Profile_Props) => {
+  const [posts, SetPosts] = useState<number>(0);
+  const [response, setResponse] = useState<IState["UserData"]>([]);
+  const [profilePic, setProfilePicGallery] = useState<string | null>(null);
+  const [myProfilePic, setMyProfilePic] = useState<string | null>(null);
+  const [profilePicLoading, setProfilePicLoading] = useState<boolean>(false);
+  const [follower, setFollower] = useState<number>(0);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [userName, setUserName] = useState<string>("");
+  const [bio, setBio] = useState<string>("");
+  const [refreshing, setRefreshing] = useState<boolean>(false);
 
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
@@ -69,8 +86,8 @@ const Profile = ({ userID, navigation, route }) => {
     getMyPosts();
   }, []);
 
-  const getUserName = async () => {
-    const url = `https://ampplex-backened.herokuapp.com/getUserNameFromUserID/${userID}/`;
+  const getUserName = async (): Promise<void> => {
+    const url: string = `https://ampplex-backened.herokuapp.com/getUserNameFromUserID/${userID}/`;
 
     await fetch(url)
       .then((response) => {
@@ -88,8 +105,8 @@ const Profile = ({ userID, navigation, route }) => {
     userID = route.params.userID;
   }
 
-  const getUserInfo = async () => {
-    const url = `https://ampplex-backened.herokuapp.com/getUserData/${userID}`;
+  const getUserInfo = async (): Promise<void> => {
+    const url: string = `https://ampplex-backened.herokuapp.com/getUserData/${userID}`;
     await fetch(url)
       .then((response) => {
         return response.json();
@@ -102,8 +119,8 @@ const Profile = ({ userID, navigation, route }) => {
       });
   };
 
-  const pickImage = async () => {
-    let result = await ImagePicker.launchImageLibraryAsync({
+  const pickImage = async (): Promise<void> => {
+    let result: any = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
       allowsMultipleSelection: false,
       allowsEditing: true,
@@ -111,16 +128,14 @@ const Profile = ({ userID, navigation, route }) => {
       quality: 1,
     });
 
-    console.log(result);
-
     if (!result.cancelled) {
       setProfilePicGallery(result.uri);
       await SetImage(profilePic);
     }
   };
 
-  const getProfilePicture = async () => {
-    const url = `https://ampplex-backened.herokuapp.com/getProfilePicture/${userID}`;
+  const getProfilePicture = async (): Promise<void> => {
+    const url: string = `https://ampplex-backened.herokuapp.com/getProfilePicture/${userID}`;
     await fetch(url)
       .then((response) => {
         return response.json();
@@ -139,16 +154,14 @@ const Profile = ({ userID, navigation, route }) => {
     getUserInfo();
   }, []);
 
-  const SetImage = async (URI) => {
+  const SetImage = async (URI: string) => {
     try {
-      let filename = "profilePicture";
+      const filename: string = "profilePicture";
       const response = await fetch(URI);
       const blob = await response.blob();
 
-      const childPath = `post/${userID}/${filename}`;
+      const childPath: string = `post/${userID}/${filename}`;
       console.log(`Child Path is : ${childPath}`);
-
-      console.log("firebase!!!!!", URI);
 
       const task = firebase.storage().ref().child(childPath).put(blob);
 
@@ -190,8 +203,8 @@ const Profile = ({ userID, navigation, route }) => {
     }
   };
 
-  const getPost = async () => {
-    const url = `https://ampplex-backened.herokuapp.com/Count_Posts/${userID}`;
+  const getPost = async (): Promise<void> => {
+    const url: string = `https://ampplex-backened.herokuapp.com/Count_Posts/${userID}`;
     await fetch(url)
       .then((response) => {
         return response.json();
@@ -200,12 +213,12 @@ const Profile = ({ userID, navigation, route }) => {
         SetPosts(data.Posts);
       })
       .catch((err) => {
-        console.log(e);
+        console.log(err);
       });
   };
 
-  const getMyPosts = async () => {
-    const url = `https://ampplex-backened.herokuapp.com/getMyPosts/${userID}`;
+  const getMyPosts = async (): Promise<void> => {
+    const url: string = `https://ampplex-backened.herokuapp.com/getMyPosts/${userID}`;
 
     await fetch(url)
       .then((response) => {
@@ -220,9 +233,9 @@ const Profile = ({ userID, navigation, route }) => {
       });
   };
 
-  const getFollowers = async () => {
-    const url = `https://ampplex-backened.herokuapp.com/GetFollower/${userID}/`;
-    console.log(url, "See me!");
+  const getFollowers = async (): Promise<void> => {
+    const url: string = `https://ampplex-backened.herokuapp.com/GetFollower/${userID}/`;
+  
     await fetch(url)
       .then((response) => {
         return response.json();
@@ -424,6 +437,7 @@ const Profile = ({ userID, navigation, route }) => {
                       timestamp={element.Timestamp}
                       myUserId={userID}
                       navigation={navigation}
+                      userName={userName}
                     />
                     <Like4
                       postID={element.Post_ID}

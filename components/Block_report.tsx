@@ -132,11 +132,12 @@ const Block_report = ({ userID, myUserID, commentID }: PropsInterface) => {
                 style={{
                   color: "red",
                   textAlign: "center",
-                  marginTop: "20%",
+                  marginTop: "22%",
                   fontSize: 16,
                   fontWeight: "bold",
                   fontFamily: "sans-serif",
-                  right: "50%",
+                  right: Dimensions.get("window").width * 0.039,
+                  alignSelf: "center",
                 }}
               >
                 Report

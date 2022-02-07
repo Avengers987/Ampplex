@@ -8,14 +8,19 @@ import {
   TouchableOpacity,
 } from "react-native";
 
-const CreateNewPassword = ({ route, navigation }) => {
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
-  const [error1, setError1] = useState("");
-  const [error2, setError2] = useState("");
-  let email = route.params.email;
+interface CreateNewPassword_INTERFACE {
+  route: any;
+  navigation: any;
+}
 
-  const errorChecker1 = () => {
+const CreateNewPassword = ({ route, navigation }: CreateNewPassword_INTERFACE) => {
+  const [password, setPassword] = useState<string>("");
+  const [confirmPassword, setConfirmPassword] = useState<string>("");
+  const [error1, setError1] = useState<string>("");
+  const [error2, setError2] = useState<string>("");
+  let email: string = route.params.email;
+
+  const errorChecker1 = (): void => {
     if (password === "") {
       setError1("Password cannot be empty");
     } else if (password.length < 6) {
@@ -28,7 +33,7 @@ const CreateNewPassword = ({ route, navigation }) => {
     }
   };
 
-  const errorChecker2 = () => {
+  const errorChecker2 = (): void => {
     if (confirmPassword === "") {
       setError2("Password cannot be empty");
     } else if (confirmPassword.length < 6) {
@@ -41,12 +46,12 @@ const CreateNewPassword = ({ route, navigation }) => {
     }
   };
 
-  const SubmitBtnHandler = async () => {
+  const SubmitBtnHandler = async (): Promise<void> => {
     errorChecker1();
     errorChecker2();
 
     if (error1 === "" && error2 === "" && password === confirmPassword) {
-      const url = `https://ampplex-backened.herokuapp.com/CreateNewPassword/${email}/${confirmPassword}/;';][][3543{]';[sidjg868567**-+~&=32057dfjgiodfgoidfo;ji><<><>][[+-`;
+      const url: string = `https://ampplex-backened.herokuapp.com/CreateNewPassword/${email}/${confirmPassword}/;';][][3543{]';[sidjg868567**-+~&=32057dfjgiodfgoidfo;ji><<><>][[+-`;
 
       await fetch(url)
         .then((response) => response.text())

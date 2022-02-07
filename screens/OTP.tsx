@@ -8,6 +8,7 @@ import {
   TouchableOpacity,
   Alert,
 } from "react-native";
+import { LinearGradient } from "expo-linear-gradient";
 
 const OTP = ({ route, navigation } : any) => {
   const [enteredOTP, setEnteredOTP] = useState<number | string>(0);
@@ -82,7 +83,13 @@ const OTP = ({ route, navigation } : any) => {
       </View>
 
       <TouchableOpacity style={styles.Button} onPress={() => VerifyOTP()}>
+      <LinearGradient
+          colors={["#E125FF", "#5CD5FF", "#fff"]}
+          end={{ x: 2.0, y: 0.2 }}
+          style={styles.linearGradient}
+        >
         <Text style={styles.ButtonText}>Verify OTP</Text>
+        </LinearGradient>
       </TouchableOpacity>
     </View>
   );
@@ -122,9 +129,7 @@ const styles = StyleSheet.create({
   Button: {
     width: "55%",
     height: 40,
-    backgroundColor: "#5AFF60",
     borderRadius: 10,
-    elevation: 12,
     position: "absolute",
     top: Dimensions.get("window").height * 0.6,
   },
@@ -135,5 +140,12 @@ const styles = StyleSheet.create({
     color: "white",
     fontWeight: "bold",
     padding: 5,
+  },
+  linearGradient: {
+    width: 250,
+    height: 50,
+    borderRadius: 40,
+    elevation: 12,
+    alignSelf: "center",
   },
 });
