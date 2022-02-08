@@ -7,6 +7,7 @@ import {
   Dimensions,
 } from "react-native";
 import React, { useEffect } from "react";
+import postView from "../screens/PostView";
 
 interface LineBreak_Class_Interface {
   AddbreakLine(sent: string): string;
@@ -20,6 +21,7 @@ interface Props_interface {
     ProfilePic: string;
     PostPic: string;
     Timestamp: string;
+    navigation: any;
 }
 
 const Post_Notification = ({
@@ -29,6 +31,7 @@ const Post_Notification = ({
   ProfilePic,
   PostPic,
   Timestamp,
+  navigation,
 }: Props_interface) => {
   
   class LineBreak implements LineBreak_Class_Interface {
@@ -106,7 +109,8 @@ const Post_Notification = ({
 
   return (
     <>
-      <TouchableOpacity style={styles.container}>
+    <View key={Math.floor(Math.random() * 150000 + 100)}>
+      <TouchableOpacity style={styles.container} onPress={() => navigation.navigate("PostView", {UserName, Caption, ProfilePic, PostPic, Timestamp})}>
         {!read ? <View style={styles.red_circle} /> : null}
 
         {/* ProfilePicture */}
@@ -149,6 +153,7 @@ const Post_Notification = ({
           />
         </View>
       </TouchableOpacity>
+    </View>
     </>
   );
 };

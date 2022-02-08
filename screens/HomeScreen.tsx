@@ -105,7 +105,7 @@ const HomeScreen = ({ navigation, userID, userName }: HomeScreen_Props) => {
   const onShare = async (): Promise<void> => {
     try {
       const result = await Share.share({
-        message: "https://ampplex-website.web.app/",
+        message: "https://play.google.com/store/apps/details?id=com.ankeshkumar.Ampplex",
       });
       if (result.action === Share.sharedAction) {
         if (result.activityType) {

@@ -28,6 +28,7 @@ import Subject from "../screens/Subject";
 import Notification from "../screens/Notification";
 import Logined_userID_State from "../context/Logined_userID/Logined_userID_State";
 import Assignments from "../screens/Assignment";
+import PostView from "../screens/PostView";
 
 import {
   AdMobBanner,
@@ -283,6 +284,18 @@ export default function App() {
                   options={{
                     headerShown: false,
                     headerTitle: "Notifications",
+                    headerTitleStyle: {
+                      fontWeight: "bold",
+                    },
+                  }}
+                />
+
+                <Stack.Screen
+                  name="PostView"
+                  component={PostView}
+                  options={{
+                    headerShown: false,
+                    headerTitle: "Post View",
                     headerTitleStyle: {
                       fontWeight: "bold",
                     },

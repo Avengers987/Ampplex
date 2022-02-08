@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import {
   StyleSheet,
   Text,
@@ -24,13 +24,16 @@ const Header = ({ navigation }: any) => {
           return response.json();
       })
       .then((data: any) => {
-        console.log(data);
         setnotification_badgeVisible(data.ShowNotification_Badge);
       })
       .catch((error) => {
         console.log(error);
       });
   };
+
+  useEffect(() => {
+    getNotifications();
+  }, []);
 
   setInterval(() => {
     getNotifications();

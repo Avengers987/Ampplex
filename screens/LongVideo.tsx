@@ -47,7 +47,6 @@ const LongVideo = ({
     : "landscape";
   const [loading1, setLoading1] = useState<boolean>(true);
   const [loading2, setLoading2] = useState<boolean>(true);
-  const [response, setResponse] = useState<string | null>(null);
   const [views, setViews] = useState<number>(0);
 
   const testing_video: string =
@@ -61,7 +60,7 @@ const LongVideo = ({
         return response.json();
       })
       .then((data) => {
-        setResponse(data);
+        // console.log(data);
       })
       .catch((error) => {
         // console.log(error);
@@ -300,7 +299,9 @@ const LongVideo = ({
             {/* Assignment */}
             
             <View style={styles.AssignmentCard}>
+              {userName != undefined ? 
               <Text style={styles.Card_Title}>Hey, {userName.toString().split(' ')[0]}</Text>
+              : <View/>}
               <Text style={{
                 fontSize: 20,
                 fontFamily: "sans-serif-medium",

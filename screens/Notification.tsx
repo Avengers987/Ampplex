@@ -29,7 +29,7 @@ interface IState {
   }[]
 }
 
-const Notification = () => {
+const Notification = ({ navigation } : any) => {
   const Logined_userID = useContext<any>(Logined_userID_Context);
   const [response, setResponse] = useState<IState["Notification"]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -74,7 +74,6 @@ const Notification = () => {
           return response.json();
       })
       .then((data: any) => {
-        console.log(data);
         setResponse(data["Notification"]);
         setIsLoading(false);
       })
@@ -89,10 +88,13 @@ const Notification = () => {
     getNotifications();
   }, []);
 
+  useEffect(() => {
+    getNotifications();
+  }, []);
 
   setInterval(() => {
     getNotifications();
-  }, 2000);
+  }, 5000);
 
   return (
     <>
@@ -119,6 +121,8 @@ const Notification = () => {
                 ProfilePic={element.ProfilePic}
                 PostPic={element.PostPic}
                 Timestamp={element.PostTime}
+                key={index}
+                navigation={navigation}
               />
             );
           })
