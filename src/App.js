@@ -151,6 +151,7 @@ export default function App() {
                   name="AddPost"
                   component={AddPost}
                   options={{
+                    headerShown: true,
                     headerStyle: {
                       backgroundColor: "#87cefa",
                     },
@@ -259,7 +260,7 @@ export default function App() {
                   component={Subject}
                   options={{
                     headerShown: true,
-                    headerTitle: "Add Assignments",
+                    headerTitle: "Add Subject",
                     headerTitleStyle: {
                       fontWeight: "bold",
                     },

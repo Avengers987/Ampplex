@@ -43,6 +43,27 @@ const Home = ({ navigation, route }) => {
         }}
       >
         <Tab.Screen
+          name="AddPost"
+          children={() => (
+            <AddPost userID={route.params.userID} navigation={navigation} />
+          )}
+          options={{
+            tabBarLabel: "Add Post",
+            tabBarIcon: ({ color, size }) => (
+              <Text
+                style={{
+                  color: color,
+                  fontSize: size,
+                  marginTop: 10,
+                }}
+              >
+                +
+              </Text>
+            ),
+          }}
+        />
+
+        <Tab.Screen
           name="Home"
           children={() => (
             <HomeScreen
@@ -85,26 +106,7 @@ const Home = ({ navigation, route }) => {
             ),
           }}
         />
-        <Tab.Screen
-          name="AddPost"
-          children={() => (
-            <AddPost userID={route.params.userID} navigation={navigation} />
-          )}
-          options={{
-            tabBarLabel: "Add Post",
-            tabBarIcon: ({ color, size }) => (
-              <Text
-                style={{
-                  color: color,
-                  fontSize: size,
-                  marginTop: 10,
-                }}
-              >
-                +
-              </Text>
-            ),
-          }}
-        />
+
         <Tab.Screen
           name="Short video"
           children={() => (

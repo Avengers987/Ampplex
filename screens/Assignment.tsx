@@ -7,7 +7,7 @@ const Assignment = () => {
       <Text style={{
         fontSize: 20,
         fontFamily: "sans-serif-medium",
-      }}>Hello World!</Text>
+      }}>Coming soon!</Text>
     </View>
   );
 };

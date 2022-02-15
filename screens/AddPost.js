@@ -22,6 +22,7 @@ import firebase from "firebase";
 import Modal from "react-native-modal";
 import ActionSheet from "react-native-actions-sheet";
 import LottieView from "lottie-react-native";
+import { LinearGradient } from "expo-linear-gradient";
 
 const Push_User_Data_To_RealTime_DB = (
   imgPath,
@@ -102,8 +103,6 @@ export default function AddPost({ navigation, route, userID }) {
   const [showTaskCompleteSheet, setShowTaskCompleteSheet] = useState(false);
   const actionSheetRef = createRef();
 
-  let animatedImgContainer = new Animated.Value(-20);
-
   if (userID === undefined) {
     userID = route.params.userID;
   }
@@ -115,44 +114,6 @@ export default function AddPost({ navigation, route, userID }) {
         setShowTaskCompleteSheet(false);
       }, 3000);
     }
-  }, 3500);
-
-  const startImgAnimation = async () => {
-    setTimeout(() => {
-      Animated.timing(animatedImgContainer, {
-        toValue: 1,
-        duration: 600,
-        useNativeDriver: false,
-      }).start();
-    }, 400);
-
-    setTimeout(() => {
-      Animated.timing(animatedImgContainer, {
-        toValue: -20,
-        duration: 600,
-        useNativeDriver: false,
-      }).start();
-    }, 1100);
-
-    setTimeout(() => {
-      Animated.timing(animatedImgContainer, {
-        toValue: 1,
-        duration: 600,
-        useNativeDriver: false,
-      }).start();
-    }, 2200);
-
-    setTimeout(() => {
-      Animated.timing(animatedImgContainer, {
-        toValue: -20,
-        duration: 600,
-        useNativeDriver: false,
-      }).start();
-    }, 3300);
-  };
-
-  setInterval(() => {
-    startImgAnimation();
   }, 3500);
 
   const SetImage = () => {
@@ -264,56 +225,115 @@ export default function AddPost({ navigation, route, userID }) {
   };
 
   const PostBtn = () => {
-    const pickImage = async () => {
-      let result = await ImagePicker.launchImageLibraryAsync({
-        mediaTypes: ImagePicker.MediaTypeOptions.Images,
-        allowsMultipleSelection: false,
-        allowsEditing: true,
-        aspect: [1, 1],
-        quality: 1,
-      });
-
-      if (!result.cancelled) {
-        setImage(result.uri);
-        setMediaType("Image");
-      }
-    };
-
-    const pickVideo = async () => {
-      let result = await ImagePicker.launchImageLibraryAsync({
-        mediaTypes: ImagePicker.MediaTypeOptions.Videos,
-        aspect: [1, 1],
-        quality: 1,
-        allowsMultipleSelection: false,
-        videoQuality: 7,
-      });
-
-      console.log(result);
-
-      if (!result.cancelled) {
-        if (result.uri.substring(result.uri.lastIndexOf(".")) != ".mp4") {
-          console.log("Please select a video");
-        }
-        setImage(result.uri);
-        setMediaType("Video");
-      }
-    };
-
     return (
       <>
         <StatusBar style="light" />
         <View style={styles.container}>
-          <TextInput
-            style={styles.PostInputStyle}
-            placeholder="What's on your mind?"
-            maxLength={100}
-            value={postTxt}
-            autoFocus={autoFocus}
-            onChangeText={(e) => {
-              setPostTxt(e);
-            }}
-          />
+          <View style={styles.PostInputView}>
+            <TextInput
+              style={styles.PostInputStyle}
+              placeholder="What's on your mind?"
+              maxLength={100}
+              value={postTxt}
+              autoFocus={autoFocus}
+              onChangeText={(e) => {
+                setPostTxt(e);
+              }}
+            />
+          </View>
         </View>
+
+        <ActionSheet ref={actionSheetRef} bounceOnOpen={true}>
+          <View style={styles.ActionSheetStyle}>
+            {/* Post sent animation  */}
+            <LottieView
+              style={styles.task_completed}
+              source={require("../assets/lottie/task-complete.json")}
+              autoPlay
+              loop={true}
+            />
+          </View>
+        </ActionSheet>
+        <FlashMessage position="bottom" />
+      </>
+    );
+  };
+
+  const pickImage = async () => {
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      allowsMultipleSelection: false,
+      allowsEditing: true,
+      aspect: [1, 1],
+      quality: 1,
+    });
+
+    if (!result.cancelled) {
+      setImage(result.uri);
+      setMediaType("Image");
+    }
+  };
+
+  const pickVideo = async () => {
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.Videos,
+      aspect: [1, 1],
+      quality: 1,
+      allowsMultipleSelection: false,
+      videoQuality: 7,
+    });
+
+    console.log(result);
+
+    if (!result.cancelled) {
+      if (result.uri.substring(result.uri.lastIndexOf(".")) != ".mp4") {
+        console.log("Please select a video");
+      }
+      setImage(result.uri);
+      setMediaType("Video");
+    }
+  };
+
+  return (
+    <>
+      <View style={styles.container}>
+        <PostBtn />
+
+        {image && (
+          // Selected Image container
+          <View
+            style={{
+              position: "absolute",
+              top: Dimensions.get("window").height * 0.15,
+            }}
+          >
+            <View style={styles.Imgcontainer} />
+
+            <Image
+              source={{ uri: image }}
+              style={{
+                width: getWindowDimensionsWidth() - 50,
+                height: getWindowDimensionsWidth(),
+                alignSelf: "center",
+                marginTop: 45,
+                borderRadius: 10,
+              }}
+            />
+            <TouchableOpacity
+              style={styles.Cancel_btn_Position}
+              onPress={() => setImage(null)}
+            >
+              <Image
+                style={{
+                  width: 40,
+                  height: 40,
+                }}
+                source={require("../assets/images/cancel-icon.png")}
+              />
+            </TouchableOpacity>
+          </View>
+        )}
+
         {/* Add post button */}
         {/* Includes 
         1. Upload picture from camera
@@ -349,47 +369,6 @@ export default function AddPost({ navigation, route, userID }) {
             <Icon name="md-images-outline" style={styles.actionButtonIcon} />
           </ActionButton.Item>
         </ActionButton>
-        <ActionSheet ref={actionSheetRef} bounceOnOpen={true}>
-          <View style={styles.ActionSheetStyle}>
-            {/* Post sent animation  */}
-            <LottieView
-              style={styles.task_completed}
-              source={require("../assets/lottie/task-complete.json")}
-              autoPlay
-              loop={true}
-            />
-          </View>
-        </ActionSheet>
-        <FlashMessage position="bottom" />
-      </>
-    );
-  };
-
-  return (
-    <>
-      <PostBtn />
-      <View style={styles.container}>
-        {image && (
-          // Selected Image container
-          <Animated.View
-            style={{
-              position: "absolute",
-              top: animatedImgContainer,
-            }}
-          >
-            <View style={styles.Imgcontainer} />
-            <Image
-              source={{ uri: image }}
-              style={{
-                width: getWindowDimensionsWidth() - 50,
-                height: getWindowDimensionsWidth(),
-                alignSelf: "center",
-                marginTop: 45,
-                borderRadius: 10,
-              }}
-            />
-          </Animated.View>
-        )}
 
         {posted === false && error === false ? (
           <View
@@ -458,13 +437,17 @@ export default function AddPost({ navigation, route, userID }) {
         ) : (
           <View />
         )}
-      </View>
-      <View>
         <TouchableOpacity
           style={styles.postBtnStyle}
           onPress={sendPostToCloudServer}
         >
-          <Text style={styles.postBtnTextStyle}>Post</Text>
+          <LinearGradient
+            colors={["#E125FF", "#5CD5FF", "#fff"]}
+            end={{ x: 2, y: 0.3 }}
+            style={styles.LinearGradient}
+          >
+            <Text style={styles.postBtnTextStyle}>Post</Text>
+          </LinearGradient>
         </TouchableOpacity>
       </View>
     </>
@@ -476,32 +459,37 @@ const styles = StyleSheet.create({
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
+    width: "100%",
+    height: "100%",
+    backgroundColor: "#fff",
   },
   PostInputStyle: {
-    fontSize: 25,
-    marginTop: 60,
+    fontSize: 20,
     fontWeight: "800",
+    backgroundColor: "#EEEEEE",
+    width: getWindowDimensionsWidth() - 50,
+    height: getWindowDimensionsHeight() / 12,
+    borderRadius: 50,
+    paddingLeft: 20,
+    elevation: 20,
   },
   postBtnStyle: {
-    backgroundColor: "#7B49F6",
-    width: 100,
+    width: 120,
     height: 30,
-    marginTop: 500,
     borderRadius: 10,
     alignSelf: "center",
     position: "absolute",
-    marginTop: getWindowDimensionsHeight() - 210,
-    elevation: 12,
+    top: getWindowDimensionsHeight() * 0.8,
+    paddingBottom: 5,
   },
   postBtnTextStyle: {
     alignSelf: "center",
     fontWeight: "bold",
     fontFamily: "sans-serif-medium",
     color: "white",
-    fontSize: 16.5,
+    fontSize: 18,
   },
   Imgcontainer: {
-    elevation: 12,
     width: getWindowDimensionsWidth() - 20,
     height: getWindowDimensionsWidth() + 32,
     marginTop: 45,
@@ -513,5 +501,23 @@ const styles = StyleSheet.create({
   ActionSheetStyle: {
     height: Dimensions.get("window").height,
     width: Dimensions.get("window").width,
+  },
+  PostInputView: {
+    position: "absolute",
+    top: getWindowDimensionsHeight() * 0.1,
+  },
+  LinearGradient: {
+    borderRadius: 40,
+    width: 170,
+    height: 40,
+    elevation: 12,
+    alignSelf: "center",
+    justifyContent: "center",
+    paddingBottom: 5,
+  },
+  Cancel_btn_Position: {
+    position: "absolute",
+    top: getWindowDimensionsHeight() * 0.09,
+    right: getWindowDimensionsWidth() * 0.02,
   },
 });
