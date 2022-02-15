@@ -32,6 +32,7 @@ interface IState {
 const Notification = ({ navigation } : any) => {
   const Logined_userID = useContext<any>(Logined_userID_Context);
   const [response, setResponse] = useState<IState["Notification"]>([]);
+  const [response2, setResponse2] = useState<IState["Notification"]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [refreshing, setRefreshing] = useState<boolean>(false);
   const [showNotification, setShowNotification] = useState<boolean>(true);
@@ -67,7 +68,7 @@ const Notification = ({ navigation } : any) => {
   };
 
   const getNotifications = async (): Promise<void> => {
-    const url: string = `https://ampplex-backened.herokuapp.com/Retrieve_Notification/${Logined_userID.userID}`;
+    let url: string = `https://ampplex-backened.herokuapp.com/Retrieve_Notification/${Logined_userID.userID}/Today`;
 
     await fetch(url)
       .then((response) => {
@@ -75,6 +76,20 @@ const Notification = ({ navigation } : any) => {
       })
       .then((data: any) => {
         setResponse(data["Notification"]);
+        setIsLoading(false);
+      })
+      .catch((error) => {
+        setShowNotification(false);
+      });
+
+    url = `https://ampplex-backened.herokuapp.com/Retrieve_Notification/${Logined_userID.userID}/Older`;
+
+    await fetch(url)
+      .then((response) => {
+          return response.json();
+      })
+      .then((data: any) => {
+        setResponse2(data["Notification"]);
         setIsLoading(false);
       })
       .catch((error) => {
@@ -160,122 +175,53 @@ const Notification = ({ navigation } : any) => {
         <View>
           <Text style={styles.Day_Text}>This Week</Text>
         </View>
-        <TouchableOpacity style={styles.container}>
-          <View style={styles.red_circle} />
-          {/* ProfilePicture */}
-          <Image
-            source={{
-              uri: "https://assets.algoexpert.io/spas/main/prod/g7ca30dc6fe-prod/dist/images/testimonialPicAlex.noinline.jpg?2382c145",
-            }}
-            style={styles.ProfilePicture}
-          />
-          {/* UserName */}
-          <View style={styles.userNamePosition}>
-            <Text
-              style={styles.userName}
-              numberOfLines={2}
-              ellipsizeMode="tail"
+
+        {!isLoading ? (
+          response2.map((element, index: number) => {
+            return (
+              <Post_Notification
+                read={element.read}
+                UserName={element.UserName}
+                Caption={element.Caption}
+                ProfilePic={element.ProfilePic}
+                PostPic={element.PostPic}
+                Timestamp={element.PostTime}
+                key={index}
+                navigation={navigation}
+              />
+            );
+          })
+        ) : 
+          <>
+          {showNotification ? 
+            <View
+              style={{
+                position: "absolute",
+                top: 0,
+                width: "100%",
+                height: "100%",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
             >
-              {new LineBreak("Alex Software engineer").AddbreakLine()}
-            </Text>
-          </View>
+              <LottieView
+                style={styles.loading}
+                source={require("../assets/lottie/loading-notifications.json")}
+                autoPlay
+                loop={true}
+              />
+            </View>
+          : <View/>}
+            {showNotification === false ? 
+            <>
+              <View>
+                <Text style={styles.No_Notification}>No notifications</Text>
+              </View>
+            </> 
+            : <View/>}
+          </>
+        }
 
-          {/* Caption */}
-          <View style={styles.CaptionPosition}>
-            <Text style={styles.caption}>
-              {new LineBreak(
-                "Became a software engineer at Google Silicon valley, california"
-              ).CaptionAddbreakLine()}
-            </Text>
-          </View>
-          <View style={styles.MessagePosition}>
-            <Text style={styles.message}>Posted:</Text>
-          </View>
-
-          <View style={styles.breakpointStyle} />
-
-          <View style={styles.PostPicPosition}>
-            <Image
-              style={styles.postPic}
-              source={{
-                uri: "https://media.istockphoto.com/photos/manhattan-panorama-with-its-skyscrapers-illuminated-at-dusk-new-york-picture-id538811669?b=1&k=20&m=538811669&s=170667a&w=0&h=Z_nBn58GNBa_kjUBlzniEehEk1GPOCz9H5u50z0qKdU=",
-              }}
-            />
-          </View>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.container}>
-          <View style={styles.red_circle} />
-          {/* ProfilePicture */}
-          <Image
-            source={{
-              uri: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=764&q=80",
-            }}
-            style={styles.ProfilePicture}
-          />
-          {/* UserName */}
-          <View style={styles.userNamePosition}>
-            <Text style={styles.userName}>{new LineBreak("Sofia Bailey").AddbreakLine()}</Text>
-          </View>
-
-          {/* Caption */}
-          <View style={styles.CaptionPosition}>
-            <Text style={styles.caption}>
-              {new LineBreak("Day 1 at New york city").CaptionAddbreakLine()}
-            </Text>
-          </View>
-          <View style={styles.MessagePosition}>
-            <Text style={styles.message}>Posted:</Text>
-          </View>
-
-          <View style={styles.breakpointStyle} />
-
-          <View style={styles.PostPicPosition}>
-            <Image
-              style={styles.postPic}
-              source={{
-                uri: "https://images.unsplash.com/photo-1480714378408-67cf0d13bc1b?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8NHx8dXNhfGVufDB8fDB8fA%3D%3D&auto=format&fit=crop&w=500&q=60",
-              }}
-            />
-          </View>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.container}>
-          <View style={styles.red_circle} />
-          {/* ProfilePicture */}
-          <Image
-            source={{
-              uri: "https://images.unsplash.com/photo-1517070208541-6ddc4d3efbcb?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MjZ8fHByb2ZpbGV8ZW58MHx8MHx8&auto=format&fit=crop&w=500&q=60",
-            }}
-            style={styles.ProfilePicture}
-          />
-          {/* UserName */}
-          <View style={styles.userNamePosition}>
-            <Text style={styles.userName}>
-              {new LineBreak("Arthur Jognson").AddbreakLine()}
-            </Text>
-          </View>
-
-          {/* Caption */}
-          <View style={styles.CaptionPosition}>
-            <Text style={styles.caption}>
-              {new LineBreak("On a tour!").CaptionAddbreakLine()}
-            </Text>
-          </View>
-
-          <View style={styles.MessagePosition}>
-            <Text style={styles.message}>Posted:</Text>
-          </View>
-
-          <View style={styles.breakpointStyle} />
-
-          <View style={styles.PostPicPosition}>
-            <Image
-              style={styles.postPic}
-              source={{
-                uri: "https://images.unsplash.com/photo-1643118156795-260d71d95756?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1076&q=80",
-              }}
-            />
-          </View>
-        </TouchableOpacity>
       </ScrollView>
     </>
   );

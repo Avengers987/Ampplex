@@ -50,54 +50,61 @@ const HomeScreen = ({ navigation, userID, userName }: HomeScreen_Props) => {
   const myUserID: string = userID;
   const tab_bar_color = useContext<any>(Tab_Bar_Color_Context);
 
-  // const CreateTimeStamp = (time_stamp: string): string => {
-  //   let time_stamp_lst: string | string[] = time_stamp.split("|")[1];
-  //   time_stamp_lst = time_stamp_lst.trim().split(" ");
-
-  //   const month: string = time_stamp_lst[1];
-  //   const date: number = parseInt(time_stamp_lst[2]);
-  //   const year: number = parseInt(time_stamp_lst[3]);
-
-  //   const current_year: number = new Date().getFullYear();
-  //   const current_month: string = new Date().toDateString().split(" ")[1];
-  //   const current_date: number = new Date().getDate();
-
-  //   enum months {
-  //     Jan,
-  //     Feb,
-  //     Mar,
-  //     Apr,
-  //     May,
-  //     Jun,
-  //     Jul,
-  //     Aug,
-  //     Sep,
-  //     Oct,
-  //     Nov,
-  //     Dec,
-  //   };
-
-  //   if (current_year != year) {
-  //     const yearDifference: number = current_year - year;
-
-  //     return yearDifference > 1
-  //       ? yearDifference + " years ago"
-  //       : yearDifference + " year ago";
-  //   } else if (current_month === month) {
-  //     const dateDifference: number = current_date - date;
-
-  //     return dateDifference > 1
-  //       ? dateDifference + " days ago"
-  //       : dateDifference + " day ago";
-  //   } else if (current_month != month) {
-  //     const monthDifference: number = new Date().getMonth() + 1 - (months[month] + 1);
-
-  //     return monthDifference > 1
-  //       ? monthDifference + " months ago"
-  //       : monthDifference + " month ago";
-  //   }
-  // };
-
+  const CreateTimeStamp = (time_stamp: string | null): string => {
+    if (time_stamp != null) {
+    try {
+      let time_stamp_lst: string | string[] = time_stamp.split("|")[1];
+      time_stamp_lst = time_stamp_lst.trim().split(" ");
+      const month: string = time_stamp_lst[1];
+      const date: number = parseInt(time_stamp_lst[2]);
+      const year: number = parseInt(time_stamp_lst[3]);
+  
+      const current_year: number = new Date().getFullYear();
+      const current_month: string = new Date().toDateString().split(" ")[1];
+      const current_date: number = new Date().getDate();
+  
+      enum months {
+        Jan,
+        Feb,
+        Mar,
+        Apr,
+        May,
+        Jun,
+        Jul,
+        Aug,
+        Sep,
+        Oct,
+        Nov,
+        Dec,
+      };
+  
+      if (current_year != year) {
+        const yearDifference: number = current_year - year;
+  
+        return yearDifference > 1
+          ? yearDifference + " years ago"
+          : yearDifference + " year ago";
+      } else if (current_month === month) {
+        const dateDifference: number = current_date - date;
+  
+        return dateDifference > 1
+          ? dateDifference + " days ago"
+          : dateDifference + " day ago";
+      } else if (current_month != month) {
+        const monthDifference: number = new Date().getMonth() + 1 - (months[month] + 1);
+  
+        return monthDifference > 1
+          ? monthDifference + " months ago"
+          : monthDifference + " month ago";
+      }
+    } catch (e) {
+      console.log(e);
+    }
+  } else {
+    return "";
+  }
+  };
+  
   useEffect(() => {
     tab_bar_color.changeColor("white");
   }, []);
@@ -335,7 +342,7 @@ const HomeScreen = ({ navigation, userID, userName }: HomeScreen_Props) => {
                     </Text>
                   </View>
                   <View>
-                    {/* <Text
+                    <Text
                       key={index}
                       style={{
                         fontSize: 15,
@@ -348,7 +355,7 @@ const HomeScreen = ({ navigation, userID, userName }: HomeScreen_Props) => {
                       }}
                     >
                       {CreateTimeStamp(element.Timestamp)}
-                    </Text> */}
+                    </Text>
                   </View>
                   <View
                     style={{

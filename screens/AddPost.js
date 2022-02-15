@@ -224,7 +224,7 @@ export default function AddPost({ navigation, route, userID }) {
     }
   };
 
-  const PostBtn = () => {
+  const PostInput = () => {
     return (
       <>
         <StatusBar style="light" />
@@ -297,7 +297,20 @@ export default function AddPost({ navigation, route, userID }) {
   return (
     <>
       <View style={styles.container}>
-        <PostBtn />
+        <PostInput />
+
+        <TouchableOpacity
+          style={styles.postBtnStyle}
+          onPress={sendPostToCloudServer}
+        >
+          <LinearGradient
+            colors={["#E125FF", "#5CD5FF", "#fff"]}
+            end={{ x: 2, y: 0.3 }}
+            style={styles.LinearGradient}
+          >
+            <Text style={styles.postBtnTextStyle}>Post</Text>
+          </LinearGradient>
+        </TouchableOpacity>
 
         {image && (
           // Selected Image container
@@ -437,18 +450,6 @@ export default function AddPost({ navigation, route, userID }) {
         ) : (
           <View />
         )}
-        <TouchableOpacity
-          style={styles.postBtnStyle}
-          onPress={sendPostToCloudServer}
-        >
-          <LinearGradient
-            colors={["#E125FF", "#5CD5FF", "#fff"]}
-            end={{ x: 2, y: 0.3 }}
-            style={styles.LinearGradient}
-          >
-            <Text style={styles.postBtnTextStyle}>Post</Text>
-          </LinearGradient>
-        </TouchableOpacity>
       </View>
     </>
   );
@@ -471,6 +472,7 @@ const styles = StyleSheet.create({
     height: getWindowDimensionsHeight() / 12,
     borderRadius: 50,
     paddingLeft: 20,
+    paddingRight: 20,
     elevation: 20,
   },
   postBtnStyle: {
