@@ -314,7 +314,7 @@ const LongVideo = ({
               {/* Complete Assignment buttton */}
 
               <TouchableHighlight onPress={() => {
-                navigation.navigate("Assignments")
+                navigation.navigate("Assignments", {userID, postID})
               }} style={{
                 marginTop: Dimensions.get("window").height / 4,
                 alignSelf: "center",

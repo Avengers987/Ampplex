@@ -1,4 +1,7 @@
-<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="com.ampplex">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="com.ampplex"
+android:versionCode="2"
+android:versionName="2.0"
+>
   <uses-permission android:name="android.permission.INTERNET"/>
   <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"/>
   <uses-permission android:name="android.permission.READ_PHONE_STATE"/>

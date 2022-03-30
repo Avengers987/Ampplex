@@ -122,8 +122,6 @@ const Cryptography_Encrypt = (text) => {
 
   text = text.split("");
 
-  console.log(text);
-
   text.forEach((e) => {
     if (firstTime) {
       encryptedTxt += alpha[e];
@@ -134,7 +132,6 @@ const Cryptography_Encrypt = (text) => {
     }
   });
 
-  console.log(encryptedTxt);
   return encryptedTxt;
 };
 
@@ -184,6 +181,7 @@ export default function Register(props) {
   const [username, setUsername] = useState("");
   const [loginResponse, setLoginResponse] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
+  const [isDisabled, setIsDisabled] = useState(false);
 
   return (
     <>
@@ -234,7 +232,9 @@ export default function Register(props) {
             />
             <TouchableOpacity
               style={styles.RegisterBtn}
+              disabled={isDisabled}
               onPress={() => {
+                setIsDisabled(true);
                 verifyUserInfo();
               }}
             >

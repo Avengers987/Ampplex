@@ -13,6 +13,7 @@ import {
 import FlashMessage from "react-native-flash-message";
 import { showMessage } from "react-native-flash-message";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+// import Checkbox from 'expo-checkbox';
 
 const ErrorFlasher = (msg: string): void => {
   showMessage({
@@ -246,6 +247,7 @@ const Cryptography_Decrypt = (encryptedTxt: string): string => {
 
 export default function LoginScreen(props: any) {
   const [loading, setLoading] = useState<boolean>(false);
+  const [boxColour, setBoxColour] = useState<string>("white");
 
   useEffect(() => {
     getData();
@@ -268,7 +270,7 @@ export default function LoginScreen(props: any) {
       const userName = await AsyncStorage.removeItem("user_name");
       const user_id = await AsyncStorage.removeItem("user_id");
 
-      if (value !== null && userName !== null && user_id !== null) {
+      if (value !== null && userName !== null && user_id !== null && boxColour === "blue") {
         props.navigation.replace("Category", { user_id, userName });
       }
     } catch (e) {
@@ -310,6 +312,10 @@ export default function LoginScreen(props: any) {
       setErrorMessage("Error: Your email or password is incorrect!");
       ErrorFlasher(errorMessage);
     }
+     else if (boxColour === "white") {
+      setErrorMessage("Error: You need to agree to the terms and conditions to continue");
+      ErrorFlasher(errorMessage);
+     }
   };
 
   const Login = (email: string, password: string): void => {
@@ -395,6 +401,36 @@ export default function LoginScreen(props: any) {
         ) : (
           <View />
         )}
+      </View>
+      
+      {/* Terms and conditions */}
+      <View>
+        
+        {/* Accept check box */}
+        <TouchableOpacity style={styles.OuterBox} onPress={() => {
+          if (boxColour === "white") {
+            setBoxColour("dodgerblue");
+          }
+          else {
+            setBoxColour("white");
+          }
+        }}>
+          <View style={{
+          width: 19,
+          height: 19,
+          backgroundColor: boxColour,
+          position: "absolute",
+          alignSelf: "center",
+          borderRadius: 3,
+          }}>
+
+          </View>
+        </TouchableOpacity>
+          
+        <Text style={styles.Terms}>I agree to the</Text>
+        <TouchableOpacity onPress={() => props.navigation.navigate("Terms and Conditions")} style={styles.TermsLinkView}>
+          <Text style={styles.TermsLink}>terms and conditions</Text>
+        </TouchableOpacity>
       </View>
 
       <View
@@ -571,4 +607,41 @@ const styles = StyleSheet.create({
     top: Dimensions.get("window").height * 0.78,
     alignSelf: "center",
   },
+  Terms: {
+    fontSize: 15,
+    fontWeight: "bold",
+    fontFamily: "sans-serif-medium",
+    alignSelf: "flex-start",
+    marginTop: Dimensions.get("window").height * 0.15,
+    marginLeft: Dimensions.get("window").width * 0.21,
+  },
+  TermsLink: {
+    fontSize: 15,
+    fontWeight: "bold",
+    fontFamily: "sans-serif-medium",
+    alignSelf: "flex-end",
+    color: "#A519F0",
+    textAlign: "center",
+  },
+  TermsLinkView: {
+    width: 150,
+    height: 40,
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: -Dimensions.get("window").height * 0.038,
+    alignSelf: "flex-end",
+    marginRight: Dimensions.get("window").width * 0.147,
+  },
+  OuterBox: {
+    width: 25,
+    height: 25,
+    backgroundColor: "grey",
+    borderRadius: 3,
+    position: "absolute",
+    top: Dimensions.get("window").height * 0.15,
+    left: Dimensions.get("window").width * 0.10,
+    alignItems: "center",
+    justifyContent: "center",
+  }
 });

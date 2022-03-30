@@ -10,6 +10,7 @@ import {
   TouchableOpacity,
   RefreshControl,
   Share,
+  Linking
 } from "react-native";
 import Header from "./Header";
 import LottieView from "lottie-react-native";
@@ -127,6 +128,8 @@ const HomeScreen = ({ navigation, userID, userName }: HomeScreen_Props) => {
       alert(error.message);
     }
   };
+
+  // Linking.openURL("https://play.google.com/store/apps/details?id=com.ankeshkumar.Ampplex");
 
   const ConnectedToInternet = (): void => {
     let connected: boolean | null = null;

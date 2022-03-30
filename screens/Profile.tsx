@@ -86,10 +86,10 @@ const Profile = ({ userID, navigation, route }: Profile_Props) => {
     getMyPosts();
   }, []);
 
-  const getUserName = async (): Promise<void> => {
+  const getUserName =  (): void => {
     const url: string = `https://ampplex-backened.herokuapp.com/getUserNameFromUserID/${userID}/`;
 
-    await fetch(url)
+     fetch(url)
       .then((response) => {
         return response.json();
       })
@@ -105,9 +105,9 @@ const Profile = ({ userID, navigation, route }: Profile_Props) => {
     userID = route.params.userID;
   }
 
-  const getUserInfo = async (): Promise<void> => {
+  const getUserInfo = (): void => {
     const url: string = `https://ampplex-backened.herokuapp.com/getUserData/${userID}`;
-    await fetch(url)
+    fetch(url)
       .then((response) => {
         return response.json();
       })
@@ -182,9 +182,9 @@ const Profile = ({ userID, navigation, route }: Profile_Props) => {
     }
   };
 
-  const getProfilePicture = async (): Promise<void> => {
+  const getProfilePicture = (): void => {
     const url: string = `https://ampplex-backened.herokuapp.com/getProfilePicture/${userID}`;
-    await fetch(url)
+    fetch(url)
       .then((response) => {
         return response.json();
       })

@@ -60,8 +60,8 @@ const StartScreen = ({ navigation }: any) => {
     <View
       style={{
         backgroundColor: "#fff",
-        width: Dimensions.get("window").width,
-        height: Dimensions.get("window").height,
+        width: Dimensions.get("screen").width,
+        height: Dimensions.get("screen").height,
         display: "flex",
         justifyContent: "center",
         alignItems: "center",

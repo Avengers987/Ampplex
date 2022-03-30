@@ -11,6 +11,7 @@ import {
   KeyboardAvoidingView,
   Platform,
   Dimensions,
+  Animated,
 } from "react-native";
 import ActionSheet from "react-native-actions-sheet";
 import firebase from "firebase";
@@ -20,7 +21,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 const EditProfile = ({ route }) => {
   const userID = route.params.userID;
   const navigation = route.params.navigation;
-  const PROFILE_PIC_RADIUS_ANIMATION = 90;
+  const PROFILE_PIC_RADIUS_ANIMATION = new Animated.Value(20);
   const [profilePicLoading, setProfilePicLoading] = useState(false);
   const [myProfilePic, setMyProfilePic] = useState(null);
   const [profilePic, setProfilePicGallery] = useState(null);
@@ -28,6 +29,13 @@ const EditProfile = ({ route }) => {
   const [lastName, setLastName] = useState("");
   const [bio, setBio] = useState("");
   const actionSheetRef = createRef();
+
+  useEffect(() => {
+    Animated.timing(PROFILE_PIC_RADIUS_ANIMATION, {
+      toValue: 90,
+      duration: 1000,
+    }).start();
+  }, []);
 
   const Push_User_Data_To_RealTime_DB = (profilePicPath, userID) => {
     console.warn("User ID is : ", userID);
@@ -181,8 +189,22 @@ const EditProfile = ({ route }) => {
           position: "absolute",
           left: 0,
           top: 20,
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
         }}
       >
+        <Animated.View
+          style={{
+            width: 120,
+            height: 120,
+            backgroundColor: "#F3F3F3",
+            borderRadius: PROFILE_PIC_RADIUS_ANIMATION,
+            position: "absolute",
+            left: Dimensions.get("window").width / 2.8,
+            top: -Dimensions.get("window").height * 0.02,
+          }}
+        />
         <View
           style={{
             width: 100,
@@ -193,9 +215,9 @@ const EditProfile = ({ route }) => {
             opacity: 0,
             backgroundColor: "black",
           }}
-        ></View>
+        />
         {myProfilePic === null ? (
-          <Image
+          <Animated.Image
             style={{
               width: 90,
               height: 90,
@@ -207,7 +229,7 @@ const EditProfile = ({ route }) => {
             source={require("../assets/images/default_profile_picture.png")}
           />
         ) : (
-          <Image
+          <Animated.Image
             style={{
               width: 90,
               height: 90,
@@ -222,6 +244,7 @@ const EditProfile = ({ route }) => {
             }}
           />
         )}
+
         {profilePicLoading === true ? (
           <View
             style={{

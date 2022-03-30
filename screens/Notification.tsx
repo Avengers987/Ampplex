@@ -29,6 +29,7 @@ interface IState {
   }[]
 }
 
+
 const Notification = ({ navigation } : any) => {
   const Logined_userID = useContext<any>(Logined_userID_Context);
   const [response, setResponse] = useState<IState["Notification"]>([]);
@@ -108,6 +109,7 @@ const Notification = ({ navigation } : any) => {
   }, []);
 
   setInterval(() => {
+    // Fetching for new notifications every 5 seconds
     getNotifications();
   }, 5000);
 
