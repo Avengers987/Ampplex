@@ -65,6 +65,7 @@ const OTP = ({ route, navigation } : any) => {
           keyboardType={"number-pad"}
           autoFocus={true}
           maxLength={10}
+          secureTextEntry={true}
           onChangeText={(text) => setEnteredOTP(text)}
         />
       </View>

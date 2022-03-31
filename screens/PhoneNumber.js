@@ -59,7 +59,15 @@ const email = ({ navigation }) => {
         onPress={() => {
           sendOTP();
         }}
-      ></TouchableOpacity>
+      >
+        <LinearGradient
+          colors={["#E125FF", "#5CD5FF", "#fff"]}
+          end={{ x: 2.0, y: 0.2 }}
+          style={styles.linearGradient}
+        >
+          <Text style={styles.ButtonText}>Send OTP</Text>
+        </LinearGradient>
+      </TouchableOpacity>
     </View>
   );
 };
