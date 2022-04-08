@@ -18,15 +18,6 @@ import ShortVideo from "./ShortVideo";
 import Icon from "react-native-vector-icons/Ionicons";
 import Tab_Bar_Color_Context from "../context/tab_bar_color/Tab_Bar_Color_Context";
 
-const getWindowDimensions = () => {
-  const dimensions = Dimensions.get("window").width;
-  return dimensions;
-};
-const getWindowDimensionsHeight = () => {
-  const dimensions = Dimensions.get("window").height;
-  return dimensions;
-};
-
 const Tab = createBottomTabNavigator();
 
 const Home = ({ navigation, route }) => {

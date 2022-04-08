@@ -35,31 +35,35 @@ const Push_User_Data_To_RealTime_DB = (
 
   // Generating unique postID
 
-  const date = new Date();
+  if (userID === null || userID === undefined || userID === "") {
+    alert("Some error occurred please restart the app");
+  } else {
+    const date = new Date();
 
-  const postID =
-    date.getMilliseconds() * date.getSeconds() +
-    Math.floor(Math.random() * 1000 + 2) *
-      Math.floor(Math.random() * 150000 + 100);
+    const postID =
+      date.getMilliseconds() * date.getSeconds() +
+      Math.floor(Math.random() * 1000 + 2) *
+        Math.floor(Math.random() * 150000 + 100);
 
-  firebase
-    .database()
-    .ref(`User/${userID}/Post/`)
-    .push({
-      imgPath,
-      caption,
-      timestamp,
-      type,
-      Likes,
-      postID,
-    })
-    .then((res) => {
-      console.log(`Success: ${res}`);
-      sendNotification(userID, postID, caption, timestamp);
-    })
-    .catch((error) => {
-      console.log(`Error: ${error}`);
-    });
+    firebase
+      .database()
+      .ref(`User/${userID}/Post/`)
+      .push({
+        imgPath,
+        caption,
+        timestamp,
+        type,
+        Likes,
+        postID,
+      })
+      .then((res) => {
+        console.log(`Success: ${res}`);
+        sendNotification(userID, postID, caption, timestamp);
+      })
+      .catch((error) => {
+        console.log(`Error: ${error}`);
+      });
+  }
 };
 
 const sendNotification = async (myUserID, postID, caption, PostTime) => {
@@ -103,9 +107,9 @@ export default function AddPost({ navigation, route, userID }) {
   const [showTaskCompleteSheet, setShowTaskCompleteSheet] = useState(false);
   const actionSheetRef = createRef();
 
-  if (userID === undefined) {
-    userID = route.params.userID;
-  }
+  // if (userID === undefined || userID === null || userID === "") {
+  //   userID = route.params.userID;
+  // }
 
   setInterval(() => {
     if (showTaskCompleteSheet) {
@@ -190,7 +194,6 @@ export default function AddPost({ navigation, route, userID }) {
           },
           () => {
             // Handle successful uploads on complete
-            // For instance, get the download URL: https://firebasestorage.googleapis.com/...
             task.snapshot.ref.getDownloadURL().then((downloadURL) => {
               setIsModalVisible(false);
 
@@ -299,7 +302,11 @@ export default function AddPost({ navigation, route, userID }) {
 
         <TouchableOpacity
           style={styles.postBtnStyle}
-          onPress={sendPostToCloudServer}
+          onPress={() => {
+            if (userID != null || userID != undefined || userID != "") {
+              sendPostToCloudServer();
+            }
+          }}
         >
           <LinearGradient
             colors={["#E125FF", "#5CD5FF", "#fff"]}

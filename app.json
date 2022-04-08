@@ -5,7 +5,7 @@
     "name": "Ampplex",
     "slug": "Ampplex",
     "icon": "./assets/images/ic_launcher.png",
-    "version": "3",
+    "version": "4",
     "splash": {
       "image": "./assets/images/start_screen.png"
     },
@@ -16,7 +16,7 @@
     "description": "",
     "android": {
       "package": "com.ankeshkumar.Ampplex",
-      "versionCode": 3
+      "versionCode": 4
     },
     "ios": {
       "bundleIdentifier": "com.ankeshkumar.Ampplex"

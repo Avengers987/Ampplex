@@ -1,8 +1,12 @@
 import { StatusBar } from "expo-status-bar";
 import React, { useEffect } from "react";
-import { StyleSheet, Text, View, SafeAreaView } from "react-native";
+import { StyleSheet, Text, View, SafeAreaView, Easing } from "react-native";
 import LoginScreen from "../screens/LoginScreen";
-import { createStackNavigator } from "@react-navigation/stack";
+import {
+  createStackNavigator,
+  TransitionPresets,
+  CardStyleInterpolators,
+} from "@react-navigation/stack";
 import { NavigationContainer } from "@react-navigation/native";
 import Register from "../screens/Register";
 import OnboardingScreen from "../screens/OnboardingScreen";
@@ -56,6 +60,26 @@ if (firebase.apps.length === 0) {
   firebase.initializeApp(firebaseConfig);
 }
 
+const config = {
+  animation: "spring",
+  config: {
+    stiffness: 1000,
+    damping: 500,
+    mass: 3,
+    overshootClamping: false,
+    restDisplacementThreshold: 0.01,
+    restSpeedThreshold: 0.01,
+  },
+};
+
+const closeConfig = {
+  animation: "timing",
+  config: {
+    duration: 220,
+    easing: Easing.linear,
+  },
+};
+
 export default function App() {
   const Stack = createStackNavigator();
 
@@ -83,7 +107,17 @@ export default function App() {
               <Stack.Navigator
                 screenOptions={{
                   headerTitleAlign: "center",
+                  gestureEnabled: true,
+                  gestureDirection: "horizontal",
+                  cardStyleInterpolator:
+                    CardStyleInterpolators.forHorizontalIOS,
+                  transitionSpec: {
+                    open: config,
+                    close: closeConfig,
+                  },
                 }}
+                headerMode="float"
+                animation="fade"
               >
                 <Stack.Screen
                   name="StartScreen"

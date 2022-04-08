@@ -4,7 +4,6 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import Logined_userID_Context from "../context/Logined_userID/Logined_userID_Context";
 import { LinearGradient } from 'expo-linear-gradient';
 
-
 const StartScreen = ({ navigation }: any) => {
   const logoOpacity: any = new Animated.Value(0);
   const Logined_userID: any = useContext(Logined_userID_Context);

@@ -253,6 +253,13 @@ export default function Register(props) {
               top: Dimensions.get("window").height * 0.75,
             }}
           />
+          <Text style={styles.Terms}>I agree to the</Text>
+          <TouchableOpacity
+            onPress={() => props.navigation.navigate("Terms and Conditions")}
+            style={styles.TermsLinkView}
+          >
+            <Text style={styles.TermsLink}>terms and conditions</Text>
+          </TouchableOpacity>
         </KeyboardAvoidingView>
       </ScrollView>
     </>
@@ -385,5 +392,34 @@ const styles = StyleSheet.create({
     color: "white",
     alignSelf: "center",
     fontSize: 18,
+  },
+  Terms: {
+    fontSize: 15,
+    fontWeight: "bold",
+    fontFamily: "sans-serif-medium",
+    alignSelf: "flex-start",
+    marginLeft: Dimensions.get("window").width * 0.11,
+    position: "absolute",
+    top: Dimensions.get("window").height * 0.71,
+  },
+  TermsLink: {
+    fontSize: 15,
+    fontWeight: "bold",
+    fontFamily: "sans-serif-medium",
+    alignSelf: "flex-end",
+    color: "#A519F0",
+    textAlign: "center",
+    position: "absolute",
+  },
+  TermsLinkView: {
+    width: 150,
+    height: 40,
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    alignSelf: "flex-end",
+    position: "absolute",
+    top: Dimensions.get("window").height * 0.695,
+    right: Dimensions.get("window").width * 0.21,
   },
 });

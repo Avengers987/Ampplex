@@ -23,7 +23,7 @@ const ErrorFlasher = (msg) => {
 };
 
 const Category = ({ navigation, route }) => {
-  console.log("USER IS : ", route.params.user_id);
+  console.log("USER IS : ", route);
   const storeData = async () => {
     try {
       await AsyncStorage.setItem("Category", "true");
