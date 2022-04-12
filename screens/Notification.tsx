@@ -29,7 +29,6 @@ interface IState {
   }[]
 }
 
-
 const Notification = ({ navigation } : any) => {
   const Logined_userID = useContext<any>(Logined_userID_Context);
   const [response, setResponse] = useState<IState["Notification"]>([]);

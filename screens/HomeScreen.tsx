@@ -139,10 +139,10 @@ const HomeScreen = ({ navigation, userID, userName }: HomeScreen_Props) => {
     setConnectedToInternet(connected);
   };
 
-  const getPostInfo = async () : Promise<void> => {
+  const getPostInfo = () : void => {
     const url: string = "https://ampplex-backened.herokuapp.com/GetPostJson/";
 
-    await fetch(url)
+    fetch(url)
       .then((response) => {
         return response.json();
       })

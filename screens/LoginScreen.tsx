@@ -141,15 +141,11 @@ const Cryptography_Encrypt = (text: string): string => {
 
 export default function LoginScreen(props: any) {
   const [loading, setLoading] = useState<boolean>(false);
+  const [success_resp, setSuccessResp] = useState<string>("red");
 
   useEffect(() => {
     getData();
   }, []);
-  
-  useEffect(() => {
-    ErrorFlasher("Error: Please try again");
-  }, []);
-
 
   const storeData = async (value: string): Promise<void> => {
     // value take boolean type value
@@ -185,6 +181,7 @@ export default function LoginScreen(props: any) {
       password.length >= 8
     ) {
       // If there is success response from the backened server then redirecting user to the home page
+      setSuccessResp("green");
       setTimeout(() => {
         showMessage({
           message: "Success: Logined successfully!",
@@ -193,21 +190,20 @@ export default function LoginScreen(props: any) {
       }, 1000);
       setTimeout(() => {
         storeData("true");
-        let user_id: string = userId;
-        props.navigation.replace("Category", { user_id });
+        let userID: string = userId;
+        props.navigation.replace("Home", { userID, UserName});
         setEmail("");
         setPassword("");
       }, 1100);
     } else if (password.length < 8) {
-      setErrorMessage("Error: Password length must be more than 8 characters");
+      setErrorMessage("Password length must be more than 8 characters");
       ErrorFlasher(errorMessage);
     } else if (!email || !password) {
       // If user didn't filled the required details then showing error
-      setErrorMessage("Error: Please enter you email and password to login!");
+      setErrorMessage("Please enter you email and password to login!");
       ErrorFlasher(errorMessage);
     } else if (loginResponse === "error") {
-      // If user entered incorrect email or password then showing error
-      setErrorMessage("Error: Your email or password is incorrect!");
+      setErrorMessage("Invalid email or password!");
       ErrorFlasher(errorMessage);
     }
   };
@@ -246,6 +242,9 @@ export default function LoginScreen(props: any) {
   const [userId, setUserId] = useState<string>("");
 
   return (
+    <ScrollView keyboardShouldPersistTaps={"always"} contentContainerStyle={{
+      flex: 1,
+    }}>
     <View style={styles.container}>
 
         <View style={styles.AnimationContainer}>
@@ -254,6 +253,7 @@ export default function LoginScreen(props: any) {
             autoPlay={true}
             />
         </View>
+
         <View style={styles.card}>
 
             {/* background shape */}
@@ -307,6 +307,19 @@ export default function LoginScreen(props: any) {
                 onChangeText={(text) => setPassword(text)}
                 />
             </View>
+            
+            {/* Error view */}
+            <View>
+                <Text style={{
+                    fontSize: 13,
+                    fontFamily: 'sans-serif-medium',
+                    alignSelf: 'center',
+                    position: 'absolute',
+                    top: Dimensions.get('window').height * 0.03,
+                    textAlign: 'center',
+                    color: success_resp,
+                }}>{success_resp === "green" ? "Success !" : errorMessage}</Text>
+            </View>
 
             <Text style={{
                 fontSize: 30,
@@ -355,6 +368,7 @@ export default function LoginScreen(props: any) {
         ): null}
       <FlashMessage position="bottom" />
     </View>
+    </ScrollView>
   );
 }
 
