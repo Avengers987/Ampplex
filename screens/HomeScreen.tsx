@@ -19,6 +19,7 @@ import NetInfo from "@react-native-community/netinfo";
 import Tab_Bar_Color_Context from "../context/tab_bar_color/Tab_Bar_Color_Context";
 import Like4 from "../components/Like4";
 import LongVideo from "./LongVideo";
+import CacheImage from "../components/CacheImage";
 
 const wait = (timeout: number): Promise<unknown> => {
   return new Promise((resolve) => setTimeout(resolve, timeout));
@@ -37,6 +38,14 @@ interface IState {
   }[]
 }
 
+interface NewsData {
+  Data_Resp: {
+    Caption: string;
+    ImgPath: string;
+    UserName: string;
+  }[]
+}
+
 type HomeScreen_Props = {
   navigation: any;
   userID: string;
@@ -48,8 +57,10 @@ const HomeScreen = ({ navigation, userID, userName }: HomeScreen_Props) => {
   const [refreshing, setRefreshing] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(true);
   const [connectedToInternet, setConnectedToInternet] = useState<boolean | null>(null);
+  const [newsData, setNewsData] = useState<NewsData["Data_Resp"]>([]);
   const myUserID: string = userID;
   const tab_bar_color = useContext<any>(Tab_Bar_Color_Context);
+  const [DATA_LENGTH, setDATA_LENGTH] = useState<number>(20);
 
   const CreateTimeStamp = (time_stamp: string | null): string => {
     if (time_stamp != null) {
@@ -155,14 +166,31 @@ const HomeScreen = ({ navigation, userID, userName }: HomeScreen_Props) => {
       });
   };
 
+  const getNewsFeed = async (DATA_LENGTH: number): Promise<void>  => {
+    const url = `https://ampplex-backened.herokuapp.com/GetNewsFeed/${DATA_LENGTH}`;
+
+    await fetch(url)
+    .then((response) => {
+      return response.json();
+    })
+    .then((data) => {
+      setNewsData(data);
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+  }
+
   const onRefresh = React.useCallback((): void => {
     setRefreshing(true);
     wait(2000).then(() => setRefreshing(false));
     getPostInfo();
+    getNewsFeed(DATA_LENGTH);
   }, []);
 
   useEffect(() => {
     getPostInfo(); // Calling the getPost API for retrieving user posts
+    getNewsFeed(DATA_LENGTH);
   }, []);
 
   // Checking if user is connected to the internet or not every 7 seconds
@@ -179,6 +207,7 @@ const HomeScreen = ({ navigation, userID, userName }: HomeScreen_Props) => {
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
         }
       >
+
         {connectedToInternet == false ? (
           <>
             <Text
@@ -368,8 +397,75 @@ const HomeScreen = ({ navigation, userID, userName }: HomeScreen_Props) => {
                 </View>
               </>
             );
+          }))
+        }
+
+      {
+          newsData.map((element, index: number) => {
+            return (
+              <>
+              <View style={styles.postView} key={index}>
+                  <View>
+                      <Image
+                        style={styles.profilePicture}
+                        source={require("../assets/images/default_profile_picture.png")}
+                      />
+                  </View>
+                  <TouchableOpacity
+                    style={styles.UserNameContainer}
+                  >
+                    <Text style={styles.UserName}>Ampplex News</Text>
+                  </TouchableOpacity>
+                
+                    <>
+                      <TouchableWithoutFeedback>
+                        <Image
+                          source={{
+                            uri: element.ImgPath
+                          }}
+                          style={styles.news_postImg}
+                        />
+                      </TouchableWithoutFeedback>
+                    </>
+
+                  <View>
+                    <Text
+                      key={index}
+                      style={{
+                        fontSize: 15,
+                        fontWeight: "600",
+                        alignSelf: "flex-start",
+                        marginLeft: 22,
+                        marginTop: 35,
+                        fontFamily: "sans-serif-medium",
+                      }}
+                    >
+                      {element.Caption}
+                    </Text>
+                  </View>
+
+                  <View
+                    style={{
+                      marginTop: 20,
+                    }}
+                  />
+                </View>
+              </>
+            )
           })
-        )}
+        }
+          {/* Load More button */}
+           <View>
+             <TouchableOpacity
+               style={styles.loadMore}
+               onPress={() => {
+                  setDATA_LENGTH(DATA_LENGTH + 20);
+                  getNewsFeed(DATA_LENGTH);
+                }}
+              >
+                <Text style={styles.loadMoreText}>Load More</Text>
+              </TouchableOpacity>
+            </View>
       </ScrollView>
     </View>
   );
@@ -398,6 +494,11 @@ const styles = StyleSheet.create({
   postImg: {
     width: Dimensions.get("window").width,
     height: Dimensions.get("window").height / 1.55,
+    alignSelf: "center",
+  },
+  news_postImg: {
+    width: Dimensions.get("window").width,
+    height: Dimensions.get("window").height / 2.7,
     alignSelf: "center",
   },
   UserName: {
@@ -464,4 +565,24 @@ const styles = StyleSheet.create({
     width: 35,
     height: 35,
   },
+  loadMore: {
+    width: Dimensions.get("window").width / 3,
+    height: Dimensions.get("window").height / 20,
+    backgroundColor: "dodgerblue",
+    borderRadius: 20,
+    marginTop: 10,
+    marginBottom: Dimensions.get("window").width / 2.5,
+    alignSelf: "center",
+    textAlign: "center",
+    alignItems: "center",
+    justifyContent: "center",
+    elevation: 12,
+  },
+  loadMoreText: {
+    fontSize: 15,
+    fontWeight: "bold",
+    alignSelf: "center",
+    fontFamily: "sans-serif-medium",
+    color: "#fff",
+  }
 });

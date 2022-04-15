@@ -70,6 +70,7 @@
     "react-native-web": "^0.17.1",
     "react-native-webview": "^11.13.0",
     "react-navigation-animated-switch": "^0.6.4",
+    "shorthash": "^0.0.2",
     "undefined": "react-native-masked-view\\masked-view"
   },
   "devDependencies": {
