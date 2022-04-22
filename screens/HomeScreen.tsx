@@ -4,13 +4,13 @@ import {
   Text,
   StyleSheet,
   Dimensions,
-  ScrollView,
   Image,
   TouchableWithoutFeedback,
   TouchableOpacity,
-  RefreshControl,
   Share,
-  Linking
+  Linking,
+  FlatList,
+  Animated,
 } from "react-native";
 import Header from "./Header";
 import LottieView from "lottie-react-native";
@@ -19,11 +19,11 @@ import NetInfo from "@react-native-community/netinfo";
 import Tab_Bar_Color_Context from "../context/tab_bar_color/Tab_Bar_Color_Context";
 import Like4 from "../components/Like4";
 import LongVideo from "./LongVideo";
-import CacheImage from "../components/CacheImage";
 
 const wait = (timeout: number): Promise<unknown> => {
   return new Promise((resolve) => setTimeout(resolve, timeout));
 };
+
 
 interface IState {
   UserData: {
@@ -32,7 +32,7 @@ interface IState {
     UserName: string;
     Type: string;
     ImgPath: string;
-    Post_ID: string;
+    Post_ID: string; 
     Caption?: string;
     Timestamp: string;
   }[]
@@ -61,6 +61,7 @@ const HomeScreen = ({ navigation, userID, userName }: HomeScreen_Props) => {
   const myUserID: string = userID;
   const tab_bar_color = useContext<any>(Tab_Bar_Color_Context);
   const [DATA_LENGTH, setDATA_LENGTH] = useState<number>(20);
+  const [loading2, setLoading2] = useState<boolean>(true);
 
   const CreateTimeStamp = (time_stamp: string | null): string => {
     if (time_stamp != null) {
@@ -139,6 +140,7 @@ const HomeScreen = ({ navigation, userID, userName }: HomeScreen_Props) => {
       alert(error.message);
     }
   };
+  
 
   // Linking.openURL("https://play.google.com/store/apps/details?id=com.ankeshkumar.Ampplex");
 
@@ -150,46 +152,241 @@ const HomeScreen = ({ navigation, userID, userName }: HomeScreen_Props) => {
     setConnectedToInternet(connected);
   };
 
-  const getPostInfo = () : void => {
-    const url: string = "https://ampplex-backened.herokuapp.com/GetPostJson/";
-
-    fetch(url)
-      .then((response) => {
-        return response.json();
-      })
-      .then((data) => {
-        setResponse(data);
-        setLoading(false);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  };
-
   const getNewsFeed = async (DATA_LENGTH: number): Promise<void>  => {
-    const url = `https://ampplex-backened.herokuapp.com/GetNewsFeed/${DATA_LENGTH}`;
 
+    const url = `https://ampplex-backened.herokuapp.com/GetNewsFeed/${DATA_LENGTH}`;
+    setLoading2(true);
     await fetch(url)
     .then((response) => {
       return response.json();
     })
     .then((data) => {
-      setNewsData(data);
+      setNewsData(newsData.concat(data));
+      setLoading2(false);
     })
     .catch((error) => {
       console.log(error);
     });
   }
 
-  const onRefresh = React.useCallback((): void => {
+
+  const renderItem_news = ({item , index}) => {
+    return (
+      <>
+      {item.Type === 'News' ? (
+
+      <View style={styles.postView} key={index}>
+        <View>
+            <Image
+              style={styles.profilePicture}
+            source={require("../assets/images/default_profile_picture.png")}
+          />
+          </View>
+          <TouchableOpacity
+            style={styles.UserNameContainer}
+          >
+            <Text style={styles.UserName}>Ampplex News</Text>
+          </TouchableOpacity>
+        
+            <>
+              <TouchableWithoutFeedback>
+                <Image
+                  source={{
+                    uri: item.ImgPath
+                  }}
+                  style={styles.news_postImg}
+                />
+              </TouchableWithoutFeedback>
+            </>
+
+          <View>
+            <Text
+              key={index}
+              style={{
+                fontSize: 15,
+                fontWeight: "600",
+                alignSelf: "flex-start",
+                marginLeft: 22,
+                marginTop: 35,
+                fontFamily: "sans-serif-medium",
+              }}
+            >
+              {item.Caption}
+            </Text>
+          </View>
+
+          <View
+            style={{
+              marginTop: 20,
+            }}
+          />
+        </View>
+      ): 
+
+      // User Posts
+      <View style={styles.postView} key={index}>
+      <View>
+        {/*Profile Picture*/}
+        {item.profilePicPath != "null" ? (
+          <Image
+            style={styles.profilePicture}
+            source={{
+              uri: item.profilePicPath,
+            }}
+          />
+        ) : (
+          <Image
+            style={styles.profilePicture}
+            source={require("../assets/images/default_profile_picture.png")}
+          />
+        )}
+      </View>
+      <TouchableOpacity
+        style={styles.UserNameContainer}
+        onPress={() => {
+          const clickedUserID: string = item.UserID;
+          const clickedUserName: string = item.UserName;
+          const myUserId = userID;
+          navigation.navigate("UserProfile", {
+            clickedUserID,
+            clickedUserName,
+            myUserId,
+          });
+        }}
+      >
+        <Text style={styles.UserName}>{item.UserName}</Text>
+      </TouchableOpacity>
+      {item.Type == "Image" ? (
+        <>
+          <TouchableWithoutFeedback>
+            <Image
+              importantForAccessibility={"yes"}
+              source={{
+                uri: item.ImgPath,
+              }}
+              style={styles.postImg}
+            />
+          </TouchableWithoutFeedback>
+          <Like
+            postID={item.Post_ID}
+            myUserId={userID}
+            pressedUserID={item.UserID}
+          />
+        </>
+      ) : (
+        <>
+          <LongVideo
+            imgPath={item.ImgPath}
+            caption={item.Caption}
+            postID={item.Post_ID}
+            userID={item.UserID}
+            timestamp={item.Timestamp}
+            myUserId={userID}
+            navigation={navigation}
+            userName={userName}
+          />
+          <Like4
+            postID={item.Post_ID}
+            myUserId={userID}
+            pressedUserID={item.UserID}
+          />
+        </>
+      )}
+
+      <TouchableOpacity
+        key={index}
+        style={{
+          marginLeft: 90,
+          marginTop: -47,
+        }}
+        onPress={() => {
+          let clickedUserID = item.UserID;
+          let postID = item.Post_ID;
+          navigation.navigate("Comments", {
+            myUserID,
+            clickedUserID,
+            postID,
+          });
+        }}
+      >
+        <Image
+          style={styles.comment}
+          source={require("../Images/comment-icon.png")}
+        />
+      </TouchableOpacity>
+
+      {/* Share button */}
+      <TouchableOpacity
+        style={{
+          marginLeft: 150,
+          marginTop: -32,
+        }}
+        onPress={() => {
+          onShare();
+        }}
+      >
+        <Image
+          style={styles.share}
+          source={require("../assets/images/share-icon.png")}
+        />
+      </TouchableOpacity>
+
+      <View>
+        <Text
+          key={index}
+          style={{
+            fontSize: 15,
+            fontWeight: "600",
+            alignSelf: "flex-start",
+            marginLeft: 22,
+            marginTop: 35,
+            fontFamily: "sans-serif-medium",
+          }}
+        >
+          {item.Caption}
+        </Text>
+      </View>
+      <View>
+        <Text
+          key={index}
+          style={{
+            fontSize: 15,
+            fontWeight: "400",
+            alignSelf: "flex-start",
+            marginLeft: 22,
+            marginTop: 10,
+            fontFamily: "sans-serif-medium",
+            color: "#828282",
+          }}
+        >
+          {CreateTimeStamp(item.Timestamp)}
+        </Text>
+      </View>
+      <View
+        style={{
+          marginTop: 20,
+        }}
+      />
+    </View>
+  }</>
+)}
+
+  const onEndReached = () => {
+    if (!loading2) {
+      setDATA_LENGTH(DATA_LENGTH + 20);
+      console.log(DATA_LENGTH);
+      getNewsFeed(DATA_LENGTH);
+    }
+    setLoading2(true);
+  }
+
+  const onRefreshNews = React.useCallback((): void => {
     setRefreshing(true);
     wait(2000).then(() => setRefreshing(false));
-    getPostInfo();
     getNewsFeed(DATA_LENGTH);
   }, []);
 
   useEffect(() => {
-    getPostInfo(); // Calling the getPost API for retrieving user posts
     getNewsFeed(DATA_LENGTH);
   }, []);
 
@@ -202,271 +399,36 @@ const HomeScreen = ({ navigation, userID, userName }: HomeScreen_Props) => {
     <View style={styles.container}>
       <Header navigation={navigation} />
 
-      <ScrollView
-        refreshControl={
-          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-        }
-      >
-
-        {connectedToInternet == false ? (
-          <>
-            <Text
-              style={{
-                fontSize: 22,
-                fontWeight: "bold",
-                marginTop: 30,
-              }}
-            >
-              Not connected to internet !
-            </Text>
-            <View
-              style={{
-                alignSelf: "center",
-                marginTop: Dimensions.get("window").height / 2.5,
-              }}
-            >
-              <LottieView
-                style={styles.notConnectedToInternet}
-                source={require("../assets/lottie/no-internet.json")}
-                autoPlay
-                loop={true}
-              />
-            </View>
-          </>
-        ) : loading && connectedToInternet ? (
-          <View
-            style={{
-              alignSelf: "center",
-              marginTop: Dimensions.get("window").height / 2.5,
-            }}
-          >
+        {/* Rendering News feed */}
+        <FlatList
+        //code for optimization and load only visible items
+        initialNumToRender={8}
+        maxToRenderPerBatch={2}
+        onEndReachedThreshold={0.1}
+        onEndReached={onEndReached}
+        data={newsData}
+        renderItem={renderItem_news}
+        onRefresh={onRefreshNews}
+        refreshing={refreshing}
+        keyExtractor={(item, index) => index.toString()}
+        />
+      {loading2 ? (
+        <View style={{
+          flex: 1,
+          justifyContent: "center",
+          alignItems: "center",
+          marginTop: 22,
+          marginBottom: 22,
+        }}>
             <LottieView
-              style={styles.LoadingIndicator}
-              source={require("../assets/lottie/loading.json")}
+              style={styles.loading}
+              source={require("../assets/lottie/infinite_loading.json")}
               autoPlay
               loop={true}
             />
-          </View>
-        ) : (
-          response.map((element, index: number) => {
-            return (
-              <>
-                <View style={styles.postView} key={index}>
-                  <View>
-                    {/*Profile Picture*/}
-                    {element.profilePicPath != "null" ? (
-                      <Image
-                        style={styles.profilePicture}
-                        source={{
-                          uri: element.profilePicPath,
-                        }}
-                      />
-                    ) : (
-                      <Image
-                        style={styles.profilePicture}
-                        source={require("../assets/images/default_profile_picture.png")}
-                      />
-                    )}
-                  </View>
-                  <TouchableOpacity
-                    style={styles.UserNameContainer}
-                    onPress={() => {
-                      const clickedUserID: string = element.UserID;
-                      const clickedUserName: string = element.UserName;
-                      const myUserId = userID;
-                      navigation.navigate("UserProfile", {
-                        clickedUserID,
-                        clickedUserName,
-                        myUserId,
-                      });
-                    }}
-                  >
-                    <Text style={styles.UserName}>{element.UserName}</Text>
-                  </TouchableOpacity>
-                  {element.Type == "Image" ? (
-                    <>
-                      <TouchableWithoutFeedback>
-                        <Image
-                          importantForAccessibility={"yes"}
-                          source={{
-                            uri: element.ImgPath,
-                          }}
-                          style={styles.postImg}
-                        />
-                      </TouchableWithoutFeedback>
-                      <Like
-                        postID={element.Post_ID}
-                        myUserId={userID}
-                        pressedUserID={element.UserID}
-                      />
-                    </>
-                  ) : (
-                    <>
-                      <LongVideo
-                        imgPath={element.ImgPath}
-                        caption={element.Caption}
-                        postID={element.Post_ID}
-                        userID={element.UserID}
-                        timestamp={element.Timestamp}
-                        myUserId={userID}
-                        navigation={navigation}
-                        userName={userName}
-                      />
-                      <Like4
-                        postID={element.Post_ID}
-                        myUserId={userID}
-                        pressedUserID={element.UserID}
-                      />
-                    </>
-                  )}
+        </View>
+      ) : null}
 
-                  <TouchableOpacity
-                    key={index}
-                    style={{
-                      marginLeft: 90,
-                      marginTop: -47,
-                    }}
-                    onPress={() => {
-                      let clickedUserID = element.UserID;
-                      let postID = element.Post_ID;
-                      navigation.navigate("Comments", {
-                        myUserID,
-                        clickedUserID,
-                        postID,
-                      });
-                    }}
-                  >
-                    <Image
-                      style={styles.comment}
-                      source={require("../Images/comment-icon.png")}
-                    />
-                  </TouchableOpacity>
-
-                  {/* Share button */}
-                  <TouchableOpacity
-                    style={{
-                      marginLeft: 150,
-                      marginTop: -32,
-                    }}
-                    onPress={() => {
-                      onShare();
-                    }}
-                  >
-                    <Image
-                      style={styles.share}
-                      source={require("../assets/images/share-icon.png")}
-                    />
-                  </TouchableOpacity>
-
-                  <View>
-                    <Text
-                      key={index}
-                      style={{
-                        fontSize: 15,
-                        fontWeight: "600",
-                        alignSelf: "flex-start",
-                        marginLeft: 22,
-                        marginTop: 35,
-                        fontFamily: "sans-serif-medium",
-                      }}
-                    >
-                      {element.Caption}
-                    </Text>
-                  </View>
-                  <View>
-                    <Text
-                      key={index}
-                      style={{
-                        fontSize: 15,
-                        fontWeight: "400",
-                        alignSelf: "flex-start",
-                        marginLeft: 22,
-                        marginTop: 10,
-                        fontFamily: "sans-serif-medium",
-                        color: "#828282",
-                      }}
-                    >
-                      {CreateTimeStamp(element.Timestamp)}
-                    </Text>
-                  </View>
-                  <View
-                    style={{
-                      marginTop: 20,
-                    }}
-                  />
-                </View>
-              </>
-            );
-          }))
-        }
-
-      {
-          newsData.map((element, index: number) => {
-            return (
-              <>
-              <View style={styles.postView} key={index}>
-                  <View>
-                      <Image
-                        style={styles.profilePicture}
-                        source={require("../assets/images/default_profile_picture.png")}
-                      />
-                  </View>
-                  <TouchableOpacity
-                    style={styles.UserNameContainer}
-                  >
-                    <Text style={styles.UserName}>Ampplex News</Text>
-                  </TouchableOpacity>
-                
-                    <>
-                      <TouchableWithoutFeedback>
-                        <Image
-                          source={{
-                            uri: element.ImgPath
-                          }}
-                          style={styles.news_postImg}
-                        />
-                      </TouchableWithoutFeedback>
-                    </>
-
-                  <View>
-                    <Text
-                      key={index}
-                      style={{
-                        fontSize: 15,
-                        fontWeight: "600",
-                        alignSelf: "flex-start",
-                        marginLeft: 22,
-                        marginTop: 35,
-                        fontFamily: "sans-serif-medium",
-                      }}
-                    >
-                      {element.Caption}
-                    </Text>
-                  </View>
-
-                  <View
-                    style={{
-                      marginTop: 20,
-                    }}
-                  />
-                </View>
-              </>
-            )
-          })
-        }
-          {/* Load More button */}
-           <View>
-             <TouchableOpacity
-               style={styles.loadMore}
-               onPress={() => {
-                  setDATA_LENGTH(DATA_LENGTH + 20);
-                  getNewsFeed(DATA_LENGTH);
-                }}
-              >
-                <Text style={styles.loadMoreText}>Load More</Text>
-              </TouchableOpacity>
-            </View>
-      </ScrollView>
     </View>
   );
 };
@@ -537,7 +499,8 @@ const styles = StyleSheet.create({
   LoadingIndicator: {
     width: 120,
     height: 120,
-    marginTop: -10,
+    position: "absolute",
+    top: -10,
     alignItems: "center",
   },
   comment: {
@@ -584,5 +547,9 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     fontFamily: "sans-serif-medium",
     color: "#fff",
+  },
+  loading: {
+    width: 120,
+    height: 120,
   }
 });

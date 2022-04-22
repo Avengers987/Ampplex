@@ -146,6 +146,11 @@ export default function LoginScreen(props: any) {
   useEffect(() => {
     getData();
   }, []);
+  
+  useEffect(() => {
+    ErrorFlasher("Error: Please try again");
+  }, []);
+
 
   const storeData = async (value: string): Promise<void> => {
     // value take boolean type value
@@ -182,6 +187,7 @@ export default function LoginScreen(props: any) {
     ) {
       // If there is success response from the backened server then redirecting user to the home page
       setSuccessResp("green");
+
       setTimeout(() => {
         showMessage({
           message: "Success: Logined successfully!",
@@ -190,20 +196,21 @@ export default function LoginScreen(props: any) {
       }, 1000);
       setTimeout(() => {
         storeData("true");
-        let userID: string = userId;
-        props.navigation.replace("Home", { userID, UserName});
+        let user_id: string = userId;
+        props.navigation.replace("Category", { user_id });
         setEmail("");
         setPassword("");
       }, 1100);
     } else if (password.length < 8) {
-      setErrorMessage("Password length must be more than 8 characters");
+      setErrorMessage("Error: Password length must be more than 8 characters");
       ErrorFlasher(errorMessage);
     } else if (!email || !password) {
       // If user didn't filled the required details then showing error
-      setErrorMessage("Please enter you email and password to login!");
+      setErrorMessage("Error: Please enter you email and password to login!");
       ErrorFlasher(errorMessage);
     } else if (loginResponse === "error") {
-      setErrorMessage("Invalid email or password!");
+      // If user entered incorrect email or password then showing error
+      setErrorMessage("Error: Your email or password is incorrect!");
       ErrorFlasher(errorMessage);
     }
   };
@@ -242,9 +249,6 @@ export default function LoginScreen(props: any) {
   const [userId, setUserId] = useState<string>("");
 
   return (
-    <ScrollView keyboardShouldPersistTaps={"always"} contentContainerStyle={{
-      flex: 1,
-    }}>
     <View style={styles.container}>
 
         <View style={styles.AnimationContainer}>
@@ -253,7 +257,6 @@ export default function LoginScreen(props: any) {
             autoPlay={true}
             />
         </View>
-
         <View style={styles.card}>
 
             {/* background shape */}
@@ -307,7 +310,7 @@ export default function LoginScreen(props: any) {
                 onChangeText={(text) => setPassword(text)}
                 />
             </View>
-            
+
             {/* Error view */}
             <View>
                 <Text style={{
@@ -368,7 +371,6 @@ export default function LoginScreen(props: any) {
         ): null}
       <FlashMessage position="bottom" />
     </View>
-    </ScrollView>
   );
 }
 
@@ -431,5 +433,6 @@ positionForgotPasswordBtn: {
 loadingIndicator: {
     position: 'absolute',
     bottom: Dimensions.get('window').height * 0.13,
-},
+},  
+
 });

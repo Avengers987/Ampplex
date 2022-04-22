@@ -77,7 +77,8 @@ export default function OnboardingScreen({ navigation }) {
     storeData();
     if (value !== null) {
       // If user is already logined then navigating the user to the Home screen
-      navigation.replace("Login");
+      let validateLoggedOut = false;
+      navigation.replace("Login", { validateLoggedOut });
     } else if (value === null) {
     }
   }
