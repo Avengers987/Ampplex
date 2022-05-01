@@ -433,6 +433,5 @@ positionForgotPasswordBtn: {
 loadingIndicator: {
     position: 'absolute',
     bottom: Dimensions.get('window').height * 0.13,
-},  
-
+},
 });

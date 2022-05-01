@@ -75,7 +75,7 @@ const HomeScreen = ({ navigation, userID, userName }: HomeScreen_Props) => {
       const current_year: number = new Date().getFullYear();
       const current_month: string = new Date().toDateString().split(" ")[1];
       const current_date: number = new Date().getDate();
-  
+      
       enum months {
         Jan,
         Feb,

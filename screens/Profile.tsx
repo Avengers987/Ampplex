@@ -1,4 +1,4 @@
-import React, { useState, createRef, useEffect } from "react";
+import React, { useState, createRef, useEffect, useContext } from "react";
 import {
   View,
   Text,
@@ -20,6 +20,7 @@ import Like4 from "../components/Like4";
 import Like2 from "../components/Like2";
 import More from "../components/More";
 import LongVideo from "./LongVideo";
+import Logined_userID_Context from "../context/Logined_userID/Logined_userID_Context";
 
 interface Push_User_Data_To_RealTime_DB {
   (profilePicPath: string, userID: string)
@@ -63,7 +64,7 @@ const Push_User_Data_To_RealTime_DB: Push_User_Data_To_RealTime_DB = (profilePic
     });
 };
 
-const Profile = ({ userID, navigation, route }: Profile_Props) => {
+const Profile = ({ navigation, route }: Profile_Props) => {
   const [posts, SetPosts] = useState<number>(0);
   const [response, setResponse] = useState<IState["UserData"]>([]);
   const [profilePic, setProfilePicGallery] = useState<string | null>(null);
@@ -74,7 +75,9 @@ const Profile = ({ userID, navigation, route }: Profile_Props) => {
   const [userName, setUserName] = useState<string>("");
   const [bio, setBio] = useState<string>("");
   const [refreshing, setRefreshing] = useState<boolean>(false);
-
+  const Logined_userID = useContext<any>(Logined_userID_Context);
+  const userID: string = Logined_userID.userID;
+  
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
     wait(2000).then(() => setRefreshing(false));
@@ -101,9 +104,9 @@ const Profile = ({ userID, navigation, route }: Profile_Props) => {
       });
   };
 
-  if (userID == undefined) {
-    userID = route.params.userID;
-  }
+  // if (userID == undefined) {
+  //   userID = route.params.userID;
+  // }
 
   const getUserInfo = (): void => {
     const url: string = `https://ampplex-backened.herokuapp.com/getUserData/${userID}`;

@@ -303,9 +303,7 @@ export default function AddPost({ navigation, route, userID }) {
         <TouchableOpacity
           style={styles.postBtnStyle}
           onPress={() => {
-            if (userID != null || userID != undefined || userID != "") {
-              sendPostToCloudServer();
-            }
+            sendPostToCloudServer();
           }}
         >
           <LinearGradient
