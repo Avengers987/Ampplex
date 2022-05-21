@@ -17,11 +17,13 @@ import AddPost from "./AddPost";
 import ShortVideo from "./ShortVideo";
 import Icon from "react-native-vector-icons/Ionicons";
 import Tab_Bar_Color_Context from "../context/tab_bar_color/Tab_Bar_Color_Context";
+import Logined_userID_Context from "../context/Logined_userID/Logined_userID_Context";
 
 const Tab = createBottomTabNavigator();
 
 const Home = ({ navigation, route }) => {
   const tab_bar_color = useContext(Tab_Bar_Color_Context);
+  const Logined_userID = useContext(Logined_userID_Context);
 
   return (
     <>
@@ -36,7 +38,7 @@ const Home = ({ navigation, route }) => {
         <Tab.Screen
           name="AddPost"
           children={() => (
-            <AddPost userID={route.params.userID} navigation={navigation} />
+            <AddPost userID={Logined_userID.userID} navigation={navigation} />
           )}
           options={{
             tabBarLabel: "Add Post",
@@ -67,8 +69,8 @@ const Home = ({ navigation, route }) => {
           options={{
             tabBarLabel: "Home",
             tabBarIcon: ({ color, size }) => (
-              <Ionicons
-                name="home"
+              <MaterialCommunityIcons
+                name="home-outline"
                 color={color}
                 size={size}
                 style={{
@@ -114,7 +116,7 @@ const Home = ({ navigation, route }) => {
                   fontFamily: "sans-serif-medium",
                 }}
               >
-                <Icon name="md-images-outline" size={20} color={color} />
+                <MaterialCommunityIcons name="video" size={20} color={color} />
               </Text>
             ),
           }}
@@ -155,26 +157,5 @@ const styles = StyleSheet.create({
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
-  },
-  homeComponent: {
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-    marginTop: 30,
-  },
-  Profile: {
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  PostBtnStyle: {
-    backgroundColor: "#7b68ee",
-    width: 50,
-    height: 50,
-    borderRadius: 100,
-    position: "absolute",
-    bottom: 100,
-    alignSelf: "flex-end",
-    right: 25,
   },
 });

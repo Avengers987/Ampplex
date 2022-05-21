@@ -77,7 +77,7 @@ const Profile = ({ navigation, route }: Profile_Props) => {
   const [refreshing, setRefreshing] = useState<boolean>(false);
   const Logined_userID = useContext<any>(Logined_userID_Context);
   const userID: string = Logined_userID.userID;
-  
+
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
     wait(2000).then(() => setRefreshing(false));
@@ -89,10 +89,10 @@ const Profile = ({ navigation, route }: Profile_Props) => {
     getMyPosts();
   }, []);
 
-  const getUserName =  (): void => {
+  const getUserName = (): void => {
     const url: string = `https://ampplex-backened.herokuapp.com/getUserNameFromUserID/${userID}/`;
 
-     fetch(url)
+    fetch(url)
       .then((response) => {
         return response.json();
       })
@@ -286,7 +286,7 @@ const Profile = ({ navigation, route }: Profile_Props) => {
 
   const getFollowers = async (): Promise<void> => {
     const url: string = `https://ampplex-backened.herokuapp.com/GetFollower/${userID}/`;
-  
+
     await fetch(url)
       .then((response) => {
         return response.json();
@@ -534,21 +534,21 @@ const Profile = ({ navigation, route }: Profile_Props) => {
                   </Text>
                 </View>
                 <View>
-                    <Text
-                      key={index}
-                      style={{
-                        fontSize: 15,
-                        fontWeight: "400",
-                        alignSelf: "flex-start",
-                        marginLeft: 22,
-                        marginTop: 10,
-                        fontFamily: "sans-serif-medium",
-                        color: "#828282",
-                      }}
-                    >
-                      {CreateTimeStamp(element.Timestamp)}
-                    </Text>
-                  </View>
+                  <Text
+                    key={index}
+                    style={{
+                      fontSize: 15,
+                      fontWeight: "400",
+                      alignSelf: "flex-start",
+                      marginLeft: 22,
+                      marginTop: 10,
+                      fontFamily: "sans-serif-medium",
+                      color: "#828282",
+                    }}
+                  >
+                    {CreateTimeStamp(element.Timestamp)}
+                  </Text>
+                </View>
                 <View
                   style={{
                     marginTop: 70,

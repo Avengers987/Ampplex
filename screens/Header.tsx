@@ -43,7 +43,7 @@ const Header = ({ navigation }: any) => {
   return (
     <>
       <View style={styles.container}>
-        <Menu navigation={navigation} />
+        {/* <Menu navigation={navigation} /> */}
         <View
           style={{
             borderRadius: 100,
@@ -54,7 +54,7 @@ const Header = ({ navigation }: any) => {
               fontWeight: "bold",
               fontSize: 35,
               transform: [{ rotate: "180deg" }],
-              elevation: 0,
+              elevation: 30,
               borderRadius: 100,
               position: "absolute",
               top: -20,
@@ -76,6 +76,8 @@ const Header = ({ navigation }: any) => {
           </Text>
         </View>
         
+        {/* <Menu navigation={navigation} /> */}
+        
         <TouchableOpacity
           style={styles.positionNotification}
           onPress={() => navigation.navigate("Notification")}
@@ -92,6 +94,7 @@ const Header = ({ navigation }: any) => {
           )
           : <View/>}
         </TouchableOpacity>
+
       </View>
     </>
   );

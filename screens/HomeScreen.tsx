@@ -19,6 +19,14 @@ import NetInfo from "@react-native-community/netinfo";
 import Tab_Bar_Color_Context from "../context/tab_bar_color/Tab_Bar_Color_Context";
 import Like4 from "../components/Like4";
 import LongVideo from "./LongVideo";
+import NativeAdView, {
+  AdMobBanner,
+  AdMobInterstitial,
+  PublisherBanner,
+  AdMobRewarded,
+  setTestDeviceIDAsync,
+} from "expo-ads-admob";
+
 
 const wait = (timeout: number): Promise<unknown> => {
   return new Promise((resolve) => setTimeout(resolve, timeout));
@@ -62,6 +70,11 @@ const HomeScreen = ({ navigation, userID, userName }: HomeScreen_Props) => {
   const tab_bar_color = useContext<any>(Tab_Bar_Color_Context);
   const [DATA_LENGTH, setDATA_LENGTH] = useState<number>(20);
   const [loading2, setLoading2] = useState<boolean>(true);
+
+
+  const bannerError = (e: string): void => {
+    alert(e);
+  };
 
   const CreateTimeStamp = (time_stamp: string | null): string => {
     if (time_stamp != null) {
@@ -169,6 +182,15 @@ const HomeScreen = ({ navigation, userID, userName }: HomeScreen_Props) => {
     });
   }
 
+  const requestAdAsync = async () => {
+    await AdMobRewarded.setAdUnitID('ca-app-pub-8852518316504151/8745346338'); // Test ID, Replace with your-admob-unit-id
+    await AdMobRewarded.requestAdAsync();
+    await AdMobRewarded.showAdAsync();
+  };
+
+  // setTimeout(() => {
+  //   requestAdAsync();
+  // }, 60000);
 
   const renderItem_news = ({item , index}) => {
     return (
@@ -395,6 +417,7 @@ const HomeScreen = ({ navigation, userID, userName }: HomeScreen_Props) => {
     ConnectedToInternet();
   }, 7000);
 
+  
   return (
     <View style={styles.container}>
       <Header navigation={navigation} />
@@ -418,7 +441,7 @@ const HomeScreen = ({ navigation, userID, userName }: HomeScreen_Props) => {
           justifyContent: "center",
           alignItems: "center",
           marginTop: 22,
-          marginBottom: 22,
+          marginBottom: 75,
         }}>
             <LottieView
               style={styles.loading}
@@ -428,7 +451,16 @@ const HomeScreen = ({ navigation, userID, userName }: HomeScreen_Props) => {
             />
         </View>
       ) : null}
+      
+      <View style={styles.AdMobBannerStyle}>
+        
+        <AdMobBanner
+          adUnitID="ca-app-pub-8852518316504151/6772954967"
+          bannerSize="banner"
+          onDidFailToReceiveAdWithError={(err) => bannerError(err)}
+        />
 
+      </View>
     </View>
   );
 };
@@ -551,5 +583,10 @@ const styles = StyleSheet.create({
   loading: {
     width: 120,
     height: 120,
+  },
+  AdMobBannerStyle: {
+    position: "absolute",
+    bottom: 0,
+    alignSelf: "center",
   }
 });

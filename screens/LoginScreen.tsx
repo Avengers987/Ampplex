@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import {
   StyleSheet,
   Text,
@@ -15,6 +15,7 @@ import FlashMessage from "react-native-flash-message";
 import { showMessage } from "react-native-flash-message";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import LottieView from 'lottie-react-native';
+import Logined_userID_Context from "../context/Logined_userID/Logined_userID_Context";
 
 const ErrorFlasher = (msg: string): void => {
   showMessage({
@@ -23,125 +24,16 @@ const ErrorFlasher = (msg: string): void => {
   });
 };
 
-
-const Cryptography_Encrypt = (text: string): string => {
-  const alpha: object = {
-    a: 2073,
-    b: 2076,
-    c: 2079,
-    d: 2082,
-    e: 2085,
-    f: 2088,
-    g: 2091,
-    h: 2094,
-    i: 2097,
-    j: 2100,
-    k: 2103,
-    l: 2106,
-    m: 2109,
-    n: 2112,
-    o: 2115,
-    p: 2118,
-    q: 2121,
-    r: 2124,
-    s: 2127,
-    t: 2130,
-    u: 2133,
-    v: 2136,
-    w: 2139,
-    x: 2142,
-    y: 2145,
-    z: 2148,
-    " ": 2151,
-    1: 234,
-    2: 89,
-    3: 45,
-    4: 1095,
-    5: 77,
-    6: 12,
-    7: 61,
-    8: 55,
-    9: 23,
-    0: 22,
-    "`": 1288,
-    "~`": 226096,
-    "!": 33,
-    "@": 44,
-    "#": 59,
-    $: 66,
-    "%": 7754,
-    "^": 88,
-    "&": 99,
-    "*": 401,
-    "(": 402,
-    ")": 403,
-    "-": 404,
-    _: "405",
-    "=": 406,
-    "+": 407,
-    "[": 408,
-    "]": 409,
-    "{": 410,
-    "}": 411,
-    "\\": 412,
-    "|": 413,
-    ";": 414,
-    ":": 415,
-    "'": 416,
-    '"': 417,
-    ",": 418,
-    ".": 419,
-    "/": 420,
-    "?": 422,
-    A: 630,
-    B: 632,
-    C: 634,
-    D: 636,
-    E: "638",
-    F: 640,
-    G: 642,
-    H: 644,
-    I: 646,
-    J: 648,
-    K: 650,
-    L: 652,
-    M: 654,
-    N: 656,
-    O: 658,
-    P: 660,
-    Q: 662,
-    R: 664,
-    S: 666,
-    T: 668,
-    U: 670,
-    V: 672,
-    W: 674,
-    X: 676,
-    Y: 678,
-    Z: 680,
-  };
-
-  let encryptedTxt: string = "";
-  let firstTime: boolean = true;
-
-  const text_Arr: string[] = text.split("");
-
-  text_Arr.forEach((e) => {
-    if (firstTime) {
-      encryptedTxt += alpha[e];
-      firstTime = false;
-    } else {
-      encryptedTxt += " ";
-      encryptedTxt += alpha[e];
-    }
-  });
-
-  return encryptedTxt;
-};
-
 export default function LoginScreen(props: any) {
   const [loading, setLoading] = useState<boolean>(false);
   const [success_resp, setSuccessResp] = useState<string>("red");
+  const [email, setEmail] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
+  const [loginResponse, setLoginResponse] = useState<string>("");
+  const [errorMessage, setErrorMessage] = useState<string>("");
+  const [UserName, setUserName] = useState<string | void>("");
+  const [userId, setUserId] = useState<string>("");
+  const Logined_userID: any = useContext(Logined_userID_Context);
 
   useEffect(() => {
     getData();
@@ -167,10 +59,12 @@ export default function LoginScreen(props: any) {
     try {
       const value = await AsyncStorage.removeItem("isLogined_Boolean");
       const userName = await AsyncStorage.removeItem("user_name");
-      const user_id = await AsyncStorage.removeItem("user_id");
+      const userID = await AsyncStorage.removeItem("user_id");
 
-      if (value !== null && userName !== null && user_id !== null) {
-        props.navigation.replace("Category", { user_id, userName });
+      setUserName(userName);
+
+      if (value !== null && userName !== null && userID !== null) {
+        props.navigation.Home("Home", { userID, userName });
       }
     } catch (e) {
       // error reading value
@@ -196,8 +90,11 @@ export default function LoginScreen(props: any) {
       }, 1000);
       setTimeout(() => {
         storeData("true");
-        let user_id: string = userId;
-        props.navigation.replace("Category", { user_id });
+        let userID: string = userId;
+        let userName: string | void = UserName;
+        Logined_userID.changeLoginedUserID(userID);
+        props.navigation.replace("Home", { userID, userName });
+        
         setEmail("");
         setPassword("");
       }, 1100);
@@ -213,6 +110,121 @@ export default function LoginScreen(props: any) {
       setErrorMessage("Error: Your email or password is incorrect!");
       ErrorFlasher(errorMessage);
     }
+  };
+
+  const Cryptography_Encrypt = (text: string): string => {
+    const alpha: object = {
+      a: 2073,
+      b: 2076,
+      c: 2079,
+      d: 2082,
+      e: 2085,
+      f: 2088,
+      g: 2091,
+      h: 2094,
+      i: 2097,
+      j: 2100,
+      k: 2103,
+      l: 2106,
+      m: 2109,
+      n: 2112,
+      o: 2115,
+      p: 2118,
+      q: 2121,
+      r: 2124,
+      s: 2127,
+      t: 2130,
+      u: 2133,
+      v: 2136,
+      w: 2139,
+      x: 2142,
+      y: 2145,
+      z: 2148,
+      " ": 2151,
+      1: 234,
+      2: 89,
+      3: 45,
+      4: 1095,
+      5: 77,
+      6: 12,
+      7: 61,
+      8: 55,
+      9: 23,
+      0: 22,
+      "`": 1288,
+      "~`": 226096,
+      "!": 33,
+      "@": 44,
+      "#": 59,
+      $: 66,
+      "%": 7754,
+      "^": 88,
+      "&": 99,
+      "*": 401,
+      "(": 402,
+      ")": 403,
+      "-": 404,
+      _: "405",
+      "=": 406,
+      "+": 407,
+      "[": 408,
+      "]": 409,
+      "{": 410,
+      "}": 411,
+      "\\": 412,
+      "|": 413,
+      ";": 414,
+      ":": 415,
+      "'": 416,
+      '"': 417,
+      ",": 418,
+      ".": 419,
+      "/": 420,
+      "?": 422,
+      A: 630,
+      B: 632,
+      C: 634,
+      D: 636,
+      E: "638",
+      F: 640,
+      G: 642,
+      H: 644,
+      I: 646,
+      J: 648,
+      K: 650,
+      L: 652,
+      M: 654,
+      N: 656,
+      O: 658,
+      P: 660,
+      Q: 662,
+      R: 664,
+      S: 666,
+      T: 668,
+      U: 670,
+      V: 672,
+      W: 674,
+      X: 676,
+      Y: 678,
+      Z: 680,
+    };
+  
+    let encryptedTxt: string = "";
+    let firstTime: boolean = true;
+  
+    const text_Arr: string[] = text.split("");
+  
+    text_Arr.forEach((e) => {
+      if (firstTime) {
+        encryptedTxt += alpha[e];
+        firstTime = false;
+      } else {
+        encryptedTxt += " ";
+        encryptedTxt += alpha[e];
+      }
+    });
+  
+    return encryptedTxt;
   };
 
   const Login = (email: string, password: string): void => {
@@ -241,12 +253,6 @@ export default function LoginScreen(props: any) {
     }
   };
 
-  const [email, setEmail] = useState<string>("");
-  const [password, setPassword] = useState<string>("");
-  const [loginResponse, setLoginResponse] = useState<string>("");
-  const [errorMessage, setErrorMessage] = useState<string>("");
-  const [UserName, setUserName] = useState<string>("");
-  const [userId, setUserId] = useState<string>("");
 
   return (
     <View style={styles.container}>

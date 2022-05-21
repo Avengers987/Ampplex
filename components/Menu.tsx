@@ -58,7 +58,7 @@ const Menu = ({ navigation }) => {
             width: Dimensions.get("window").width / 1.5,
             height: Dimensions.get("window").height,
             left: -Dimensions.get("window").width / 2,
-            elevation: 12,
+            elevation: 20,
             borderTopRightRadius: 30,
             borderBottomRightRadius: 30,
             top: -30,

@@ -35,13 +35,6 @@ import Assignments from "../screens/Assignment";
 import PostView from "../screens/PostView";
 import Terms_and_Conditions from "../screens/Terms_and_Conditions";
 
-import {
-  AdMobBanner,
-  AdMobInterstitial,
-  PublisherBanner,
-  AdMobRewarded,
-} from "react-native-admob";
-
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 
 // Till Now Ampplex is made up of 2,018 lines of code!
@@ -83,22 +76,8 @@ const closeConfig = {
 export default function App() {
   const Stack = createStackNavigator();
 
-  // useEffect(() => {
-  //   // Display a DFP Publisher banner
-  //   // Display an interstitial
-  //   AdMobInterstitial.setAdUnitID("ca-app-pub-3940256099942544/1033173712");
-  //   AdMobInterstitial.setTestDevices([AdMobInterstitial.simulatorId]);
-  //   AdMobInterstitial.requestAd().then(() => AdMobInterstitial.showAd());
-  // }, []);
-
   return (
     <>
-      {/* <AdMobBanner
-        adSize="fullBanner"
-        adUnitID="ca-app-pub-3940256099942544/6300978111"
-        testDevices={[AdMobBanner.simulatorId]}
-        onAdFailedToLoad={(error) => console.error(error)}
-      /> */}
       <Logined_userID_State>
         <Comment_State>
           <Tab_Bar_Color_State>

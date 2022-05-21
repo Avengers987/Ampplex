@@ -23,6 +23,7 @@ import Modal from "react-native-modal";
 import ActionSheet from "react-native-actions-sheet";
 import LottieView from "lottie-react-native";
 import { LinearGradient } from "expo-linear-gradient";
+import { MaterialCommunityIcons, Ionicons } from "@expo/vector-icons";
 
 const Push_User_Data_To_RealTime_DB = (
   imgPath,
@@ -373,7 +374,12 @@ export default function AddPost({ navigation, route, userID }) {
               pickImage();
             }}
           >
-            <Icon name="md-images-outline" style={styles.actionButtonIcon} />
+            <MaterialCommunityIcons
+              name="video-outline"
+              size={17}
+              color={"grey"}
+              style={styles.actionButtonIcon}
+            />
           </ActionButton.Item>
           <ActionButton.Item
             buttonColor="#fafafa"
@@ -477,6 +483,8 @@ const styles = StyleSheet.create({
     paddingLeft: 20,
     paddingRight: 20,
     elevation: 20,
+    shadowColor: "blue",
+    shadowRadius: 20,
   },
   postBtnStyle: {
     width: 120,
@@ -524,5 +532,9 @@ const styles = StyleSheet.create({
     position: "absolute",
     top: getWindowDimensionsHeight() * 0.09,
     right: getWindowDimensionsWidth() * 0.02,
+  },
+  actionButtonIcon: {
+    width: 17,
+    height: 17,
   },
 });

@@ -5,9 +5,9 @@ import Logined_userID_Context from "../context/Logined_userID/Logined_userID_Con
 import { LinearGradient } from 'expo-linear-gradient';
 
 const StartScreen = ({ navigation }: any) => {
-  const logoOpacity: any = new Animated.Value(0);
+  const logoOpacity: Animated.Value = new Animated.Value(0);
   const Logined_userID: any = useContext(Logined_userID_Context);
-  let borderRadius: Animated.Value = new Animated.Value(10)
+  const borderRadius: Animated.Value = new Animated.Value(10)
 
   useEffect(() => {
     Animated.timing(logoOpacity, {

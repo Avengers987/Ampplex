@@ -427,6 +427,8 @@ const EditProfile = ({ route }) => {
         </KeyboardAvoidingView>
       </View>
 
+      {/* Submit Button */}
+
       <TouchableOpacity
         style={styles.submitBtn}
         onPress={() => onSubmitHandler_EditProfile()}
@@ -441,6 +443,36 @@ const EditProfile = ({ route }) => {
           }}
         >
           Submit
+        </Text>
+      </TouchableOpacity>
+
+      {/* Break Point */}
+      <View
+        style={{
+          height: 1,
+          width: "60%",
+          alignSelf: "center",
+          position: "absolute",
+          top: Dimensions.get("window").height * 0.746,
+          backgroundColor: "lightgrey",
+        }}
+      />
+
+      {/* Logout Button */}
+
+      <TouchableOpacity
+        style={styles.LogoutBtn}
+        onPress={() => navigation.replace("Login")}
+      >
+        <Text
+          style={{
+            fontSize: 16,
+            fontFamily: "sans-serif-medium",
+            color: "red",
+            alignSelf: "center",
+          }}
+        >
+          Logout
         </Text>
       </TouchableOpacity>
 
@@ -464,7 +496,9 @@ const EditProfile = ({ route }) => {
           >
             Edit Profile Picture
           </Text>
+
           {/* Take Picture from camera */}
+
           <TouchableOpacity
             onPress={() => {
               navigation.navigate("TakePic", { navParent: "Profile", userID });
@@ -552,5 +586,13 @@ const styles = StyleSheet.create({
     position: "absolute",
     top: 500,
     elevation: 12,
+  },
+  LogoutBtn: {
+    width: "40%",
+    height: "7%",
+    borderRadius: 15,
+    paddingTop: 5,
+    position: "absolute",
+    top: 600,
   },
 });

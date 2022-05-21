@@ -5,7 +5,7 @@
     "name": "Ampplex",
     "slug": "Ampplex",
     "icon": "./assets/images/App-Icon/icon_JpG_icon.png",
-    "version": "12",
+    "version": "13",
     "splash": {
       "image": "./assets/images/start_screen.png"
     },
@@ -16,10 +16,16 @@
     "description": "",
     "android": {
       "package": "com.ankeshkumar.Ampplex",
-      "versionCode": 12
+      "config": {
+        "googleMobileAdsAppId": "ca-app-pub-8852518316504151~9750440272"
+      },
+      "versionCode": 13
     },
     "ios": {
-      "bundleIdentifier": "com.ankeshkumar.Ampplex"
+      "bundleIdentifier": "com.ankeshkumar.Ampplex",
+      "config": {
+        "googleMobileAdsAppId": "ca-app-pub-8852518316504151~9750440272"
+      }
     }
   }
 }

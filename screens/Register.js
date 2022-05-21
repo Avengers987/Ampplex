@@ -136,6 +136,8 @@ const Cryptography_Encrypt = (text) => {
 };
 
 export default function Register(props) {
+  const [boxColour, setBoxColour] = useState("white");
+
   const SignUp = (username, email, password) => {
     const url = `https://ampplex-backened.herokuapp.com/SignUp/${username}/${email}/${Cryptography_Encrypt(
       password.trim()
@@ -253,6 +255,39 @@ export default function Register(props) {
               top: Dimensions.get("window").height * 0.75,
             }}
           />
+          {/* Terms and conditions */}
+          <View>
+            {/* Accept check box */}
+            <TouchableOpacity
+              style={styles.OuterBox}
+              onPress={() => {
+                if (boxColour === "white") {
+                  setBoxColour("dodgerblue");
+                } else {
+                  setBoxColour("white");
+                }
+              }}
+            >
+              <View
+                style={{
+                  width: 19,
+                  height: 19,
+                  backgroundColor: boxColour,
+                  position: "absolute",
+                  alignSelf: "center",
+                  borderRadius: 3,
+                }}
+              ></View>
+            </TouchableOpacity>
+
+            <Text style={styles.Terms}>I agree to the</Text>
+            <TouchableOpacity
+              onPress={() => props.navigation.navigate("Terms and Conditions")}
+              style={styles.TermsLinkView}
+            >
+              <Text style={styles.TermsLink}>terms and conditions</Text>
+            </TouchableOpacity>
+          </View>
           <Text style={styles.Terms}>I agree to the</Text>
           <TouchableOpacity
             onPress={() => props.navigation.navigate("Terms and Conditions")}
@@ -398,7 +433,7 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     fontFamily: "sans-serif-medium",
     alignSelf: "flex-start",
-    marginLeft: Dimensions.get("window").width * 0.11,
+    marginLeft: Dimensions.get("window").width * 0.2,
     position: "absolute",
     top: Dimensions.get("window").height * 0.71,
   },
@@ -419,7 +454,18 @@ const styles = StyleSheet.create({
     alignItems: "center",
     alignSelf: "flex-end",
     position: "absolute",
-    top: Dimensions.get("window").height * 0.695,
-    right: Dimensions.get("window").width * 0.21,
+    top: Dimensions.get("window").height * 0.697,
+    right: Dimensions.get("window").width * 0.15,
+  },
+  OuterBox: {
+    width: 25,
+    height: 25,
+    backgroundColor: "grey",
+    borderRadius: 3,
+    position: "absolute",
+    top: Dimensions.get("window").height * 0.15,
+    left: Dimensions.get("window").width * 0.1,
+    alignItems: "center",
+    justifyContent: "center",
   },
 });
