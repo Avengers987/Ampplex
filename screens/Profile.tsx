@@ -1,4 +1,4 @@
-import React, { useState, createRef, useEffect } from "react";
+import React, { useState, createRef, useEffect, useContext } from "react";
 import {
   View,
   Text,
@@ -20,6 +20,7 @@ import Like4 from "../components/Like4";
 import Like2 from "../components/Like2";
 import More from "../components/More";
 import LongVideo from "./LongVideo";
+import Logined_userID_Context from "../context/Logined_userID/Logined_userID_Context";
 
 interface Push_User_Data_To_RealTime_DB {
   (profilePicPath: string, userID: string)
@@ -63,7 +64,7 @@ const Push_User_Data_To_RealTime_DB: Push_User_Data_To_RealTime_DB = (profilePic
     });
 };
 
-const Profile = ({ userID, navigation, route }: Profile_Props) => {
+const Profile = ({ navigation, route }: Profile_Props) => {
   const [posts, SetPosts] = useState<number>(0);
   const [response, setResponse] = useState<IState["UserData"]>([]);
   const [profilePic, setProfilePicGallery] = useState<string | null>(null);
@@ -74,6 +75,8 @@ const Profile = ({ userID, navigation, route }: Profile_Props) => {
   const [userName, setUserName] = useState<string>("");
   const [bio, setBio] = useState<string>("");
   const [refreshing, setRefreshing] = useState<boolean>(false);
+  const Logined_userID = useContext<any>(Logined_userID_Context);
+  const userID: string = Logined_userID.userID;
 
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
@@ -86,10 +89,10 @@ const Profile = ({ userID, navigation, route }: Profile_Props) => {
     getMyPosts();
   }, []);
 
-  const getUserName = async (): Promise<void> => {
+  const getUserName = (): void => {
     const url: string = `https://ampplex-backened.herokuapp.com/getUserNameFromUserID/${userID}/`;
 
-    await fetch(url)
+    fetch(url)
       .then((response) => {
         return response.json();
       })
@@ -101,13 +104,13 @@ const Profile = ({ userID, navigation, route }: Profile_Props) => {
       });
   };
 
-  if (userID == undefined) {
-    userID = route.params.userID;
-  }
+  // if (userID == undefined) {
+  //   userID = route.params.userID;
+  // }
 
-  const getUserInfo = async (): Promise<void> => {
+  const getUserInfo = (): void => {
     const url: string = `https://ampplex-backened.herokuapp.com/getUserData/${userID}`;
-    await fetch(url)
+    fetch(url)
       .then((response) => {
         return response.json();
       })
@@ -182,9 +185,9 @@ const Profile = ({ userID, navigation, route }: Profile_Props) => {
     }
   };
 
-  const getProfilePicture = async (): Promise<void> => {
+  const getProfilePicture = (): void => {
     const url: string = `https://ampplex-backened.herokuapp.com/getProfilePicture/${userID}`;
-    await fetch(url)
+    fetch(url)
       .then((response) => {
         return response.json();
       })
@@ -283,7 +286,7 @@ const Profile = ({ userID, navigation, route }: Profile_Props) => {
 
   const getFollowers = async (): Promise<void> => {
     const url: string = `https://ampplex-backened.herokuapp.com/GetFollower/${userID}/`;
-  
+
     await fetch(url)
       .then((response) => {
         return response.json();
@@ -531,21 +534,21 @@ const Profile = ({ userID, navigation, route }: Profile_Props) => {
                   </Text>
                 </View>
                 <View>
-                    <Text
-                      key={index}
-                      style={{
-                        fontSize: 15,
-                        fontWeight: "400",
-                        alignSelf: "flex-start",
-                        marginLeft: 22,
-                        marginTop: 10,
-                        fontFamily: "sans-serif-medium",
-                        color: "#828282",
-                      }}
-                    >
-                      {CreateTimeStamp(element.Timestamp)}
-                    </Text>
-                  </View>
+                  <Text
+                    key={index}
+                    style={{
+                      fontSize: 15,
+                      fontWeight: "400",
+                      alignSelf: "flex-start",
+                      marginLeft: 22,
+                      marginTop: 10,
+                      fontFamily: "sans-serif-medium",
+                      color: "#828282",
+                    }}
+                  >
+                    {CreateTimeStamp(element.Timestamp)}
+                  </Text>
+                </View>
                 <View
                   style={{
                     marginTop: 70,

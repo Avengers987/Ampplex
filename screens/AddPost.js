@@ -23,6 +23,7 @@ import Modal from "react-native-modal";
 import ActionSheet from "react-native-actions-sheet";
 import LottieView from "lottie-react-native";
 import { LinearGradient } from "expo-linear-gradient";
+import { MaterialCommunityIcons, Ionicons } from "@expo/vector-icons";
 
 const Push_User_Data_To_RealTime_DB = (
   imgPath,
@@ -35,31 +36,35 @@ const Push_User_Data_To_RealTime_DB = (
 
   // Generating unique postID
 
-  const date = new Date();
+  if (userID === null || userID === undefined || userID === "") {
+    alert("Some error occurred please restart the app");
+  } else {
+    const date = new Date();
 
-  const postID =
-    date.getMilliseconds() * date.getSeconds() +
-    Math.floor(Math.random() * 1000 + 2) *
-      Math.floor(Math.random() * 150000 + 100);
+    const postID =
+      date.getMilliseconds() * date.getSeconds() +
+      Math.floor(Math.random() * 1000 + 2) *
+        Math.floor(Math.random() * 150000 + 100);
 
-  firebase
-    .database()
-    .ref(`User/${userID}/Post/`)
-    .push({
-      imgPath,
-      caption,
-      timestamp,
-      type,
-      Likes,
-      postID,
-    })
-    .then((res) => {
-      console.log(`Success: ${res}`);
-      sendNotification(userID, postID, caption, timestamp);
-    })
-    .catch((error) => {
-      console.log(`Error: ${error}`);
-    });
+    firebase
+      .database()
+      .ref(`User/${userID}/Post/`)
+      .push({
+        imgPath,
+        caption,
+        timestamp,
+        type,
+        Likes,
+        postID,
+      })
+      .then((res) => {
+        console.log(`Success: ${res}`);
+        sendNotification(userID, postID, caption, timestamp);
+      })
+      .catch((error) => {
+        console.log(`Error: ${error}`);
+      });
+  }
 };
 
 const sendNotification = async (myUserID, postID, caption, PostTime) => {
@@ -92,7 +97,7 @@ require("firebase/firebase-storage");
 export default function AddPost({ navigation, route, userID }) {
   const [image, setImage] = useState(null);
   const [userId, setUserId] = useState(null);
-  const [postTxt, setPostTxt] = useState(null);
+  const [postTxt, setPostTxt] = useState("");
   const [posted, setPosted] = useState(null);
   const [uploadStatus, setUploadStatus] = useState(0);
   const [error, setError] = useState(false); // if true then user have not attached picture or video or not written caption
@@ -103,9 +108,9 @@ export default function AddPost({ navigation, route, userID }) {
   const [showTaskCompleteSheet, setShowTaskCompleteSheet] = useState(false);
   const actionSheetRef = createRef();
 
-  if (userID === undefined) {
-    userID = route.params.userID;
-  }
+  // if (userID === undefined || userID === null || userID === "") {
+  //   userID = route.params.userID;
+  // }
 
   setInterval(() => {
     if (showTaskCompleteSheet) {
@@ -190,7 +195,6 @@ export default function AddPost({ navigation, route, userID }) {
           },
           () => {
             // Handle successful uploads on complete
-            // For instance, get the download URL: https://firebasestorage.googleapis.com/...
             task.snapshot.ref.getDownloadURL().then((downloadURL) => {
               setIsModalVisible(false);
 
@@ -231,14 +235,12 @@ export default function AddPost({ navigation, route, userID }) {
         <View style={styles.container}>
           <View style={styles.PostInputView}>
             <TextInput
-              style={styles.PostInputStyle}
               placeholder="What's on your mind?"
+              onChangeText={(e) => setPostTxt(e)}
               maxLength={100}
               value={postTxt}
               autoFocus={autoFocus}
-              onChangeText={(e) => {
-                setPostTxt(e);
-              }}
+              style={styles.PostInputStyle}
             />
           </View>
         </View>
@@ -301,7 +303,9 @@ export default function AddPost({ navigation, route, userID }) {
 
         <TouchableOpacity
           style={styles.postBtnStyle}
-          onPress={sendPostToCloudServer}
+          onPress={() => {
+            sendPostToCloudServer();
+          }}
         >
           <LinearGradient
             colors={["#E125FF", "#5CD5FF", "#fff"]}
@@ -370,7 +374,12 @@ export default function AddPost({ navigation, route, userID }) {
               pickImage();
             }}
           >
-            <Icon name="md-images-outline" style={styles.actionButtonIcon} />
+            <MaterialCommunityIcons
+              name="video-outline"
+              size={17}
+              color={"grey"}
+              style={styles.actionButtonIcon}
+            />
           </ActionButton.Item>
           <ActionButton.Item
             buttonColor="#fafafa"
@@ -474,6 +483,8 @@ const styles = StyleSheet.create({
     paddingLeft: 20,
     paddingRight: 20,
     elevation: 20,
+    shadowColor: "blue",
+    shadowRadius: 20,
   },
   postBtnStyle: {
     width: 120,
@@ -521,5 +532,9 @@ const styles = StyleSheet.create({
     position: "absolute",
     top: getWindowDimensionsHeight() * 0.09,
     right: getWindowDimensionsWidth() * 0.02,
+  },
+  actionButtonIcon: {
+    width: 17,
+    height: 17,
   },
 });

@@ -87,7 +87,7 @@ const Add_Assignments = ({ route, navigation }: any) => {
   };
 
   return (
-    <ScrollView>
+    <ScrollView keyboardShouldPersistTaps={"always"}>
       <View style={styles.container}>
         <View style={styles.InnerBox}>
           <View style={styles.question}>

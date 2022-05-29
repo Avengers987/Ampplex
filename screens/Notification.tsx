@@ -108,6 +108,7 @@ const Notification = ({ navigation } : any) => {
   }, []);
 
   setInterval(() => {
+    // Fetching for new notifications every 5 seconds
     getNotifications();
   }, 5000);
 

@@ -1,8 +1,12 @@
 import { StatusBar } from "expo-status-bar";
 import React, { useEffect } from "react";
-import { StyleSheet, Text, View, SafeAreaView } from "react-native";
+import { StyleSheet, Text, View, SafeAreaView, Easing } from "react-native";
 import LoginScreen from "../screens/LoginScreen";
-import { createStackNavigator } from "@react-navigation/stack";
+import {
+  createStackNavigator,
+  TransitionPresets,
+  CardStyleInterpolators,
+} from "@react-navigation/stack";
 import { NavigationContainer } from "@react-navigation/native";
 import Register from "../screens/Register";
 import OnboardingScreen from "../screens/OnboardingScreen";
@@ -29,13 +33,7 @@ import Notification from "../screens/Notification";
 import Logined_userID_State from "../context/Logined_userID/Logined_userID_State";
 import Assignments from "../screens/Assignment";
 import PostView from "../screens/PostView";
-
-import {
-  AdMobBanner,
-  AdMobInterstitial,
-  PublisherBanner,
-  AdMobRewarded,
-} from "react-native-admob";
+import Terms_and_Conditions from "../screens/Terms_and_Conditions";
 
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 
@@ -55,25 +53,31 @@ if (firebase.apps.length === 0) {
   firebase.initializeApp(firebaseConfig);
 }
 
+const config = {
+  animation: "spring",
+  config: {
+    stiffness: 1000,
+    damping: 500,
+    mass: 3,
+    overshootClamping: false,
+    restDisplacementThreshold: 0.01,
+    restSpeedThreshold: 0.01,
+  },
+};
+
+const closeConfig = {
+  animation: "timing",
+  config: {
+    duration: 220,
+    easing: Easing.linear,
+  },
+};
+
 export default function App() {
   const Stack = createStackNavigator();
 
-  // useEffect(() => {
-  //   // Display a DFP Publisher banner
-  //   // Display an interstitial
-  //   AdMobInterstitial.setAdUnitID("ca-app-pub-3940256099942544/1033173712");
-  //   AdMobInterstitial.setTestDevices([AdMobInterstitial.simulatorId]);
-  //   AdMobInterstitial.requestAd().then(() => AdMobInterstitial.showAd());
-  // }, []);
-
   return (
     <>
-      {/* <AdMobBanner
-        adSize="fullBanner"
-        adUnitID="ca-app-pub-3940256099942544/6300978111"
-        testDevices={[AdMobBanner.simulatorId]}
-        onAdFailedToLoad={(error) => console.error(error)}
-      /> */}
       <Logined_userID_State>
         <Comment_State>
           <Tab_Bar_Color_State>
@@ -82,7 +86,17 @@ export default function App() {
               <Stack.Navigator
                 screenOptions={{
                   headerTitleAlign: "center",
+                  gestureEnabled: true,
+                  gestureDirection: "horizontal",
+                  cardStyleInterpolator:
+                    CardStyleInterpolators.forHorizontalIOS,
+                  transitionSpec: {
+                    open: config,
+                    close: closeConfig,
+                  },
                 }}
+                headerMode="float"
+                animation="fade"
               >
                 <Stack.Screen
                   name="StartScreen"
@@ -294,6 +308,18 @@ export default function App() {
                 <Stack.Screen
                   name="PostView"
                   component={PostView}
+                  options={{
+                    headerShown: false,
+                    headerTitle: "Post View",
+                    headerTitleStyle: {
+                      fontWeight: "bold",
+                    },
+                  }}
+                />
+
+                <Stack.Screen
+                  name="Terms and Conditions"
+                  component={Terms_and_Conditions}
                   options={{
                     headerShown: false,
                     headerTitle: "Post View",

@@ -122,8 +122,6 @@ const Cryptography_Encrypt = (text) => {
 
   text = text.split("");
 
-  console.log(text);
-
   text.forEach((e) => {
     if (firstTime) {
       encryptedTxt += alpha[e];
@@ -134,11 +132,12 @@ const Cryptography_Encrypt = (text) => {
     }
   });
 
-  console.log(encryptedTxt);
   return encryptedTxt;
 };
 
 export default function Register(props) {
+  const [boxColour, setBoxColour] = useState("white");
+
   const SignUp = (username, email, password) => {
     const url = `https://ampplex-backened.herokuapp.com/SignUp/${username}/${email}/${Cryptography_Encrypt(
       password.trim()
@@ -184,6 +183,7 @@ export default function Register(props) {
   const [username, setUsername] = useState("");
   const [loginResponse, setLoginResponse] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
+  const [isDisabled, setIsDisabled] = useState(false);
 
   return (
     <>
@@ -234,7 +234,9 @@ export default function Register(props) {
             />
             <TouchableOpacity
               style={styles.RegisterBtn}
+              disabled={isDisabled}
               onPress={() => {
+                setIsDisabled(true);
                 verifyUserInfo();
               }}
             >
@@ -253,6 +255,46 @@ export default function Register(props) {
               top: Dimensions.get("window").height * 0.75,
             }}
           />
+          {/* Terms and conditions */}
+          <View>
+            {/* Accept check box */}
+            <TouchableOpacity
+              style={styles.OuterBox}
+              onPress={() => {
+                if (boxColour === "white") {
+                  setBoxColour("dodgerblue");
+                } else {
+                  setBoxColour("white");
+                }
+              }}
+            >
+              <View
+                style={{
+                  width: 19,
+                  height: 19,
+                  backgroundColor: boxColour,
+                  position: "absolute",
+                  alignSelf: "center",
+                  borderRadius: 3,
+                }}
+              ></View>
+            </TouchableOpacity>
+
+            <Text style={styles.Terms}>I agree to the</Text>
+            <TouchableOpacity
+              onPress={() => props.navigation.navigate("Terms and Conditions")}
+              style={styles.TermsLinkView}
+            >
+              <Text style={styles.TermsLink}>terms and conditions</Text>
+            </TouchableOpacity>
+          </View>
+          <Text style={styles.Terms}>I agree to the</Text>
+          <TouchableOpacity
+            onPress={() => props.navigation.navigate("Terms and Conditions")}
+            style={styles.TermsLinkView}
+          >
+            <Text style={styles.TermsLink}>terms and conditions</Text>
+          </TouchableOpacity>
         </KeyboardAvoidingView>
       </ScrollView>
     </>
@@ -385,5 +427,45 @@ const styles = StyleSheet.create({
     color: "white",
     alignSelf: "center",
     fontSize: 18,
+  },
+  Terms: {
+    fontSize: 15,
+    fontWeight: "bold",
+    fontFamily: "sans-serif-medium",
+    alignSelf: "flex-start",
+    marginLeft: Dimensions.get("window").width * 0.2,
+    position: "absolute",
+    top: Dimensions.get("window").height * 0.71,
+  },
+  TermsLink: {
+    fontSize: 15,
+    fontWeight: "bold",
+    fontFamily: "sans-serif-medium",
+    alignSelf: "flex-end",
+    color: "#A519F0",
+    textAlign: "center",
+    position: "absolute",
+  },
+  TermsLinkView: {
+    width: 150,
+    height: 40,
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    alignSelf: "flex-end",
+    position: "absolute",
+    top: Dimensions.get("window").height * 0.697,
+    right: Dimensions.get("window").width * 0.15,
+  },
+  OuterBox: {
+    width: 25,
+    height: 25,
+    backgroundColor: "grey",
+    borderRadius: 3,
+    position: "absolute",
+    top: Dimensions.get("window").height * 0.15,
+    left: Dimensions.get("window").width * 0.1,
+    alignItems: "center",
+    justifyContent: "center",
   },
 });

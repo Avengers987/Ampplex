@@ -1,7 +1,7 @@
 import { StyleSheet, Text, View, Image, Dimensions, ScrollView } from "react-native";
 import React from "react";
 
-const PostView = ({route}: any) => {
+const PostView = ({ route }: any) => {
 
   const userName: string = route.params.UserName;
   const caption: string = route.params.Caption;
@@ -59,63 +59,63 @@ const PostView = ({route}: any) => {
 
   return (
     <>
-    <ScrollView contentContainerStyle={styles.Scroll_container}>
-      <View style={styles.container}>
-        <View style={styles.postView}>
+      <ScrollView contentContainerStyle={styles.Scroll_container}>
+        <View style={styles.container}>
+          <View style={styles.postView}>
 
-          {/* ProfilePicture */}
+            {/* ProfilePicture */}
 
-          <View>
-            <Image
-              style={styles.profilePicture}
-              source={{ uri: profilePic }}
+            <View>
+              <Image
+                style={styles.profilePicture}
+                source={{ uri: profilePic }}
+              />
+            </View>
+
+            {/* UserName */}
+
+            <View>
+              <Text style={styles.UserName}>{userName}</Text>
+            </View>
+
+            {/* PostImage */}
+
+            <View>
+              <Image
+                style={styles.postImg}
+                source={{ uri: postPic }}
+              />
+            </View>
+
+            {/* Caption */}
+
+            <View>
+              <Text style={styles.Caption}>{caption}</Text>
+            </View>
+
+            <View>
+              <Text
+                style={{
+                  fontSize: 15,
+                  fontWeight: "400",
+                  alignSelf: "flex-start",
+                  marginLeft: 22,
+                  marginTop: 10,
+                  fontFamily: "sans-serif-medium",
+                  color: "#828282",
+                }}
+              >
+                {CreateTimeStamp(timestamp)}
+              </Text>
+            </View>
+            <View
+              style={{
+                marginTop: 20,
+              }}
             />
           </View>
-
-          {/* UserName */}
-          
-          <View>
-            <Text style={styles.UserName}>{userName}</Text>
-          </View>
-
-        {/* PostImage */}
-
-        <View>
-          <Image
-            style={styles.postImg}
-            source={{ uri: postPic }}
-          />
         </View>
-
-        {/* Caption */}
-
-        <View>
-          <Text style={styles.Caption}>{caption}</Text>
-        </View>
-
-        <View>
-        <Text
-        style={{
-          fontSize: 15,
-          fontWeight: "400",
-          alignSelf: "flex-start",
-          marginLeft: 22,
-          marginTop: 10,
-          fontFamily: "sans-serif-medium",
-          color: "#828282",
-        }}
-      >
-        {CreateTimeStamp(timestamp)}
-      </Text>
-      </View>
-      <View
-        style={{
-          marginTop: 20,
-        }}
-      />
-        </View>
-      </View>
-    </ScrollView>
+      </ScrollView>
     </>
   );
 };
@@ -155,7 +155,7 @@ const styles = StyleSheet.create({
     marginLeft: 80,
     fontFamily: "sans-serif-medium",
     position: "absolute",
-    top: -Dimensions.get("window").height  * 0.05,
+    top: -Dimensions.get("window").height * 0.05,
   },
   profilePicture: {
     width: 43,
