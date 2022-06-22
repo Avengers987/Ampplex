@@ -108,10 +108,6 @@ export default function AddPost({ navigation, route, userID }) {
   const [showTaskCompleteSheet, setShowTaskCompleteSheet] = useState(false);
   const actionSheetRef = createRef();
 
-  // if (userID === undefined || userID === null || userID === "") {
-  //   userID = route.params.userID;
-  // }
-
   setInterval(() => {
     if (showTaskCompleteSheet) {
       actionSheetRef.current?.setModalVisible();
@@ -161,8 +157,6 @@ export default function AddPost({ navigation, route, userID }) {
 
       const childPath = `post/${userID}/${filename}`;
       console.log(`Child Path is : ${childPath}`);
-
-      console.log("firebase!!!!!", URI);
 
       try {
         const uploadUri =

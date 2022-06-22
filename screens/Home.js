@@ -15,7 +15,6 @@ import HomeScreen from "./HomeScreen";
 import { StatusBar } from "expo-status-bar";
 import AddPost from "./AddPost";
 import ShortVideo from "./ShortVideo";
-import Icon from "react-native-vector-icons/Ionicons";
 import Tab_Bar_Color_Context from "../context/tab_bar_color/Tab_Bar_Color_Context";
 import Logined_userID_Context from "../context/Logined_userID/Logined_userID_Context";
 
