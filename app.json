@@ -4,7 +4,6 @@
   "expo": {
     "name": "Ampplex",
     "slug": "Ampplex",
-    "icon": "./assets/images/ic_launcher.png",
     "version": "13",
     "splash": {
       "image": "./assets/images/start_screen.png"
@@ -16,10 +15,14 @@
     "description": "",
     "android": {
       "package": "com.ankeshkumar.Ampplex",
+
       "versionCode": 13
     },
     "ios": {
-      "bundleIdentifier": "com.ankeshkumar.Ampplex"
+      "bundleIdentifier": "com.ankeshkumar.Ampplex",
+      "config": {
+        "googleMobileAdsAppId": "ca-app-pub-8852518316504151~9750440272"
+      }
     }
   }
 }

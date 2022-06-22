@@ -13,6 +13,7 @@ const Menu = ({ navigation }) => {
   const [menuBtnPressed, setMenuButtonPressed] = useState<boolean>(false);
   const [closeMenu, setCloseMenu] = useState<boolean>(false);
   let menuBarAnimation: Animated.Value = new Animated.Value(-200);
+  let validateLoggedOut: boolean = true;
 
   useEffect(() => {
     Animated.timing(menuBarAnimation, {
@@ -57,7 +58,7 @@ const Menu = ({ navigation }) => {
             width: Dimensions.get("window").width / 1.5,
             height: Dimensions.get("window").height,
             left: -Dimensions.get("window").width / 2,
-            elevation: 12,
+            elevation: 20,
             borderTopRightRadius: 30,
             borderBottomRightRadius: 30,
             top: -30,
@@ -84,7 +85,7 @@ const Menu = ({ navigation }) => {
           </TouchableOpacity>
           <TouchableOpacity
             style={styles.LogoutBtn}
-            onPress={(): void => navigation.navigate("Login")}
+            onPress={(): void => navigation.replace("Login", { validateLoggedOut })}
           >
             {/* Log out button */}
             <Text
