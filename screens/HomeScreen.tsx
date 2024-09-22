@@ -425,11 +425,7 @@ const HomeScreen = ({ navigation, userID, userName }: HomeScreen_Props) => {
         {/* Rendering News feed */}
         <FlatList
         //code for optimization and load only visible items
-<<<<<<< HEAD
         initialNumToRender={4}
-=======
-        initialNumToRender={8}
->>>>>>> facd7c581e762ff2dd43c0b63b4671bf3cb41f89
         maxToRenderPerBatch={2}
         onEndReachedThreshold={0.1}
         onEndReached={onEndReached}
